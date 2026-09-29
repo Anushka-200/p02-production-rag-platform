@@ -31,6 +31,11 @@ experiment where it applies):
   picks tools
 - Also from the brief: contextual retrieval, semantic cache, reranking, memory
 
+**Coverage gaps also assigned to P02** (from the portfolio-wide research, 2026-09-29; details in the brief's
+"Coverage gaps to include" section): long context vs RAG experiment; per-tenant token budgets with alerts;
+user-feedback loop into the eval set; a structured red-team pass (garak / promptfoo / PortSwigger patterns);
+a data-retention note plus an "AI assistant" disclosure line (EU AI Act Article 50).
+
 **Living-wiki RAG (connectors + incremental sync):** most companies keep knowledge in wikis
 (Confluence/Notion/SharePoint/GitHub wiki) that change daily. Build a connector interface, change
 detection (last-modified / content hash per page and section), re-index only what changed, remove

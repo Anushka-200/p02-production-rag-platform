@@ -10,3 +10,4 @@ __pycache__/
 .mypy_cache/
 logs/
 data/raw/
+.estimates_claude_view.json

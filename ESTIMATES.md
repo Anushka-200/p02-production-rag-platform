@@ -20,6 +20,8 @@ Start time: 17:02 (2026-09-30). Owner's phase-level estimate (all 8 tasks togeth
 | | **Phase total** | | | 0.5 | 0.75 | 1 | 0.75 | | 0.75 | 1.23 | 0.12 | 1.35 | 1.8 | Owner: underestimated; did not budget learning and Q&A (learning:build about 10:1, split derived from that ratio). Start 17:02, end 18:23 |
 
 ## Phase 1: Ingestion + eval set v0
+Start time: 19:01 (2026-09-30). Owner's phase-level estimate (all 16 tasks together): O 1 / M 1.25 / P 1.5 h, PERT 1.25 h.
+
 | # | Task | Category | Familiarity | O | M | P | PERT | x mult | Planned h | Learning h | Build h | Actual total h | Ratio | Why it was off |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 1.1 | Read pgvector README (HNSW params) + Postgres full-text docs | learning | New | | | | | 1.0 | | | | | | |
@@ -38,7 +40,7 @@ Start time: 17:02 (2026-09-30). Owner's phase-level estimate (all 8 tasks togeth
 | 1.14 | Eval set: YOUR review of all items, set reviewed flag | data | Some | | | | | 1.0 | | | | | | |
 | 1.15 | Tests: ingestion unit + one integration test | testing-evals | New | | | | | 1.1 | | | | | | |
 | 1.16 | Live run + fix: bulk-ingest full corpus (cost and time check) | integration | New | | | | | 1.4 | | | | | | |
-| | **Phase total** | | | | | | | | | | | | | |
+| | **Phase total** | | | 1 | 1.25 | 1.5 | 1.25 | | 1.25 | | | | | |
 
 ## Phase 2: Retrieval + answers
 | # | Task | Category | Familiarity | O | M | P | PERT | x mult | Planned h | Learning h | Build h | Actual total h | Ratio | Why it was off |

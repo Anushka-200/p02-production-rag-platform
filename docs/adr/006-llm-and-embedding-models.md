@@ -12,4 +12,4 @@ Haiku 4.5 answers/rewrites/blurbs/memory, Sonnet 5.5 judge; local open embedding
 Haiku 4.5 + Sonnet 5.5 judge; local embedding as default, one hosted model for the quality-vs-cost experiment. Verify current model names and prices when finalising.
 
 ## Consequences
-TBD after experiment 5.
+TBD after experiment 5. Constraint: indexed `vector` columns allow at most 2,000 dimensions (`halfvec` 4,000).

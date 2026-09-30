@@ -1,7 +1,7 @@
 # ESTIMATES: P02 Production RAG Platform
 Status: drafted 2026-09-30. Your O/M/P columns are empty on purpose: fill them for a phase **before** starting it.
 My own estimates are sealed (git-ignored file `.estimates_claude_view.json`) and are revealed at the end of each phase, next to your numbers and the actuals.
-Rules: PERT = (O + 4M + P) / 6. `x mult` is pre-filled from `03_ESTIMATION_TRACKER.md` section B (retrieval 2.0, agent 2.0, integration 1.4, testing-evals 1.1, optimization 1.2, others 1.0; debugging +15% buffer is added at phase level). Familiarity is my suggestion (Some/New); change it if wrong. Estimates are your hours with Claude writing the code. Tasks marked SPIKE are timeboxed because neither of us can size them yet. Note the start time before each phase. If elapsed time passes 150% of a task's planned hours, stop and diagnose.
+Rules: PERT = (O + 4M + P) / 6. `x mult` is pre-filled from `03_ESTIMATION_TRACKER.md` section B (retrieval 2.0, agent 2.0, integration 1.4, testing-evals 1.1, optimization 1.2, others 1.0; debugging +15% buffer is added at phase level). Familiarity is my suggestion (Some/New); change it if wrong. Estimates are your hours with Claude writing the code. From Phase 1 on, note learning/Q&A and build time separately (Phase 0 lesson). Tasks marked SPIKE are timeboxed because neither of us can size them yet. Note the start time before each phase. If elapsed time passes 150% of a task's planned hours, stop and diagnose.
 ## Phase 0: Foundations
 Start time: 17:02 (2026-09-30). Owner's phase-level estimate (all 8 tasks together): O 0.5 / M 0.75 / P 1 h, PERT 0.75 h.
 
@@ -40,6 +40,7 @@ Start time: 19:01 (2026-09-30). Owner's phase-level estimate (all 16 tasks toget
 | 1.14 | Eval set: YOUR review of all items, set reviewed flag | data | Some | | | | | 1.0 | | | | | | |
 | 1.15 | Tests: ingestion unit + one integration test | testing-evals | New | | | | | 1.1 | | | | | | |
 | 1.16 | Live run + fix: bulk-ingest full corpus (cost and time check) | integration | New | | | | | 1.4 | | | | | | |
+| 1.17 | Cost guard: projected cost + confirmation above $0.50 for model-calling scripts | llm-logic | New | | | | | 1.0 | | | | | | |
 | | **Phase total** | | | 1 | 1.25 | 1.5 | 1.25 | | 1.25 | | | | | |
 
 ## Phase 2: Retrieval + answers
@@ -57,6 +58,7 @@ Start time: 19:01 (2026-09-30). Owner's phase-level estimate (all 16 tasks toget
 | 2.10 | LLM judge (faithfulness, correctness) + calibration on 20 hand labels | testing-evals | New | | | | | 1.1 | | | | | | |
 | 2.11 | make eval end to end: baseline per retrieval mode | testing-evals | New | | | | | 1.1 | | | | | | |
 | 2.12 | Live run + fix: full query flow on real corpus | integration | New | | | | | 1.4 | | | | | | |
+| 2.13 | SPIKE (timebox 1 h): reranker latency on CPU (candidate count, model size, ONNX) | optimization | New | | | | | 1.2 | | | | | | |
 | | **Phase total** | | | | | | | | | | | | | |
 
 ## Phase 3: Tenancy, auth, memory, PII
@@ -75,6 +77,7 @@ Start time: 19:01 (2026-09-30). Owner's phase-level estimate (all 16 tasks toget
 | 3.11 | Presidio PII redaction on logs + memory (+ hit-rate check) | integration | New | | | | | 1.4 | | | | | | |
 | 3.12 | Memory tests | testing-evals | New | | | | | 1.1 | | | | | | |
 | 3.13 | Live run + fix: two tenants end to end | integration | New | | | | | 1.4 | | | | | | |
+| 3.14 | Pooled-connection test: tenant setting never carries over; unset org fails closed | testing-evals | New | | | | | 1.1 | | | | | | |
 | | **Phase total** | | | | | | | | | | | | | |
 
 ## Phase 4: Channels
@@ -89,6 +92,7 @@ Start time: 19:01 (2026-09-30). Owner's phase-level estimate (all 16 tasks toget
 | 4.7 | Live run + fix: widget on a demo page | integration | New | | | | | 1.4 | | | | | | |
 | 4.8 | Live run + fix: WhatsApp via tunnel | integration | New | | | | | 1.4 | | | | | | |
 | 4.9 | Channel tests | testing-evals | New | | | | | 1.1 | | | | | | |
+| 4.10 | Public visibility + anonymous scope for widget/WhatsApp, with leak tests | infra | New | | | | | 1.0 | | | | | | |
 | | **Phase total** | | | | | | | | | | | | | |
 
 ## Phase 5: Advanced retrieval

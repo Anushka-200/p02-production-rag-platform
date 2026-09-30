@@ -2,8 +2,8 @@
 
 ## Context
 P02 is the second portfolio project: a multi-tenant document Q&A platform with cited answers, hybrid retrieval, per-user
-memory, strict tenant isolation, and web / widget / WhatsApp channels. The repo has only CLAUDE.md so far.
-The learning step is done (about 1.5 h). This plan turns it into `PLAN.md` and the ADRs; no code is written yet.
+memory, strict tenant isolation, and web / widget / WhatsApp channels.
+Revised 2026-09-30 after Phase 0 and the first Phase 1 tasks (see "Revisions" at the end).
 
 **Decisions taken (2026-09-30):**
 - GraphRAG: small comparison slice only (one handbook section, about 20 relationship questions). P10 does the depth.
@@ -12,7 +12,12 @@ The learning step is done (about 1.5 h). This plan turns it into `PLAN.md` and t
 - Reranker: local bge-reranker; Cohere is benchmarked on the same eval for ADR 003.
 - Models via LiteLLM: Claude Haiku 4.5 for answers, rewrites, blurbs, memory extraction; Sonnet 5.5 as judge.
   Embeddings: one local open model plus one hosted model for the quality-vs-cost experiment. Anthropic has no
-  embedding model. Verify current model names and prices when writing ADR 006.
+  embedding model. Verify current model names and prices when writing ADR 006. The embedding model must fit
+  pgvector's index limit (`vector` up to 2,000 dimensions, `halfvec` up to 4,000).
+- Corpus: LLM-costly steps (contextual blurbs, eval drafting, judge runs) use a **Tenant A slice**; the full GitLab
+  handbook is ingested without blurbs as a scale test (see Data).
+- API spend: a **cost guard** on every script that calls a model (see Cost budget). Top up credit only when needed.
+- One release at the end (no interim v1-core milestone).
 
 **Schedule warning:** the master plan had P02 on Sep 26-27; it is now Sep 30, and the scope has grown by 7 concept
 groups plus 5 coverage gaps. Estimates (next step) must show this honestly. If a phase passes 130% of plan, the
@@ -47,12 +52,14 @@ flowchart LR
 ## Schema (Postgres, ports: PG 5434, Redis 6380, API 8001, UI 8502)
 Roles: `rag_owner` (migrations), `rag_app` and `rag_worker` (no BYPASSRLS, `FORCE ROW LEVEL SECURITY`).
 Every request/job runs `SET LOCAL app.org_id, app.user_id` taken from the verified JWT or the job payload, never
-from the body or the model.
+from the body or the model. `SET LOCAL` (or `set_config(..., true)`) only lasts for the current transaction, so a
+pooled connection can never carry one tenant's setting into the next request; a test proves this with a pool.
+If no org is set, policies must match nothing (fail closed), never everything.
 
 | Table | Key columns |
 |---|---|
 | orgs, users | org_id, email, role (admin/member) |
-| documents | org_id, owner_id, visibility (private/org), source_type, source_uri, content_hash, active_version, status, source_updated_at |
+| documents | org_id, owner_id, visibility (private / org / public), source_type, source_uri, content_hash, active_version, status, source_updated_at |
 | chunks | org_id, owner_id + visibility (copied from doc so RLS needs no join), document_id, version, level (0 child, 1 parent, 2 summary), parent_id, page_start/end, section_path, text, context_blurb, embedding, tsv, content_hash. Composite FK (document_id, org_id) |
 | conversations, messages | org_id, user_id, rewritten_query, citations |
 | memories | org_id, user_id, fact, embedding, source_message_id (separate from chunks) |
@@ -61,7 +68,10 @@ from the body or the model.
 | feedback, leads, audit_log, semantic_cache | cache keyed by org + visibility scope + doc versions |
 
 RLS on chunks: `org_id = current_setting('app.org_id')::uuid AND (visibility='org' OR owner_id = current_setting('app.user_id')::uuid)`,
-plus `WITH CHECK` on writes. HNSW + filter can return fewer than N rows: test pgvector iterative scans.
+plus `WITH CHECK` on writes. HNSW + filter can return fewer than N rows: test pgvector iterative scans, and compare
+with exact search for small tenants (filter first, no HNSW).
+**Anonymous channels:** widget and WhatsApp visitors are not org members. They get a separate `anonymous` scope that
+sees only `visibility = 'public'` documents, never org-internal ones (migration in Phase 4, with leak tests).
 
 ## API (FastAPI)
 - Auth: `POST /auth/login`
@@ -82,14 +92,19 @@ transaction, then flip `active_version` and delete the old chunks (versioned re-
 
 ## Retrieval pipeline (every stage is a setting so the eval can toggle it)
 rewrite (only with history) > optional multi-query / HyDE > cache lookup > dense top 50 + keyword top 50 > RRF (k, weights)
+(keyword query = OR of the question's words via `websearch_to_tsquery`-style parsing; strict AND returns too little.
+`ts_rank` is not BM25: compare `ts_rank_cd` with a true-BM25 extension in ADR 003)
 > rerank to 8 > parent expansion > context assembly under a token budget (+ memory in a separate delimited block)
 > cited answer or refusal > checker (every citation id must be in the retrieved set; no external URLs/images).
+Reranker on CPU is the biggest latency risk (a large cross-encoder can take seconds for 50 pairs): a 1 h spike in
+Phase 2 measures it; knobs are candidate count (20-50), a smaller model, or ONNX.
 Agentic mode is a separate path with a step cap and a token budget; tools inherit the org from the backend.
 
 ## Memory design
 After each turn, async: Haiku proposes stable facts as JSON > Presidio redaction > merge/dedupe against existing by
 similarity > store. Retrieved top 3 by similarity into a block labelled "user facts (may be wrong)". Users can list and
 delete. Never written into the document index. RLS by user.
+Traces: prompts contain document text and user messages, so PII is redacted before anything is sent to Langfuse.
 
 ## Phases and acceptance criteria
 | # | Phase | Done means |
@@ -106,8 +121,12 @@ delete. Never written into the document index. RLS by user.
 | v2 | AWS | Terraform (VPC, ECS Fargate, RDS pgvector, ElastiCache, ALB + HTTPS, Secrets Manager, CloudWatch), CI/CD, k6 at 10/50 users, monthly cost note |
 
 ## Eval plan
-- 80 answerable + 15 unanswerable. Gold is **(document, page)**, not a chunk id, so chunking experiments stay comparable.
-  A retrieval hit means a retrieved chunk overlaps the gold page.
+- 80 answerable + 15 unanswerable. Gold is **(document, locator)**, not a chunk id, so chunking experiments stay
+  comparable. Locator = page for PDF/DOCX, heading anchor for Markdown/HTML (handbooks have no pages).
+  A retrieval hit means a retrieved chunk overlaps the gold page or section.
+- The eval corpus is **pinned to a git commit** of each handbook, recorded in `evals/`. The living-wiki demo replays
+  later commits separately, so wiki changes never silently break gold answers.
+- Questions come from the Tenant A slice, PostHog and the PDFs; the 15 unanswerable ones are plausible but absent.
 - Include relationship / multi-hop questions (for GraphRAG and agentic) and follow-ups (for rewriting) as tagged subsets.
 - Candidates drafted by an LLM from the corpus, then reviewed by you; `reviewed: true` is recorded per item (P01 never did).
 - Retrieval: Recall@5/50, MRR, nDCG@10 per mode. Answers: faithfulness and correctness by Sonnet judge calibrated on 20
@@ -118,6 +137,17 @@ delete. Never written into the document index. RLS by user.
 ## Cost / latency budget (p95 time to first token 2.5 s; to be confirmed by measurement)
 embed query 0.1 s, rewrite 0.3 s (follow-ups only), retrieval 0.1 s, local rerank 0.3-0.5 s, first token 0.8-1.2 s.
 Cost per answer is a baseline first; then caching, Haiku-only vs cascade, and context trimming.
+
+**Project API budget (rough, to be replaced by measured numbers):** $10 credit available.
+| Item | Rough cost |
+|---|---|
+| Contextual blurbs, Tenant A slice (~1.6k chunks) + PostHog (~1k) | $3-6 (less with prompt caching) |
+| Eval set drafting | < $1 |
+| Answer + judge runs, ~15 configurations x 95 questions | $10-15 |
+| RAPTOR summaries, GraphRAG slice, agentic, long-context experiment | $3-8 |
+| Total | ~$20-30, so a top-up is likely mid-Phase 6 |
+**Cost guard:** every script that calls a model estimates tokens x price first, prints it, and needs `--yes` above
+$0.50. Actual spend is read from Langfuse and logged per experiment in `docs/benchmarks.md`.
 
 ## ADRs (docs/adr/, 10 because scope is larger than the usual 3-5)
 001 vector store (pgvector vs Qdrant vs Pinecone) - 002 chunking - 003 hybrid fusion + reranker (local vs Cohere) -
@@ -139,14 +169,31 @@ Not for P02: A2A, computer-use, DSPy, online-eval canaries (P03/P04/P10 homes). 
 Scratch* (free, ~10 h; rewrite in plain Python), Anthropic contextual-retrieval post + cookbook (free, 3-4 h), Truto/tianpan
 multi-tenant posts (free, ~1 h), OWASP LLM10 (free).
 
-## Data (licence check before any download; recorded in docs/data.md)
-Tenant A GitLab handbook (Markdown, git); Tenant B PostHog handbook; public HR/benefits PDFs + DOCX with tables;
-self-written adversarial docs. Licences to be verified, not assumed.
+## Data (licences verified; details in docs/data.md)
+- **Tenant A:** GitLab handbook slice = `people-group`, `people-policies`, `total-rewards`, `hiring`, `values`,
+  `communication`, `leadership`, `finance` (~220 pages, ~0.8M tokens). Chosen because PostHog covers the same topics
+  (hiring, benefits, expenses, values), which makes cross-tenant leak tests meaningful. The full handbook (~4,200
+  pages, ~10M tokens, ~21k chunks) is ingested **without blurbs** as a scale and latency test.
+- **Tenant B:** PostHog `contents/handbook` only (MIT part of the repo; ~380 pages).
+- **PDFs:** IRS Pub 15-B, IRS Pub 969, OPM FEHB overview (US federal works). DOL guides blocked scripted download.
+- **DOCX:** a synthetic benefits-policy DOCX with tables, written by us.
+- **Adversarial docs:** written by us (Phase 3).
 
 ## Verification of this plan (once code exists)
 `make setup && docker compose up` healthy; `make test`; `make eval` prints all metrics; adversarial suite prints
 "N attacks, 0 leaks"; demo script from the brief runs end to end; every phase ends with a real run, not just tests.
 
 ## Status
-Plan approved 2026-09-30. Next: ESTIMATES.md (O/M/P per task), then Phase 0.
+Phase 0 done (1.35 h). Phase 1 in progress (1.1 and 1.2 done).
 Open item: widget host page. Proposed a static demo page instead of Next.js; confirm before Phase 4.
+
+## Revisions
+**2026-09-30 (after Phase 0 and tasks 1.1-1.2):**
+- Tenant A slice + full-corpus scale test (cost: full-corpus blurbs would be ~$40-70).
+- Cost budget table and cost guard.
+- Eval gold uses a locator (page or heading) and a pinned corpus commit.
+- `public` visibility + anonymous scope for widget/WhatsApp (they must not see org-internal docs).
+- RLS settings are transaction-scoped and fail closed; pooled-connection leak test.
+- Keyword search uses OR, and `ts_rank` vs BM25 goes into ADR 003 (from the task 1.1 reading).
+- Reranker CPU latency spike in Phase 2; PII redacted before Langfuse; embedding dimension limit noted.
+- Estimation: from Phase 1 on, estimate learning/Q&A and build separately (Phase 0 lesson).

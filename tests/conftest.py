@@ -19,3 +19,30 @@ def clean_settings_env(monkeypatch: pytest.MonkeyPatch) -> None:
 def no_tracing(monkeypatch: pytest.MonkeyPatch) -> None:
     """Tests must never send traces to Langfuse, even if the developer's .env has real keys."""
     monkeypatch.setattr(tracing, "get_client", lambda: None)
+
+
+@pytest.fixture
+def db_schema():  # type: ignore[no-untyped-def]
+    """A throwaway schema in the dev database, with all migrations applied. Skips without a DB.
+
+    Tests never touch real tables: the schema is created for the test and dropped after.
+    """
+    import uuid
+
+    import psycopg
+
+    from app.db.migrate import apply_migrations
+
+    try:
+        url = Settings().database_url("owner")
+        conn = psycopg.connect(url, connect_timeout=3)
+    except Exception as exc:  # no .env, or database not running (e.g. CI)
+        pytest.skip(f"database not available: {type(exc).__name__}")
+    schema = f"test_{uuid.uuid4().hex[:8]}"
+    try:
+        apply_migrations(conn, schema=schema)
+        yield conn
+    finally:
+        conn.autocommit = True
+        conn.execute(f"DROP SCHEMA IF EXISTS {schema} CASCADE")
+        conn.close()

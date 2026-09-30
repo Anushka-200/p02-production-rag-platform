@@ -1,4 +1,4 @@
-.PHONY: setup up down test lint typecheck eval bench demo
+.PHONY: setup up down migrate test lint typecheck eval bench demo
 
 setup:  ## Install dependencies
 	uv sync
@@ -8,6 +8,9 @@ up:  ## Start Postgres (pgvector) and Redis
 
 down:  ## Stop the services (data volume is kept)
 	docker compose down
+
+migrate:  ## Apply database migrations (as the owner role)
+	uv run python -m app.db.migrate
 
 test:  ## Unit and integration tests (no live API calls, no cost)
 	uv run pytest -q

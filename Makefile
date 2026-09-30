@@ -1,7 +1,13 @@
-.PHONY: setup test lint typecheck eval bench demo
+.PHONY: setup up down test lint typecheck eval bench demo
 
 setup:  ## Install dependencies
 	uv sync
+
+up:  ## Start Postgres (pgvector) and Redis
+	docker compose up -d
+
+down:  ## Stop the services (data volume is kept)
+	docker compose down
 
 test:  ## Unit and integration tests (no live API calls, no cost)
 	uv run pytest -q

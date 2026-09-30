@@ -7,7 +7,7 @@ Start time: 17:02 (2026-09-30). Owner's phase-level estimate (all 8 tasks togeth
 
 | # | Task | Category | Familiarity | O | M | P | PERT | x mult | Planned h | Learning h | Build h | Actual total h | Ratio | Why it was off |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 0.1 | Repo scaffold: uv, ruff, mypy, pytest, pyproject, .env.example, Makefile skeleton | setup | Some | | | | | 1.0 | | | | | | |
+| 0.1 | Repo scaffold: uv, ruff, mypy, pytest, pyproject, .env.example, Makefile skeleton | setup | Some | | | | | 1.0 | | | | 0.35 | | 17:02-17:23 |
 | 0.2 | docker-compose: Postgres+pgvector (5434), Redis (6380), DB roles | infra | Some | | | | | 1.0 | | | | | | |
 | 0.3 | Settings (pydantic-settings) + structured JSON logging | setup | Some | | | | | 1.0 | | | | | | |
 | 0.4 | LiteLLM wrapper: timeout, retry+backoff+jitter, cost capture; new Anthropic key with spend limit | llm-logic | New | | | | | 1.0 | | | | | | |

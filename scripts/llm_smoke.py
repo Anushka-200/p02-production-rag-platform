@@ -1,6 +1,6 @@
 """One real, tiny model call, traced in Langfuse (a fraction of a cent).
 
-Run: uv run python scripts/llm_smoke.py
+Run: uv run python -m scripts.llm_smoke
 """
 
 from app.llm import complete

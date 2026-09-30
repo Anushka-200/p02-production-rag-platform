@@ -19,6 +19,8 @@ from app.config import Settings, get_settings
 from app.tracing import observation
 
 logger = logging.getLogger(__name__)
+# LiteLLM logs every call at INFO in its own format; we already log one JSON line per call.
+logging.getLogger("LiteLLM").setLevel(logging.WARNING)
 
 # Temporary problems: trying again can work. Everything else (bad request, wrong key) is our
 # mistake and would fail the same way every time, so retrying only wastes time and money.

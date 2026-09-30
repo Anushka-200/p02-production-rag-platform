@@ -5,17 +5,19 @@ Rules: PERT = (O + 4M + P) / 6. `x mult` is pre-filled from `03_ESTIMATION_TRACK
 ## Phase 0: Foundations
 Start time: 17:02 (2026-09-30). Owner's phase-level estimate (all 8 tasks together): O 0.5 / M 0.75 / P 1 h, PERT 0.75 h.
 
+**Claude's sealed view (revealed at phase end):** 8 tasks, PERT 9.32 h, with multipliers 9.82 h. **Actual 1.35 h** = 1.8x the owner's estimate and 0.14x Claude's. Claude's numbers assumed each task takes about 1 h of hands-on time even with AI writing the code; real build time was minutes per task. The owner's numbers were closer in size but missed learning and Q&A time.
+
 | # | Task | Category | Familiarity | O | M | P | PERT | x mult | Planned h | Learning h | Build h | Actual total h | Ratio | Why it was off |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 0.1 | Repo scaffold: uv, ruff, mypy, pytest, pyproject, .env.example, Makefile skeleton | setup | Some | | | | | 1.0 | | | | 0.35 | | 17:02-17:23 |
-| 0.2 | docker-compose: Postgres+pgvector (5434), Redis (6380), DB roles | infra | Some | | | | | 1.0 | | | | | | |
-| 0.3 | Settings (pydantic-settings) + structured JSON logging | setup | Some | | | | | 1.0 | | | | | | |
-| 0.4 | LiteLLM wrapper: timeout, retry+backoff+jitter, cost capture; new Anthropic key with spend limit | llm-logic | New | | | | | 1.0 | | | | | | |
-| 0.5 | Langfuse tracing wired + live run and fix | integration | New | | | | | 1.4 | | | | | | |
-| 0.6 | CI skeleton (GitHub Actions: lint + tests) | infra | Some | | | | | 1.0 | | | | | | |
+| 0.2 | docker-compose: Postgres+pgvector (5434), Redis (6380), DB roles | infra | Some | | | | | 1.0 | | | | 0.30 | | 17:23-17:41 |
+| 0.3 | Settings (pydantic-settings) + structured JSON logging | setup | Some | | | | | 1.0 | | | | 0.10 | | 17:41-17:47 |
+| 0.4 | LiteLLM wrapper: timeout, retry+backoff+jitter, cost capture; new Anthropic key with spend limit | llm-logic | New | | | | | 1.0 | | | | 0.20 | | 17:47-17:59, live run later |
+| 0.5 | Langfuse tracing wired + live run and fix | integration | New | | | | | 1.4 | | | | 0.30 | | 17:59-18:17, incl. live run + Langfuse v2 API |
+| 0.6 | CI skeleton (GitHub Actions: lint + tests) | infra | Some | | | | | 1.0 | | | | | | 18:17-18:23 together with 0.7, 0.8 (0.10 h) |
 | 0.7 | Verify licences (GitLab, PostHog, HR PDFs) -> docs/data.md | data | Some | | | | | 1.0 | | | | | | |
 | 0.8 | Download and pin corpora (shallow clone, sizes, D: drive) | data | Some | | | | | 1.0 | | | | | | |
-| | **Phase total** | | | 0.5 | 0.75 | 1 | 0.75 | | | | | | | |
+| | **Phase total** | | | 0.5 | 0.75 | 1 | 0.75 | | 0.75 | 1.23 | 0.12 | 1.35 | 1.8 | Owner: underestimated; did not budget learning and Q&A (learning:build about 10:1, split derived from that ratio). Start 17:02, end 18:23 |
 
 ## Phase 1: Ingestion + eval set v0
 | # | Task | Category | Familiarity | O | M | P | PERT | x mult | Planned h | Learning h | Build h | Actual total h | Ratio | Why it was off |

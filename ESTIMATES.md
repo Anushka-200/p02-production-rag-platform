@@ -3,6 +3,8 @@ Status: drafted 2026-09-30. Your O/M/P columns are empty on purpose: fill them f
 My own estimates are sealed (git-ignored file `.estimates_claude_view.json`) and are revealed at the end of each phase, next to your numbers and the actuals.
 Rules: PERT = (O + 4M + P) / 6. `x mult` is pre-filled from `03_ESTIMATION_TRACKER.md` section B (retrieval 2.0, agent 2.0, integration 1.4, testing-evals 1.1, optimization 1.2, others 1.0; debugging +15% buffer is added at phase level). Familiarity is my suggestion (Some/New); change it if wrong. Estimates are your hours with Claude writing the code. Tasks marked SPIKE are timeboxed because neither of us can size them yet. Note the start time before each phase. If elapsed time passes 150% of a task's planned hours, stop and diagnose.
 ## Phase 0: Foundations
+Start time: 17:02 (2026-09-30). Owner's phase-level estimate (all 8 tasks together): O 0.5 / M 0.75 / P 1 h, PERT 0.75 h.
+
 | # | Task | Category | Familiarity | O | M | P | PERT | x mult | Planned h | Learning h | Build h | Actual total h | Ratio | Why it was off |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 0.1 | Repo scaffold: uv, ruff, mypy, pytest, pyproject, .env.example, Makefile skeleton | setup | Some | | | | | 1.0 | | | | | | |
@@ -13,7 +15,7 @@ Rules: PERT = (O + 4M + P) / 6. `x mult` is pre-filled from `03_ESTIMATION_TRACK
 | 0.6 | CI skeleton (GitHub Actions: lint + tests) | infra | Some | | | | | 1.0 | | | | | | |
 | 0.7 | Verify licences (GitLab, PostHog, HR PDFs) -> docs/data.md | data | Some | | | | | 1.0 | | | | | | |
 | 0.8 | Download and pin corpora (shallow clone, sizes, D: drive) | data | Some | | | | | 1.0 | | | | | | |
-| | **Phase total** | | | | | | | | | | | | | |
+| | **Phase total** | | | 0.5 | 0.75 | 1 | 0.75 | | | | | | | |
 
 ## Phase 1: Ingestion + eval set v0
 | # | Task | Category | Familiarity | O | M | P | PERT | x mult | Planned h | Learning h | Build h | Actual total h | Ratio | Why it was off |

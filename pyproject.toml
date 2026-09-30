@@ -1,0 +1,30 @@
+[project]
+name = "p02-production-rag-platform"
+version = "0.1.0"
+description = "Multi-tenant document Q&A: hybrid retrieval, reranking, citations, memory, RLS isolation"
+requires-python = ">=3.12"
+# Runtime dependencies are added at the task that first needs them.
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "mypy>=1.13",
+    "pytest>=8.3",
+    "ruff>=0.8",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.mypy]
+python_version = "3.12"
+files = ["app"]
+ignore_missing_imports = true
+warn_unused_ignores = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

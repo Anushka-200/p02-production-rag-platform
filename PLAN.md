@@ -99,7 +99,7 @@ delete. Never written into the document index. RLS by user.
 | 2 | Retrieval + answers | 3 modes, RRF, rerank, streaming, citations, refusal, inspector endpoint; `make eval` prints Recall@5, MRR, nDCG@10 per mode |
 | 3 | Tenancy, auth, memory, PII | JWT, RLS, private vs shared; memory view/delete; adversarial suite runs (forged tenant, modified doc ids, injected docs) with 0 leaks |
 | 4 | Channels | Streamlit chat + admin, one-tag widget, WhatsApp sandbox, lead capture + handoff flag |
-| 5 | Advanced retrieval | rewriting, multi-query/HyDE, parent-child + RAPTOR, GraphRAG slice, agentic mode, living-wiki connector with hash-diff sync and permission sync |
+| 5 | Advanced retrieval | rewriting, multi-query/HyDE, parent-child + RAPTOR, GraphRAG slice, agentic mode, living-wiki connector with hash-diff sync and permission sync, 1-2 h LangChain/LangGraph spike (ADR 010) |
 | 6 | Evaluate + optimize | brief experiments 1-7 plus: rewriting, expansion, hierarchical, GraphRAG, agentic, long-context vs RAG; 3+ logged optimizations; token budgets with alert; feedback loop into eval |
 | 7 | Security pass | red-team (garak / promptfoo / PortSwigger patterns), attacks tried vs blocked; OWASP mapping; data-policy note; AI disclosure line |
 | 8 | Package | README with tables and diagram, DEMO_SCRIPT, LEARNING_LOG, CI with a 15-question mocked eval, demo video |
@@ -119,10 +119,10 @@ delete. Never written into the document index. RLS by user.
 embed query 0.1 s, rewrite 0.3 s (follow-ups only), retrieval 0.1 s, local rerank 0.3-0.5 s, first token 0.8-1.2 s.
 Cost per answer is a baseline first; then caching, Haiku-only vs cascade, and context trimming.
 
-## ADRs (docs/adr/, 9 because scope is larger than the usual 3-5)
+## ADRs (docs/adr/, 10 because scope is larger than the usual 3-5)
 001 vector store (pgvector vs Qdrant vs Pinecone) - 002 chunking - 003 hybrid fusion + reranker (local vs Cohere) -
 004 memory - 005 tenant isolation (filter vs RLS vs DB-per-tenant) - 006 LLM + embedding models - 007 query
-rewriting/expansion - 008 hierarchical / GraphRAG / agentic - 009 connectors + incremental sync.
+rewriting/expansion - 008 hierarchical / GraphRAG / agentic - 009 connectors + incremental sync - 010 framework (LangChain) vs plain Python.
 
 ## KB check (AI_ENGINEERING_KB.md and IDEAS.md): what fits P02 and the cheapest way in
 Already in scope and confirmed: long-context vs RAG (score 9), per-tenant budgets (8), feedback loop, red-team,

@@ -16,6 +16,7 @@ import litellm
 from litellm import exceptions as llm_exc
 
 from app.config import Settings, get_settings
+from app.tracing import observation
 
 logger = logging.getLogger(__name__)
 
@@ -57,6 +58,7 @@ def backoff_delay(attempt: int, base: float = 1.0, cap: float = 20.0) -> float:
 def complete(
     messages: list[dict[str, Any]],
     *,
+    name: str = "llm-call",
     model: str | None = None,
     max_tokens: int = 1024,
     temperature: float = 0.0,
@@ -68,6 +70,36 @@ def complete(
 ) -> LLMResult:
     s = settings or get_settings()
     model = model or s.llm_default_model
+    with observation(
+        as_type="generation",
+        name=name,
+        model=model,
+        input=messages,
+        model_parameters={"max_tokens": max_tokens, "temperature": temperature},
+    ) as obs:
+        result = _call_with_retries(
+            messages, model, max_tokens, temperature, s, completion_fn, cost_fn, sleep_fn
+        )
+        if obs is not None:
+            obs.update(
+                output=result.text,
+                usage_details={"input": result.input_tokens, "output": result.output_tokens},
+                cost_details={"total": result.cost_usd} if result.cost_usd is not None else None,
+                metadata={"attempts": result.attempts, "latency_s": result.latency_s},
+            )
+    return result
+
+
+def _call_with_retries(
+    messages: list[dict[str, Any]],
+    model: str,
+    max_tokens: int,
+    temperature: float,
+    s: Settings,
+    completion_fn: Callable[..., Any],
+    cost_fn: Callable[..., float],
+    sleep_fn: Callable[[float], None],
+) -> LLMResult:
     api_key = s.anthropic_api_key.get_secret_value() if s.anthropic_api_key else None
     max_attempts = s.llm_max_retries + 1
     started = time.perf_counter()

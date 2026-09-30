@@ -35,6 +35,11 @@ class Settings(BaseSettings):
     ui_port: int = 8502
 
     anthropic_api_key: SecretStr | None = None
+    # Cheap tier by default (shared standard); the stronger model is only used as the eval judge.
+    llm_default_model: str = "anthropic/claude-haiku-4-5-20251001"
+    llm_judge_model: str = "anthropic/claude-sonnet-5-5"
+    llm_timeout_s: float = 30.0
+    llm_max_retries: int = 3
     langfuse_public_key: str | None = None
     langfuse_secret_key: SecretStr | None = None
     langfuse_host: str = "https://cloud.langfuse.com"

@@ -24,14 +24,14 @@ Start time: 19:01 (2026-09-30). Owner's phase-level estimate (all 16 tasks toget
 
 | # | Task | Category | Familiarity | O | M | P | PERT | x mult | Planned h | Learning h | Build h | Actual total h | Ratio | Why it was off |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 1.1 | Read pgvector README (HNSW params) + Postgres full-text docs | learning | New | | | | | 1.0 | | | | | | |
-| 1.2 | Schema migrations: tables, HNSW index, GIN index | infra | Some | | | | | 1.0 | | | | | | |
+| 1.1 | Read pgvector README (HNSW params) + Postgres full-text docs | learning | New | | | | | 1.0 | | | | 0.85 | | 19:01-19:52; mostly Q&A (filtering, candidates, AND vs OR) |
+| 1.2 | Schema migrations: tables + GIN index (HNSW moved to 1.8) | infra | Some | | | | | 1.0 | | | | 0.63 | | 19:52-20:30; includes the plan review done in between |
 | 1.3 | Parsers: MD / TXT / HTML with sections | retrieval | New | | | | | 2.0 | | | | | | |
 | 1.4 | Parsers: PDF with page numbers, DOCX with tables | retrieval | New | | | | | 2.0 | | | | | | |
 | 1.5 | Preprocessing: boilerplate removal, dedupe, table handling | data | Some | | | | | 1.0 | | | | | | |
 | 1.6 | Chunker A: recursive by tokens + overlap + tests | retrieval | New | | | | | 2.0 | | | | | | |
 | 1.7 | Chunker B: heading-aware + parent-child linking + tests | retrieval | New | | | | | 2.0 | | | | | | |
-| 1.8 | Embedding wrapper (local + hosted), batching | retrieval | New | | | | | 2.0 | | | | | | |
+| 1.8 | Embedding wrapper (local + hosted), batching; embedding column + HNSW index | retrieval | New | | | | | 2.0 | | | | | | |
 | 1.9 | Contextual blurb generation (Haiku + prompt caching) + tests | retrieval | New | | | | | 2.0 | | | | | | |
 | 1.10 | Persist chunks; versioned re-index; dedupe on re-upload (idempotency) | retrieval | New | | | | | 2.0 | | | | | | |
 | 1.11 | RQ worker + job status + failure handling | infra | Some | | | | | 1.0 | | | | | | |

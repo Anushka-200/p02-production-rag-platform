@@ -1,0 +1,119 @@
+"""The ingestion pipeline for one file: parse > clean > chunk > (blurbs) > embed > save.
+
+Pure orchestration: it takes the connection, embedder and model function as arguments, so tests
+run it with fakes and the worker runs it with the real ones.
+"""
+
+from collections.abc import Callable
+from pathlib import Path
+from typing import Any
+
+import psycopg
+
+from app.config import Settings
+from app.cost_guard import CostGuard
+from app.embeddings import Embedder, get_token_counter
+from app.ingest.chunkers import chunk_document
+from app.ingest.chunking import TokenCounter
+from app.ingest.contextual import (
+    BlurbCache,
+    BlurbStats,
+    add_blurbs,
+    embedding_text,
+    project_blurb_cost,
+)
+from app.ingest.models import ParseError
+from app.ingest.parsers import parse
+from app.ingest.preprocess import preprocess
+from app.ingest.store import plan_ingest, write_version
+
+
+def run_pipeline(
+    conn: psycopg.Connection,
+    job: dict[str, Any],
+    raw: bytes,
+    *,
+    settings: Settings,
+    embedder: Embedder,
+    complete_fn: Callable[..., Any],
+    count: TokenCounter | None,
+    set_stage: Callable[[str], None],
+) -> dict[str, Any]:
+    plan = plan_ingest(
+        conn,
+        org_id=job["org_id"],
+        owner_id=job["owner_id"],
+        source_uri=job["source_uri"],
+        content_hash=job["content_hash"],
+    )
+    if plan.action != "ingest":  # nothing to do, and nothing was spent
+        return {
+            "action": plan.action,
+            "document_id": str(plan.document_id) if plan.document_id else None,
+            "duplicate_of": str(plan.duplicate_of) if plan.duplicate_of else None,
+        }
+
+    set_stage("parse")
+    parsed = preprocess(parse(job["source_type"], raw, job["source_uri"]))
+    if not parsed.sections:
+        raise ParseError("no readable text was found in the file")
+
+    set_stage("chunk")
+    counter = count or get_token_counter(settings)
+    chunks = chunk_document(parsed, settings, counter)
+
+    blurb_cost = 0.0
+    if settings.blurbs_enabled:
+        set_stage("blurb")
+        guard = CostGuard(
+            f"blurbs for {job['source_uri']}",
+            project_blurb_cost([(parsed, chunks)], settings.llm_default_model, counter),
+            max_usd=settings.blurb_max_usd_per_document,
+            assume_yes=True,  # unattended: the hard stop is the protection, not a prompt
+            say=lambda _: None,
+        )
+        stats = BlurbStats()
+        cache = BlurbCache(Path(settings.upload_dir).parent / "cache" / "blurbs.jsonl")
+        chunks = add_blurbs(
+            parsed,
+            chunks,
+            complete_fn=complete_fn,
+            guard=guard,
+            stats=stats,
+            cache=cache,
+            count=counter,
+        )
+        blurb_cost = stats.cost_usd
+
+    set_stage("embed")
+    children = [c for c in chunks if c.level == 0]
+    vectors = iter(embedder.embed_documents([embedding_text(c) for c in children]))
+    embeddings = [next(vectors) if c.level == 0 else None for c in chunks]  # parents: no vector
+
+    set_stage("save")
+    written = write_version(
+        conn,
+        plan,
+        org_id=job["org_id"],
+        owner_id=job["owner_id"],
+        visibility=job["visibility"],
+        source_uri=job["source_uri"],
+        source_type=job["source_type"],
+        content_hash=job["content_hash"],
+        title=parsed.title,
+        chunks=chunks,
+        embeddings=embeddings,
+        embedding_model=embedder.model,
+    )
+    return {
+        "action": "created" if written.created else "updated",
+        "document_id": str(written.document_id),
+        "version": written.version,
+        "chunks": len(chunks),
+        "children": len(children),
+        "parents": len(chunks) - len(children),
+        "chunks_replaced": written.chunks_deleted,
+        "preprocess": parsed.metadata.get("preprocess", {}),
+        "blurb_cost_usd": round(blurb_cost, 5),
+        "embedding_model": embedder.model,
+    }

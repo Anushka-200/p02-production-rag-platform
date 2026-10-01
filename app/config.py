@@ -51,6 +51,13 @@ class Settings(BaseSettings):
     embedding_dimension: int = 384
     # 16 not 256: big batches padded to 512 tokens made an 8 GB machine swap (8x slower).
     embedding_batch_size: int = 16
+    # Ingestion worker (task 1.11)
+    upload_dir: str = "data/uploads"
+    max_upload_mb: int = 25
+    ingest_queue: str = "ingest"
+    job_max_attempts: int = 3  # first try + 2 retries, then the job is marked failed
+    blurbs_enabled: bool = False  # contextual blurbs cost money: opt in explicitly
+    blurb_max_usd_per_document: float = 1.0  # hard stop per document (unattended: no prompt)
     llm_timeout_s: float = 30.0
     llm_max_retries: int = 3
     langfuse_public_key: str | None = None

@@ -239,3 +239,36 @@ def test_a_few_pdfs_still_supply_all_their_questions_one_per_page() -> None:
         len(ps) == 2 and ps[0].doc == ps[1].doc and ps[0].locator != ps[1].locator
         for ps in unanswerable
     )
+
+
+def test_fill_mode_drafts_only_what_is_missing() -> None:
+    calls = {"n": 0}
+
+    def counting(messages, **kw):  # type: ignore[no-untyped-def]
+        calls["n"] += 1
+        return fake_model(messages, **kw)
+
+    first, _ = run_draft(groups(), counting, workers=1)
+    assert len(first) == 95
+    calls["n"] = 0
+    again, failures = run_draft(groups(), counting, workers=1, existing=first)
+    assert again == [] and failures == [] and calls["n"] == 0  # nothing missing, nothing spent
+
+    missing = [i for i in first if i.kind == "single" and i.tenant == "B"][:3]
+    partial = [i for i in first if i not in missing]
+    new, _ = run_draft(groups(), counting, workers=1, existing=partial)
+    assert len(new) == 3 and all(n.kind == "single" and n.tenant == "B" for n in new)
+    assert not {n.id for n in new} & {p.id for p in partial}  # the new ids do not collide
+    assert {tuple(g.locator for g in n.gold) for n in new} == {
+        tuple(g.locator for g in m.gold) for m in missing
+    }
+
+
+def test_matching_ignores_curly_quotes_and_dashes() -> None:
+    passage_text = (
+        "Expenses incurred before you establish your HSA aren’t qualified – see the rules."
+    )
+    assert C.contains_verbatim(
+        passage_text,
+        "Expenses incurred before you establish your HSA aren't qualified - see the rules",
+    )

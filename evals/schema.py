@@ -20,6 +20,7 @@ class EvalItem(BaseModel):
     gold: list[GoldRef] = Field(default_factory=list)  # where the answer is (empty if unanswerable)
     gold_answer: str = ""
     support: list[str] = Field(default_factory=list)  # sentences copied verbatim from the passage
+    source: list[str] = Field(default_factory=list)  # passages the draft was made from: doc#locator
     corpus: str  # gitlab | posthog | irs-p15b | irs-p969 | opm
     tags: list[str] = Field(default_factory=list)
     flags: list[str] = Field(default_factory=list)  # automatic warnings for the reviewer

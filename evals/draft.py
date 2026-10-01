@@ -262,9 +262,38 @@ def plan_work(
     return work
 
 
-def run_draft(groups: dict[str, dict[str, list[C.Passage]]], complete_fn: Callable[..., Any],
-              guard: Any = None, workers: int = 6) -> tuple[list[EvalItem], list[str]]:  # fmt: skip
-    work = plan_work(groups)
+def _signature(kind: str, refs: list[str]) -> tuple[str, tuple[str, ...]]:
+    return kind, tuple(sorted(refs))
+
+
+def run_draft(
+    groups: dict[str, dict[str, list[C.Passage]]],
+    complete_fn: Callable[..., Any],
+    guard: Any = None,
+    workers: int = 6,
+    existing: list[EvalItem] | None = None,
+) -> tuple[list[EvalItem], list[str]]:
+    """Draft every planned question that is not already in `existing`; return (new items, failures).
+
+    Existing items are matched by kind + gold location, so a rerun only fills the gaps and never
+    re-spends on questions that already exist (the plan is reproducible, so the jobs are stable).
+    """
+    existing = existing or []
+    done = {
+        _signature(i.kind, [f"{g.doc}#{g.locator}" for g in i.gold]) for i in existing if i.gold
+    }
+    unans_have = Counter(i.tenant for i in existing if i.kind == "unanswerable")
+    unans_seen: Counter[str] = Counter()
+    work = []
+    for kind, group, ps in plan_work(groups):
+        refs = [f"{p.doc}#{p.locator}" for p in ps]
+        if kind == "unanswerable":
+            unans_seen[ps[0].tenant] += 1
+            if unans_seen[ps[0].tenant] <= unans_have[ps[0].tenant]:
+                continue
+        elif _signature(kind, refs) in done:
+            continue
+        work.append((kind, group, ps))
     haystacks = {
         g: [
             (f"{p.doc}#{p.locator}", " ".join(p.text.lower().split()))
@@ -279,12 +308,17 @@ def run_draft(groups: dict[str, dict[str, list[C.Passage]]], complete_fn: Callab
         kind, group, ps = job
         try:
             if kind == "single":
-                return draft_single(ps[0], complete_fn, guard)
-            if kind == "follow_up":
-                return draft_follow_up(ps[0], complete_fn, guard)
-            if kind == "multi_hop":
-                return draft_multi(ps[0], ps[1], complete_fn, guard)
-            return draft_unanswerable(ps[0], ps[1], haystacks[group], complete_fn, guard)
+                item = draft_single(ps[0], complete_fn, guard)
+            elif kind == "follow_up":
+                item = draft_follow_up(ps[0], complete_fn, guard)
+            elif kind == "multi_hop":
+                item = draft_multi(ps[0], ps[1], complete_fn, guard)
+            else:
+                item = draft_unanswerable(ps[0], ps[1], haystacks[group], complete_fn, guard)
+            if item:
+                item.source = [f"{p.doc}#{p.locator}" for p in ps]
+                item.drafted_by = get_settings().llm_default_model
+            return item
         except (DraftError, LLMError) as exc:
             with lock:
                 failures.append(f"{kind} {ps[0].doc}#{ps[0].locator}: {exc}")
@@ -293,6 +327,9 @@ def run_draft(groups: dict[str, dict[str, list[C.Passage]]], complete_fn: Callab
     with ThreadPoolExecutor(max_workers=workers) as pool:
         items = [i for i in pool.map(one, work) if i is not None]
     counters: Counter[str] = Counter()
+    for old in existing:  # new ids continue after the existing ones
+        prefix, _, number = old.id.rpartition("-")
+        counters[prefix] = max(counters[prefix], int(number))
     for item in items:  # stable ids: a-single-001, b-follow_up-002, ...
         key = f"{item.tenant.lower()}-{item.kind}"
         counters[key] += 1
@@ -305,6 +342,9 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     add_cost_args(parser)
     parser.add_argument("--dry-run", action="store_true", help="plan and project the cost only")
+    parser.add_argument(
+        "--fill", action="store_true", help="only draft questions missing from evals/qa.jsonl"
+    )
     args = parser.parse_args()
     setup_logging("WARNING")
     s = get_settings()
@@ -322,8 +362,17 @@ def main() -> None:
         guard.confirm()
         return
     guard.confirm()
-    items, failures = run_draft(groups, complete, guard)
     out = Path("evals/qa.jsonl")
+    existing = (
+        [EvalItem.model_validate_json(line) for line in out.read_text().splitlines()]
+        if args.fill
+        else []
+    )
+    for old in existing:  # items from the first run were drafted before these fields existed
+        old.drafted_by = old.drafted_by or s.llm_default_model
+        old.source = old.source or [f"{g.doc}#{g.locator}" for g in old.gold]
+    new_items, failures = run_draft(groups, complete, guard, existing=existing)
+    items = sorted([*existing, *new_items], key=lambda i: i.id)
     out.write_text("".join(i.model_dump_json() + "\n" for i in items))
     C.write_manifest(Path("evals/corpus_manifest.json"))
     print(f"\nwrote {len(items)} items to {out}; {len(failures)} could not be drafted")

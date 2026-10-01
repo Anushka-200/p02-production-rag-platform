@@ -1,0 +1,20 @@
+{
+  "gitlab_handbook_commit": "99dd61a094529804c7f13b05ef6c9fc6ede6eac8",
+  "gitlab_slice_dirs": [
+    "people-group",
+    "people-policies",
+    "total-rewards",
+    "hiring",
+    "values",
+    "communication",
+    "leadership",
+    "finance"
+  ],
+  "posthog_handbook_commit": "b31c2569263fd345bfa336d561f6e0fc9b9d9655",
+  "pdf_sha256": {
+    "irs-p15b-fringe-benefits.pdf": "a0af8513d6f45e65620bfd3eaa564cde7a6912781b9cb1c5b03dcd77b639ec46",
+    "irs-p969-health-accounts.pdf": "d51681ecae43d517415500efe6f7dcc1bba65fed09b48d416f18d6407a5b522f",
+    "opm-health-insurance-overview.pdf": "4180531875a0c5b765edc30c935711c86a56e90246cfda0932a33a28d98f6c57"
+  },
+  "note": "Gold answers are only valid against these exact versions. Wiki-sync demos replay LATER commits separately."
+}

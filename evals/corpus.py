@@ -3,6 +3,7 @@
 import json
 import re
 import subprocess
+import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -35,7 +36,14 @@ class Passage:
     askable: bool  # enough prose to base a question on (see eligible())
 
 
+_PUNCT = str.maketrans(
+    {"’": "'", "‘": "'", "“": '"', "”": '"', "–": "-", "—": "-", "‑": "-", "\u00ad": None}
+)
+
+
 def _clean_for_match(text: str) -> str:
+    """Make two versions of the same sentence comparable: no markup, one kind of quote and dash."""
+    text = unicodedata.normalize("NFKC", text).translate(_PUNCT)
     text = re.sub(r"\[([^\]]+)\]\([^)]*\)", r"\1", text)  # [label](url) -> label
     text = re.sub(r"[*_`#>|]", " ", text)
     return " ".join(text.lower().split())
@@ -43,7 +51,8 @@ def _clean_for_match(text: str) -> str:
 
 def contains_verbatim(passage_text: str, quote: str) -> bool:
     """True if the quote really appears in the passage (ignoring markup and spacing)."""
-    return bool(quote.strip()) and _clean_for_match(quote) in _clean_for_match(passage_text)
+    wanted = _clean_for_match(quote).rstrip(" .;:,")  # a different final punctuation mark is fine
+    return bool(wanted) and wanted in _clean_for_match(passage_text)
 
 
 def eligible(text: str) -> bool:

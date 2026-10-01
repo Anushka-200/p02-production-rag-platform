@@ -38,6 +38,11 @@ class Settings(BaseSettings):
     # Cheap tier by default (shared standard); the stronger model is only used as the eval judge.
     llm_default_model: str = "anthropic/claude-haiku-4-5-20251001"
     llm_judge_model: str = "anthropic/claude-sonnet-5-5"
+    # Chunking (task 1.6/1.7): which strategy and how big. Tuned by the Phase 6 experiments.
+    chunk_strategy: Literal["recursive", "structured"] = "structured"
+    chunk_tokens: int = 400
+    chunk_overlap_tokens: int = 50
+    parent_tokens: int = 1200
     llm_timeout_s: float = 30.0
     llm_max_retries: int = 3
     langfuse_public_key: str | None = None

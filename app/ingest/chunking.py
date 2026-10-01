@@ -45,6 +45,8 @@ class Chunk:
     token_count: int
     index: int  # position of the chunk in its document, starting at 0
     level: int = 0  # 0 = child chunk (searched); chunker B adds 1 = parent, 2 = summary
+    anchors: tuple[str, ...] = ()  # every section anchor the chunk covers (B can merge several)
+    parent_index: int | None = None  # index of this child's parent chunk, if it has one
 
 
 @dataclass
@@ -154,6 +156,7 @@ def chunk_recursive(
                     page_end=section.page,
                     token_count=count(text),
                     index=len(chunks),
+                    anchors=(section.anchor,),
                 )
             )
     return chunks

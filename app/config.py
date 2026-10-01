@@ -43,6 +43,14 @@ class Settings(BaseSettings):
     chunk_tokens: int = 400
     chunk_overlap_tokens: int = 50
     parent_tokens: int = 1200
+    # Embeddings (task 1.8). "local" runs on this machine (free); "litellm" calls a hosted model.
+    # The database column is vector(384), fixed by the default model: changing the model to one
+    # with a different size needs a new migration and a full re-embed.
+    embedding_provider: Literal["local", "litellm"] = "local"
+    embedding_model: str = "BAAI/bge-small-en-v1.5"
+    embedding_dimension: int = 384
+    # 16 not 256: big batches padded to 512 tokens made an 8 GB machine swap (8x slower).
+    embedding_batch_size: int = 16
     llm_timeout_s: float = 30.0
     llm_max_retries: int = 3
     langfuse_public_key: str | None = None

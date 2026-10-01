@@ -114,8 +114,8 @@ def test_strategy_is_chosen_from_settings() -> None:
     doc = doc_of(sec(("D", "A"), "Alpha text."), sec(("D", "B"), "Beta text."))
     structured = Settings(_env_file=None, chunk_strategy="structured")  # type: ignore[call-arg]
     recursive = Settings(_env_file=None, chunk_strategy="recursive")  # type: ignore[call-arg]
-    assert all("D > " in c.text for c in chunk_document(doc, structured))
-    assert all("D > " not in c.text for c in chunk_document(doc, recursive))
+    assert all("D > " in c.text for c in chunk_document(doc, structured, count=approx_tokens))
+    assert all("D > " not in c.text for c in chunk_document(doc, recursive, count=approx_tokens))
 
 
 # ---- real corpus: does B actually fix chunker A's tiny-chunk problem? --------------------------

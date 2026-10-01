@@ -179,3 +179,40 @@ def test_enqueue_really_reaches_redis(world) -> None:  # type: ignore[no-untyped
     finally:
         queue.empty()
         queue.delete()
+
+
+def test_a_bulk_source_can_pass_a_path_as_the_document_identity(world) -> None:  # type: ignore[no-untyped-def]
+    def add(text: bytes, uri: str):  # type: ignore[no-untyped-def]
+        return enqueue_upload(
+            world.conn, world.queue, org_id=world.org, owner_id=world.user, visibility="org",
+            filename="_index.md", raw=text, settings=world.settings, source_uri=uri,
+        )  # fmt: skip
+
+    a, b = (
+        add(b"# A\n\ntext a", "benefits/_index.md"),
+        add(b"# B\n\ntext b", "compensation/_index.md"),
+    )
+    assert (
+        a.job_id != b.job_id
+    )  # two different pages that share a file name stay separate documents
+    uris = sorted(r[0] for r in world.conn.execute("SELECT source_uri FROM ingestion_jobs"))
+    assert uris == ["benefits/_index.md", "compensation/_index.md"]
+
+
+@pytest.mark.parametrize(
+    ("raw_uri", "clean"),
+    [("a/b/c.md", "a/b/c.md"), ("../../etc/x.md", "etc/x.md"), ("/abs/path.md", "abs/path.md"),
+     ("a\\b\\c.md", "a/b/c.md"), ("./a//b.md", "a/b.md")],
+)  # fmt: skip
+def test_source_uri_is_normalised(raw_uri: str, clean: str) -> None:
+    from app.ingest.upload import normalize_source_uri
+
+    assert normalize_source_uri(raw_uri) == clean
+
+
+@pytest.mark.parametrize("bad", ["", "..", "a\x00b.md", "x" * 501])
+def test_unusable_source_uris_are_refused(bad: str) -> None:
+    from app.ingest.upload import normalize_source_uri
+
+    with pytest.raises(UploadError, match="invalid file name"):
+        normalize_source_uri(bad)

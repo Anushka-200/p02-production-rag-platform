@@ -56,6 +56,19 @@ def validate_upload(filename: str, raw: bytes, max_bytes: int) -> str:
     return source_type
 
 
+def normalize_source_uri(uri: str) -> str:
+    """A document's identity label: a clean relative path like "benefits/_index.md".
+
+    It is only a label (the stored file is named by its hash), but it still must not contain
+    "..", absolute paths or control characters.
+    """
+    parts = [p for p in uri.replace("\\", "/").split("/") if p not in ("", ".", "..")]
+    clean = "/".join(parts)
+    if not clean or len(clean) > 500 or any(ord(ch) < 32 for ch in clean):
+        raise UploadError("invalid file name")
+    return clean
+
+
 def save_raw(upload_dir: str, org_id: uuid.UUID, content_hash: str, raw: bytes) -> Path:
     """Store the original bytes under a name made of their hash (so equal files share a path)."""
     path = Path(upload_dir) / str(org_id) / content_hash[:2] / content_hash
@@ -86,10 +99,11 @@ def enqueue_upload(
     filename: str,
     raw: bytes,
     settings: Settings | None = None,
+    source_uri: str | None = None,  # bulk sources pass the path; users' uploads use the file name
 ) -> EnqueueResult:
     s = settings or get_settings()
     source_type = validate_upload(filename, raw, s.max_upload_mb * 1_000_000)
-    source_uri = PurePath(filename).name  # a label only: never used to build a path
+    source_uri = normalize_source_uri(source_uri or PurePath(filename).name)
     content_hash = file_hash(raw)
     raw_path = save_raw(s.upload_dir, org_id, content_hash, raw)
     key = hashlib.sha256(f"{owner_id}|{source_uri}|{content_hash}".encode()).hexdigest()

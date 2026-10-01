@@ -125,13 +125,18 @@ def process_job(job_id: str) -> str:
 
 
 def main() -> None:
+    import sys
+
     from redis import Redis
     from rq import Queue, Worker
 
     setup_logging()
     settings = get_settings()
     connection = Redis.from_url(settings.redis_url)
-    Worker([Queue(settings.ingest_queue, connection=connection)], connection=connection).work()
+    worker = Worker([Queue(settings.ingest_queue, connection=connection)], connection=connection)
+    worker.work(
+        burst="--burst" in sys.argv
+    )  # --burst: stop when the queue is empty (scripts, tests)
 
 
 if __name__ == "__main__":

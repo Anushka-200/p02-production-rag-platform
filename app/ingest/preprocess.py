@@ -10,6 +10,7 @@ Each step was chosen from measurements on the real corpus (see PLAN.md / task 1.
 
 import re
 from collections import defaultdict
+from collections.abc import Callable
 from dataclasses import dataclass, replace
 
 from app.ingest.models import ParsedDocument, Section
@@ -139,27 +140,28 @@ def split_blocks(text: str) -> list[Block]:
     return [b for b in blocks if b.text]
 
 
-def split_table(table: str, max_chars: int) -> list[str]:
-    """Split a long pipe table into parts of at most max_chars. Every part repeats the header.
+def split_table(table: str, max_size: int, measure: Callable[[str], int] = len) -> list[str]:
+    """Split a long pipe table into parts no bigger than max_size. Every part repeats the header.
 
-    A single row longer than the limit stays whole: cutting a row would destroy its meaning.
+    `measure` says how big a text is: characters by default, or tokens when the chunker passes
+    its token counter. A single row bigger than the limit stays whole: cutting a row would
+    destroy its meaning.
     """
-    if len(table) <= max_chars:
+    if measure(table) <= max_size:
         return [table]
     lines = table.split("\n")
     header, rows = lines[:2], lines[2:]  # header row + the |---| separator row
-    if len(rows) == 0:
+    if not rows:
         return [table]
     head_text = "\n".join(header)
     parts: list[str] = []
     current: list[str] = []
-    size = len(head_text)
     for row in rows:
-        if current and size + 1 + len(row) > max_chars:
+        candidate = "\n".join([head_text, *current, row])
+        if current and measure(candidate) > max_size:
             parts.append("\n".join([head_text, *current]))
-            current, size = [], len(head_text)
+            current = []
         current.append(row)
-        size += 1 + len(row)
     if current:
         parts.append("\n".join([head_text, *current]))
     return parts

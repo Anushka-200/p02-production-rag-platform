@@ -162,9 +162,10 @@ Start time: 19:01 (2026-09-30). Owner's phase-level estimate (all 16 tasks toget
 | | **Phase total** | | | | | | | | | | | | | |
 
 
-## Time log (IST; Claude records: start when the owner says go, end when code + explanation are written)
+## Time log (IST; Claude records the start when the owner says go; the END only when the owner says the task is finished)
 | Task | Start | End | Note |
 |---|---|---|---|
 | 1.3 | 20:30 (09-30) | n/a | owner reported ~0.5 h active |
 | 1.4 | n/a | 2026-10-01 18:04 | end recorded when the code walkthrough was delivered; start not captured |
-| 1.5 | 2026-10-01 18:04 | 2026-10-01 18:09 | code done + tests pass; walkthrough delivered right after |
+| 1.5 | 2026-10-01 18:04 | | end recorded only when the owner says so |
+| 1.6 | 2026-10-01 18:57 | | owner said go while reading 1.5 |

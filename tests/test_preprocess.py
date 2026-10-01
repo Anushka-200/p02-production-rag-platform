@@ -122,7 +122,7 @@ def test_table_directly_followed_by_text_ends_the_table() -> None:
 
 def test_split_table_repeats_header_in_every_part() -> None:
     table = "| item | cap |\n|---|---|\n" + "\n".join(f"| row{i} | {i} |" for i in range(20))
-    parts = split_table(table, max_chars=80)
+    parts = split_table(table, max_size=80)
     assert len(parts) > 1
     assert all(p.startswith("| item | cap |\n|---|---|") for p in parts)
     assert all(len(p) <= 80 for p in parts)

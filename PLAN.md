@@ -114,7 +114,7 @@ Traces: prompts contain document text and user messages, so PII is redacted befo
 | 2 | Retrieval + answers | 3 modes, RRF, rerank, streaming, citations, refusal, inspector endpoint; `make eval` prints Recall@5, MRR, nDCG@10 per mode |
 | 3 | Tenancy, auth, memory, PII | JWT, RLS, private vs shared; memory view/delete; adversarial suite runs (forged tenant, modified doc ids, injected docs) with 0 leaks |
 | 4 | Channels | Streamlit chat + admin, one-tag widget, WhatsApp sandbox, lead capture + handoff flag |
-| 5 | Advanced retrieval | rewriting, multi-query/HyDE, parent-child + RAPTOR, GraphRAG slice, agentic mode, living-wiki connector with hash-diff sync and permission sync, 1-2 h LangChain/LangGraph spike (ADR 010) |
+| 5 | Advanced retrieval | rewriting, multi-query/HyDE, parent-child + RAPTOR, GraphRAG slice, agentic mode, living-wiki connector with hash-diff sync and permission sync, 1-2 h LangChain/LangGraph spike (ADR 010), plus a library-chunker comparison (LangChain splitters vs ours, same slice and metrics) |
 | 6 | Evaluate + optimize | brief experiments 1-7 plus: rewriting, expansion, hierarchical, GraphRAG, agentic, long-context vs RAG; 3+ logged optimizations; token budgets with alert; feedback loop into eval |
 | 7 | Security pass | red-team (garak / promptfoo / PortSwigger patterns), attacks tried vs blocked; OWASP mapping; data-policy note; AI disclosure line |
 | 8 | Package | README with tables and diagram, DEMO_SCRIPT, LEARNING_LOG, CI with a 15-question mocked eval, demo video |

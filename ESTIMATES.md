@@ -113,7 +113,7 @@ Start time: 19:01 (2026-09-30). Owner's phase-level estimate (all 16 tasks toget
 | 5.13 | Change detection (hash), incremental re-index, deletes | integration | New | | | | | 1.4 | | | | | | |
 | 5.14 | Permission sync + last-updated in citations | integration | New | | | | | 1.4 | | | | | | |
 | 5.15 | Live run + fix: replay handbook git history | integration | New | | | | | 1.4 | | | | | | |
-| 5.16 | LangChain / LangGraph spike (ADR 010) | integration | New | | | | | 1.4 | | | | | | |
+| 5.16 | LangChain / LangGraph spike (ADR 010) + compare a library chunker (LangChain recursive + Markdown-header splitters) with ours on the Tenant A slice | integration | New | | | | | 1.4 | | | | | | |
 | 5.17 | Sync tests | testing-evals | New | | | | | 1.1 | | | | | | |
 | | **Phase total** | | | | | | | | | | | | | |
 
@@ -170,3 +170,4 @@ Start time: 19:01 (2026-09-30). Owner's phase-level estimate (all 16 tasks toget
 | 1.5 | 2026-10-01 18:04 | 2026-10-01 19:10 | end given by owner; overlaps 1.6 work done while the owner read 1.5 |
 | 1.6 | 2026-10-01 18:57 | 2026-10-01 19:32 | end given by owner |
 | 1.7 | 2026-10-01 19:19 | | owner said go while reading 1.6 (1.6 end left open until the owner says) |
+| 1.8 | 2026-10-01 19:44 | | owner said go while reading 1.7 (1.7 end left open until the owner says) |

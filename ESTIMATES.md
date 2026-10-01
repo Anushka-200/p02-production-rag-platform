@@ -177,3 +177,4 @@ Start time: 19:01 (2026-09-30). Owner's phase-level estimate (all 16 tasks toget
 | 1.11 | 2026-10-01 23:01 | 2026-10-01 23:44 | end given by owner |
 | 1.12 | 2026-10-01 23:34 | | owner said go while reading 1.11; ends of 1.7, 1.8, 1.9, 1.11, 1.17 open until the owner says |
 | 1.13 | 2026-10-01 23:44 | | owner said go while reading 1.12 |
+| 1.16 | 2026-10-02 00:06 | | owner said go (skipping the review tool for now) |

@@ -174,3 +174,4 @@ Start time: 19:01 (2026-09-30). Owner's phase-level estimate (all 16 tasks toget
 | 1.17 | 2026-10-01 20:51 | | owner said go for 1.9; cost guard built first because 1.9 spends money (1.7 and 1.8 ends left open until the owner says) |
 | 1.9 | 2026-10-01 20:53 | | started right after 1.17 (owner said go); ends of 1.7, 1.8, 1.17 left open until the owner says |
 | 1.10 | 2026-10-01 21:36 | | owner said go; ends of 1.7, 1.8, 1.17, 1.9 left open until the owner says |
+| 1.11 | 2026-10-01 23:01 | | owner said go while reading 1.10; ends of 1.7-1.10 and 1.17 left open until the owner says |

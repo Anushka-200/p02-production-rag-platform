@@ -4,6 +4,10 @@ from dataclasses import dataclass, field
 from typing import Any
 
 
+class ParseError(ValueError):
+    """The file cannot be turned into text (corrupt, encrypted, scanned). Message is readable."""
+
+
 @dataclass
 class Section:
     heading_path: tuple[str, ...]  # e.g. ("Benefits", "Parental leave"); first item is the title

@@ -15,7 +15,10 @@ import yaml
 from markdown_it import MarkdownIt
 from selectolax.parser import HTMLParser
 
+from app.ingest.common import slugify
+from app.ingest.docx import parse_docx
 from app.ingest.models import ParsedDocument, Section
+from app.ingest.pdf import parse_pdf
 
 _FRONT_MATTER = re.compile(r"\A---\s*\n(.*?)\n---\s*(?:\n|\Z)", re.DOTALL)
 # {{% name args %}} / {{< name args >}} and their closing forms
@@ -34,10 +37,6 @@ _md = MarkdownIt()
 def decode(raw: bytes) -> str:
     """Bytes -> text. Never fails: bad bytes become the replacement character."""
     return raw.decode("utf-8-sig", errors="replace").replace("\r\n", "\n")
-
-
-def slugify(text: str) -> str:
-    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-") or "section"
 
 
 def _split_front_matter(text: str) -> tuple[dict[str, Any], str]:
@@ -213,7 +212,7 @@ def parse_html(raw: bytes | str, filename: str = "") -> ParsedDocument:
         elif tag == "tr":
             cells = [c.text(strip=True) for c in node.css("th, td")]
             if any(cells):
-                buf.append("| " + " | ".join(cells) + " |")
+                buf.append("| " + " | ".join(c.replace("|", "\\|") for c in cells) + " |")
         elif tag == "li":
             buf.append("- " + node.text(separator=" ", strip=True))
         else:
@@ -224,7 +223,13 @@ def parse_html(raw: bytes | str, filename: str = "") -> ParsedDocument:
     return ParsedDocument(title=title, source_type="html", sections=sections)
 
 
-PARSERS = {"md": parse_markdown, "txt": parse_text, "html": parse_html}
+PARSERS = {
+    "md": parse_markdown,
+    "txt": parse_text,
+    "html": parse_html,
+    "pdf": parse_pdf,
+    "docx": parse_docx,
+}
 
 
 def parse(source_type: str, raw: bytes, filename: str = "") -> ParsedDocument:

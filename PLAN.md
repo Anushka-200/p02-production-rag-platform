@@ -141,7 +141,7 @@ Cost per answer is a baseline first; then caching, Haiku-only vs cascade, and co
 **Project API budget (rough, to be replaced by measured numbers):** $10 credit available.
 | Item | Rough cost |
 |---|---|
-| Contextual blurbs, Tenant A slice (~1.6k chunks) + PostHog (~1k) | $3-6 (less with prompt caching) |
+| Contextual blurbs, Tenant A slice (~4.1k chunks at 400 tokens, measured in task 1.6) + PostHog (~1.5k) | $5-8 (less with prompt caching; replace with measured cost in task 1.9) |
 | Eval set drafting | < $1 |
 | Answer + judge runs, ~15 configurations x 95 questions | $10-15 |
 | RAPTOR summaries, GraphRAG slice, agentic, long-context experiment | $3-8 |
@@ -171,7 +171,7 @@ multi-tenant posts (free, ~1 h), OWASP LLM10 (free).
 
 ## Data (licences verified; details in docs/data.md)
 - **Tenant A:** GitLab handbook slice = `people-group`, `people-policies`, `total-rewards`, `hiring`, `values`,
-  `communication`, `leadership`, `finance` (~220 pages, ~0.8M tokens). Chosen because PostHog covers the same topics
+  `communication`, `leadership`, `finance` (~220 pages, 3,272 sections, ~0.6M tokens, ~4.1k chunks at 400 tokens). Chosen because PostHog covers the same topics
   (hiring, benefits, expenses, values), which makes cross-tenant leak tests meaningful. The full handbook (~4,200
   pages, ~10M tokens, ~21k chunks) is ingested **without blurbs** as a scale and latency test.
 - **Tenant B:** PostHog `contents/handbook` only (MIT part of the repo; ~380 pages).

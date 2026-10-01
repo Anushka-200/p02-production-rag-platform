@@ -65,7 +65,7 @@ Start time: 19:01 (2026-09-30). Owner's phase-level estimate (all 16 tasks toget
 | # | Task | Category | Familiarity | O | M | P | PERT | x mult | Planned h | Learning h | Build h | Actual total h | Ratio | Why it was off |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 3.1 | Read Postgres RLS docs, OWASP GenAI Top 10 (2026), multi-tenant RAG posts | learning | New | | | | | 1.0 | | | | | | |
-| 3.2 | RLS policies, WITH CHECK, non-bypass roles, composite FKs | infra | Some | | | | | 1.0 | | | | | | |
+| 3.2 | RLS policies, WITH CHECK, non-bypass roles, composite FKs; tighten per-role grants (the worker needs no write access to orgs/users) | infra | Some | | | | | 1.0 | | | | | | |
 | 3.3 | JWT auth, orgs/users/roles, per-request app.org_id context | integration | New | | | | | 1.4 | | | | | | |
 | 3.4 | Private vs shared docs; permission-aware retrieval; filtered-HNSW / iterative scan test | retrieval | New | | | | | 2.0 | | | | | | |
 | 3.5 | SQL-level RLS tests | testing-evals | New | | | | | 1.1 | | | | | | |

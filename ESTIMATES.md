@@ -125,7 +125,7 @@ Start time: 19:01 (2026-09-30). Owner's phase-level estimate (all 16 tasks toget
 | 6.3 | Exp 2: chunk size / overlap sweep | optimization | New | | | | | 1.2 | | | | | | |
 | 6.4 | Exp 3: dense vs keyword vs hybrid vs hybrid+rerank (+ Cohere) | optimization | New | | | | | 1.2 | | | | | | |
 | 6.5 | Exp 4: contextual retrieval | optimization | New | | | | | 1.2 | | | | | | |
-| 6.6 | Exp 5: two embedding models | optimization | New | | | | | 1.2 | | | | | | |
+| 6.6 | Exp 5: compare embedding models (follow the checklist in docs/adr/006: MTEB check, shortlist, PDF subset tested separately) | optimization | New | | | | | 1.2 | | | | | | |
 | 6.7 | Exp 6: semantic cache + tenant-scoped cache tests | optimization | New | | | | | 1.2 | | | | | | |
 | 6.8 | Exp 7: HNSW ef_search sweep | optimization | New | | | | | 1.2 | | | | | | |
 | 6.9 | Exp: rewriting, multi-query, HyDE | optimization | New | | | | | 1.2 | | | | | | |
@@ -171,3 +171,4 @@ Start time: 19:01 (2026-09-30). Owner's phase-level estimate (all 16 tasks toget
 | 1.6 | 2026-10-01 18:57 | 2026-10-01 19:32 | end given by owner |
 | 1.7 | 2026-10-01 19:19 | | owner said go while reading 1.6 (1.6 end left open until the owner says) |
 | 1.8 | 2026-10-01 19:44 | | owner said go while reading 1.7 (1.7 end left open until the owner says) |
+| 1.17 | 2026-10-01 20:51 | | owner said go for 1.9; cost guard built first because 1.9 spends money (1.7 and 1.8 ends left open until the owner says) |

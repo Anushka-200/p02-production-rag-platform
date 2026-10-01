@@ -161,3 +161,10 @@ Start time: 19:01 (2026-09-30). Owner's phase-level estimate (all 16 tasks toget
 | 8.8 | ESTIMATES.md project summary + tracker row | docs-video | Some | | | | | 1.0 | | | | | | |
 | | **Phase total** | | | | | | | | | | | | | |
 
+
+## Time log (IST; Claude records: start when the owner says go, end when code + explanation are written)
+| Task | Start | End | Note |
+|---|---|---|---|
+| 1.3 | 20:30 (09-30) | n/a | owner reported ~0.5 h active |
+| 1.4 | n/a | 2026-10-01 18:04 | end recorded when the code walkthrough was delivered; start not captured |
+| 1.5 | 2026-10-01 18:04 | | started while the owner reads the 1.4 walkthrough |

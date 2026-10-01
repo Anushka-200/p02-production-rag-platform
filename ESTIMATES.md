@@ -169,3 +169,4 @@ Start time: 19:01 (2026-09-30). Owner's phase-level estimate (all 16 tasks toget
 | 1.4 | n/a | 2026-10-01 18:04 | end recorded when the code walkthrough was delivered; start not captured |
 | 1.5 | 2026-10-01 18:04 | 2026-10-01 19:10 | end given by owner; overlaps 1.6 work done while the owner read 1.5 |
 | 1.6 | 2026-10-01 18:57 | | owner said go while reading 1.5 |
+| 1.7 | 2026-10-01 19:19 | | owner said go while reading 1.6 (1.6 end left open until the owner says) |

@@ -141,11 +141,11 @@ Cost per answer is a baseline first; then caching, Haiku-only vs cascade, and co
 **Project API budget (rough, to be replaced by measured numbers):** $10 credit available.
 | Item | Rough cost |
 |---|---|
-| Contextual blurbs, Tenant A slice (~4.1k chunks at 400 tokens, measured in task 1.6) + PostHog (~1.5k) | $5-8 (less with prompt caching; replace with measured cost in task 1.9) |
+| Contextual blurbs, Tenant A slice (3,301 child chunks, measured in 1.9) + 3 PDFs | **~$8** (projected with prompt caching; the first big spend, task 1.12). PostHog (3,606 chunks) gets NO blurbs: it would add ~$9 and Tenant B only serves isolation tests |
 | Eval set drafting | < $1 |
 | Answer + judge runs, ~15 configurations x 95 questions | $10-15 |
 | RAPTOR summaries, GraphRAG slice, agentic, long-context experiment | $3-8 |
-| Total | ~$20-30, so a top-up is likely mid-Phase 6 |
+| Total | ~$21-31. **The $10 credit will not cover this: top up (about $30) before task 1.12** |
 **Cost guard:** every script that calls a model estimates tokens x price first, prints it, and needs `--yes` above
 $0.50. Actual spend is read from Langfuse and logged per experiment in `docs/benchmarks.md`.
 
@@ -197,3 +197,8 @@ Open item: widget host page. Proposed a static demo page instead of Next.js; con
 - Keyword search uses OR, and `ts_rank` vs BM25 goes into ADR 003 (from the task 1.1 reading).
 - Reranker CPU latency spike in Phase 2; PII redacted before Langfuse; embedding dimension limit noted.
 - Estimation: from Phase 1 on, estimate learning/Q&A and build separately (Phase 0 lesson).
+
+**2026-10-01 (tasks 1.8-1.9):** real tokenizer is the default chunk counter (the cheap estimate let 29 chunks exceed the
+embedding model's 512-token limit); embedding batch size 16 (default 256 swapped an 8 GB machine); contextual blurbs only
+for Tenant A + PDFs; prompt caching needs identical text per window and one priming call per window (found in a live run);
+cost guard in front of every model-calling script; embedding-model checklist saved in ADR 006.

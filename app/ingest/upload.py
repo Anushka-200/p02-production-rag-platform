@@ -18,8 +18,8 @@ from rq import Queue, Retry
 from app.config import Settings, get_settings
 from app.ingest.store import file_hash
 
-EXTENSIONS = {
-    ".pdf": "pdf", ".docx": "docx", ".md": "md", ".markdown": "md",
+EXTENSIONS = {  # .mdx is Markdown with components: the Markdown parser handles it
+    ".pdf": "pdf", ".docx": "docx", ".md": "md", ".markdown": "md", ".mdx": "md",
     ".txt": "txt", ".html": "html", ".htm": "html",
 }  # fmt: skip
 RETRY_INTERVALS = [10, 60, 300]  # seconds before retry 1, 2, 3 (backoff)

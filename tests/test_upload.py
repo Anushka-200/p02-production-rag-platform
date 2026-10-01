@@ -33,6 +33,7 @@ def real_docx() -> bytes:
     [
         ("a.md", b"# Title\n\ntext", "md"),
         ("A.MARKDOWN", b"# Title", "md"),
+        ("page.mdx", b"import X from 'x'\n\n# Title\n\n<X />", "md"),
         ("notes.txt", b"plain text", "txt"),
         ("page.html", b"<p>hi</p>", "html"),
         ("policy.pdf", real_pdf(), "pdf"),

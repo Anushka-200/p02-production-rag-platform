@@ -46,6 +46,15 @@ class LLMResult:
     cost_usd: float | None  # None if LiteLLM has no price for this model yet; never silently 0
     latency_s: float
     attempts: int
+    cached_input_tokens: int = 0  # part of the input served from the prompt cache
+
+
+def _cached_tokens(usage: Any) -> int:
+    """Tokens read from the prompt cache; providers name this differently, so try each."""
+    details = getattr(usage, "prompt_tokens_details", None)
+    return int(
+        getattr(usage, "cache_read_input_tokens", 0) or getattr(details, "cached_tokens", 0) or 0
+    )
 
 
 def backoff_delay(attempt: int, base: float = 1.0, cap: float = 20.0) -> float:
@@ -149,6 +158,7 @@ def _call_with_retries(
         cost_usd=cost,
         latency_s=round(time.perf_counter() - started, 3),
         attempts=attempt,
+        cached_input_tokens=_cached_tokens(response.usage),
     )
     logger.info(
         "llm call",

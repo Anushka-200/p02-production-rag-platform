@@ -35,21 +35,27 @@ def estimate_llm_cost(
     output_tokens: int,
     calls: int = 1,
     cached_input_tokens: int = 0,
+    cache_write_tokens: int = 0,
 ) -> float | None:
     """Projected dollars for `calls` calls of this size, or None if the price is unknown.
 
     `cached_input_tokens` is the part of each call's input served from the prompt cache (billed
     at the cheaper cache-read rate when the model has one; otherwise treated as normal input).
-    Cache-write surcharges are ignored: small next to thousands of cache reads.
+    `cache_write_tokens` is the part written to the cache by this call (billed at the higher
+    cache-write rate, 1.25x normal input for Anthropic).
     """
     info = _price_info(model)
     if not info or "input_cost_per_token" not in info or "output_cost_per_token" not in info:
         return None
     price_in, price_out = info["input_cost_per_token"], info["output_cost_per_token"]
     price_cached = info.get("cache_read_input_token_cost", price_in)
-    fresh = input_tokens - cached_input_tokens
+    price_write = info.get("cache_creation_input_token_cost", price_in)
+    fresh = input_tokens - cached_input_tokens - cache_write_tokens
     return calls * (
-        fresh * price_in + cached_input_tokens * price_cached + output_tokens * price_out
+        fresh * price_in
+        + cached_input_tokens * price_cached
+        + cache_write_tokens * price_write
+        + output_tokens * price_out
     )
 
 

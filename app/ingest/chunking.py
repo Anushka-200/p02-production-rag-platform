@@ -47,6 +47,7 @@ class Chunk:
     level: int = 0  # 0 = child chunk (searched); chunker B adds 1 = parent, 2 = summary
     anchors: tuple[str, ...] = ()  # every section anchor the chunk covers (B can merge several)
     parent_index: int | None = None  # index of this child's parent chunk, if it has one
+    context_blurb: str = ""  # LLM-written situating sentence (task 1.9); added to the embedded text
 
 
 @dataclass

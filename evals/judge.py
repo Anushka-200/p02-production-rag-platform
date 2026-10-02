@@ -92,7 +92,7 @@ class Judge:
         ).hexdigest()
 
     def _ask(
-        self, prompt: str, check: Callable[[dict[str, Any]], None]
+        self, prompt: str, check: Callable[[dict[str, Any]], None], max_tokens: int = 900
     ) -> tuple[dict[str, Any], float]:
         """One judge call; a bad answer is retried ONCE with the reason. Returns (json, cost)."""
         messages: list[dict[str, Any]] = [
@@ -103,7 +103,11 @@ class Judge:
         for _ in range(2):
             try:
                 result = self._complete(
-                    messages, name="eval-judge", model=self.model, max_tokens=900, temperature=None
+                    messages,
+                    name="eval-judge",
+                    model=self.model,
+                    max_tokens=max_tokens,
+                    temperature=None,
                 )
             except LLMError as exc:
                 raise JudgeError(f"judge call failed: {exc}") from exc
@@ -147,7 +151,9 @@ class Judge:
                 ):
                     raise JudgeError('"claims" must be a list of {"claim", "supported"}')
 
-            data, cost = self._ask(FAITHFULNESS.format(context=context, answer=answer), check)
+            data, cost = self._ask(
+                FAITHFULNESS.format(context=context, answer=answer), check, max_tokens=3000
+            )
             claims = data["claims"]
             return Verdict(
                 faithfulness_score(claims),

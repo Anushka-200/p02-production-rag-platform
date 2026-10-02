@@ -156,3 +156,20 @@ def test_the_real_cross_encoder_prefers_the_passage_that_answers_the_question() 
     bad = "The cafeteria on the third floor serves lunch from noon until two."
     scores = model.score("How many vacation days do employees get?", [bad, good])
     assert scores[1] > scores[0] + 1.0
+
+
+def test_length_sorted_scoring_returns_scores_in_the_original_order() -> None:
+    """Sorting by length is a speed trick: it must never change which score belongs to which passage."""
+    local = rr.LocalReranker.__new__(rr.LocalReranker)  # skip loading a model
+    local.name, local.batch_size, local.sort_by_length = "fake", 2, True
+
+    class FakeModel:
+        def rerank(self, query, docs, batch_size=64):  # type: ignore[no-untyped-def]
+            return [float(len(d)) for d in docs]  # score = length, so we can check the mapping
+
+    local._model = FakeModel()  # type: ignore[attr-defined]
+    passages = ["aa", "bbbbbb", "c", "dddd"]
+    assert local.score("q", passages) == [2.0, 6.0, 1.0, 4.0]
+    local.sort_by_length = False
+    assert local.score("q", passages) == [2.0, 6.0, 1.0, 4.0]
+    assert local.score("q", []) == []

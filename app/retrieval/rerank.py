@@ -30,16 +30,33 @@ class Reranker(Protocol):
 
 
 class LocalReranker:
-    def __init__(self, model: str = "Xenova/ms-marco-MiniLM-L-6-v2", batch_size: int = 16) -> None:
+    def __init__(
+        self,
+        model: str = "Xenova/ms-marco-MiniLM-L-6-v2",
+        batch_size: int = 16,
+        threads: int | None = None,
+        sort_by_length: bool = False,
+    ) -> None:
         from fastembed.rerank.cross_encoder import TextCrossEncoder  # heavy import, loaded on use
 
-        self.name, self.batch_size = model, batch_size
-        self._model = TextCrossEncoder(model)
+        self.name, self.batch_size, self.sort_by_length = model, batch_size, sort_by_length
+        self._model = TextCrossEncoder(model, threads=threads)
 
     def score(self, query: str, passages: list[str]) -> list[float]:
         if not passages:
             return []
-        return [float(s) for s in self._model.rerank(query, passages, batch_size=self.batch_size)]
+        # A batch is padded to its longest text. Sorting by length groups similar lengths, so less
+        # time goes on padding; the scores are put back in the caller's order afterwards.
+        order = list(range(len(passages)))
+        if self.sort_by_length:
+            order.sort(key=lambda i: -len(passages[i]))
+        scores = list(
+            self._model.rerank(query, [passages[i] for i in order], batch_size=self.batch_size)
+        )
+        out = [0.0] * len(passages)
+        for position, i in enumerate(order):
+            out[i] = float(scores[position])
+        return out
 
 
 class CohereReranker:
@@ -85,7 +102,9 @@ class CohereReranker:
 def get_reranker(settings: Settings | None = None) -> Reranker | None:
     s = settings or get_settings()
     if s.reranker_provider == "local":
-        return LocalReranker(s.reranker_model)
+        return LocalReranker(
+            s.reranker_model, threads=s.reranker_threads, sort_by_length=s.reranker_sort_by_length
+        )
     if s.reranker_provider == "cohere":
         return CohereReranker(s.cohere_rerank_model)
     return None

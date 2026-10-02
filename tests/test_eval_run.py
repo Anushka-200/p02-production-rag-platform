@@ -136,3 +136,66 @@ def test_the_benchmark_log_gets_one_row_per_run(tmp_path) -> None:  # type: igno
         and text.count("| second |") == 1
     )
     assert "| 61 | 0.70 | 0.50 | 0.55 | 0.8 | 0.6 | 0.9 | 3000 / 5000 | 0.0035 |" in text
+
+
+def test_answers_are_saved_as_they_are_made_and_a_resume_skips_the_saved_ones(
+    tmp_path, monkeypatch
+) -> None:  # type: ignore[no-untyped-def]
+    """A crash in the judge stage must not throw away money spent on answers."""
+    import json
+    from types import SimpleNamespace
+
+    from evals import run as R
+
+    calls = []
+
+    def fake_ask(conn, embedder, reranker, question, scope, settings=None):  # type: ignore[no-untyped-def]
+        calls.append(question)
+        answer = SimpleNamespace(refused=False, text="a", reason="", cost_usd=0.004, citations=[])
+        return SimpleNamespace(
+            answer=answer,
+            timings_ms={"retrieve_ms": 1.0},
+            context=SimpleNamespace(sources=[], text="CTX"),
+        )
+
+    monkeypatch.setattr(R, "ask", fake_ask)
+    guard = SimpleNamespace(record=lambda c: None, spent_usd=0.0)
+    items = [item(f"q{i}") for i in range(3)]
+    for it, q in zip(items, "abc", strict=True):
+        it.question = q
+    path = tmp_path / "answers.jsonl"
+    first = R.run_answers(None, None, None, items, {"A": None}, None, guard, path)  # type: ignore[arg-type]
+    assert len(first) == 3 and len(path.read_text().splitlines()) == 3
+    assert (
+        json.loads(path.read_text().splitlines()[0])["context"] == "CTX"
+    )  # the judge's input is saved too
+    calls.clear()
+    again = R.run_answers(None, None, None, items, {"A": None}, None, guard, path, resume=True)  # type: ignore[arg-type]
+    assert calls == [] and [r.item_id for r in again] == [
+        "q0",
+        "q1",
+        "q2",
+    ]  # nothing re-asked, nothing re-paid
+
+
+def test_a_judge_error_is_recorded_and_does_not_stop_the_run() -> None:
+    from evals.judge import JudgeError
+    from evals.run import run_judge
+
+    class FailsOnce:
+        def faithfulness(self, answer, context):  # type: ignore[no-untyped-def]
+            if answer == "bad":
+                raise JudgeError("not valid JSON: cut off")
+            return SimpleNamespace(score=1.0, cost_usd=0.01)
+
+        def correctness(self, question, answer, gold):  # type: ignore[no-untyped-def]
+            return SimpleNamespace(score=1.0, cost_usd=0.002)
+
+    items = [item("a"), item("b")]
+    for it in items:
+        it.gold_answer = "gold"
+    records = [rec("a"), rec("b")]
+    records[0].text, records[1].text = "bad", "good"
+    run_judge(items, records, FailsOnce(), SimpleNamespace(record=lambda c: None), workers=1)  # type: ignore[arg-type]
+    assert "cut off" in records[0].judge_error and records[0].faithfulness is None
+    assert records[1].faithfulness == 1.0 and records[1].judge_error == ""

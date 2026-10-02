@@ -29,7 +29,7 @@ from app.retrieval.fusion import Fused
 from app.retrieval.rerank import Reranker, get_reranker, rerank
 from app.retrieval.retrieve import retrieve
 from app.retrieval.search import Candidate, Scope
-from evals.judge import Judge
+from evals.judge import Judge, JudgeError
 from evals.metrics import evaluate
 from evals.schema import EvalItem
 
@@ -76,6 +76,8 @@ class AnswerRecord:
     citations: list[str] = field(default_factory=list)
     faithfulness: float | None = None
     correctness: float | None = None
+    context: str = ""  # what the model was shown: the judge needs it, and a crash must not lose it
+    judge_error: str = ""
 
 
 def answer_metrics(records: Sequence[AnswerRecord]) -> dict[str, Any]:
@@ -192,24 +194,37 @@ def retrieval_report(
 
 def run_answers(
     conn: psycopg.Connection, embedder: Any, reranker: Reranker | None, items: Sequence[EvalItem],
-    scopes: dict[str, Scope], s: Settings, guard: Any,
+    scopes: dict[str, Scope], s: Settings, guard: Any, save_path: Path, resume: bool = False,
 ) -> list[AnswerRecord]:  # fmt: skip
+    """Answer every question. Each record is appended to `save_path` the moment it exists, so a
+    crash later in the run (the judge, say) never throws away money already spent."""
+    done: dict[str, AnswerRecord] = {}
+    if resume and save_path.exists():
+        for line in save_path.read_text().splitlines():
+            rec = AnswerRecord(**json.loads(line))
+            done[rec.item_id] = rec
+        print(f"  resuming: {len(done)} answers already saved")
+    elif save_path.exists():
+        save_path.unlink()
+    save_path.parent.mkdir(parents=True, exist_ok=True)
     records = []
     for n, item in enumerate(items, start=1):
+        if item.id in done:
+            records.append(done[item.id])
+            continue
         r = ask(conn, embedder, reranker, item.question, scopes[item.tenant], settings=s)
         guard.record(r.answer.cost_usd)
-        records.append(AnswerRecord(
+        rec = AnswerRecord(
             item.id, item.kind, item.answerable, r.answer.refused, r.answer.text, r.answer.reason, r.answer.cost_usd,
             r.timings_ms, gold_in_context(item, r.context.sources) if item.answerable else None,
-            [c.id for c in r.answer.citations],
-        ))  # fmt: skip
-        r_context[item.id] = r.context.text
+            [c.id for c in r.answer.citations], context=r.context.text,
+        )  # fmt: skip
+        records.append(rec)
+        with save_path.open("a") as f:
+            f.write(json.dumps(asdict(rec)) + "\n")
         if n % 10 == 0:
             print(f"  answered {n}/{len(items)}  (spent ${guard.spent_usd:.3f})", flush=True)
     return records
-
-
-r_context: dict[str, str] = {}  # item id -> the context the model saw (for the judge)
 
 
 def run_judge(
@@ -223,17 +238,20 @@ def run_judge(
 
     def one(rec: AnswerRecord) -> None:
         item = by_id[rec.item_id]
-        if not rec.refused:
-            f = judge.faithfulness(rec.text, r_context[rec.item_id])
-            rec.faithfulness = f.score
-            guard.record(f.cost_usd)
-        if item.answerable and item.gold_answer:
-            if rec.refused:
-                rec.correctness = 0.0  # a wrongly refused answerable question is a miss
-            else:
-                c = judge.correctness(item.question, rec.text, item.gold_answer)
-                rec.correctness = c.score
-                guard.record(c.cost_usd)
+        try:
+            if not rec.refused:
+                f = judge.faithfulness(rec.text, rec.context)
+                rec.faithfulness = f.score
+                guard.record(f.cost_usd)
+            if item.answerable and item.gold_answer:
+                if rec.refused:
+                    rec.correctness = 0.0  # a wrongly refused answerable question is a miss
+                else:
+                    c = judge.correctness(item.question, rec.text, item.gold_answer)
+                    rec.correctness = c.score
+                    guard.record(c.cost_usd)
+        except JudgeError as exc:  # one bad verdict must not kill the run: record it and move on
+            rec.judge_error = str(exc)[:200]
 
     with ThreadPoolExecutor(max_workers=workers) as pool:
         list(pool.map(one, records))
@@ -291,6 +309,9 @@ def main() -> None:
     parser.add_argument("--modes", default=",".join(MODES))
     parser.add_argument("--label", default="baseline")
     parser.add_argument("--log", action="store_true", help="append a row to docs/benchmarks.md")
+    parser.add_argument(
+        "--resume", action="store_true", help="reuse answers already saved for this label"
+    )
     args = parser.parse_args()
     setup_logging("WARNING")
     s = get_settings()
@@ -319,11 +340,22 @@ def main() -> None:
     records: list[AnswerRecord] = []
     if args.answers:
         print("stage 2: full pipeline on every question")
-        records = run_answers(conn, embedder, reranker, items, scopes, s, guard)
+        records = run_answers(
+            conn,
+            embedder,
+            reranker,
+            items,
+            scopes,
+            s,
+            guard,
+            Path(f"data/cache/answers-{args.label}.jsonl"),
+            args.resume,
+        )
         if args.judge:
             print("stage 3: judge")
             run_judge(items, records, Judge(cache_path=Path("data/cache/judge.jsonl")), guard)
         report["answers"] = answer_metrics(records)
+        report["answers"]["judge_errors"] = sum(bool(r.judge_error) for r in records)
     stamp = datetime.now().strftime("%Y%m%d-%H%M")
     out = Path(f"evals/results/{stamp}-{args.label}.json")
     out.write_text(

@@ -70,6 +70,10 @@ class Settings(BaseSettings):
     reranker_provider: Literal["none", "local", "cohere"] = "local"
     reranker_model: str = "Xenova/ms-marco-MiniLM-L-6-v2"
     cohere_rerank_model: str = "cohere/rerank-english-v3.0"
+    reranker_threads: int | None = (
+        None  # CPU threads for the local reranker (None = library default)
+    )
+    reranker_sort_by_length: bool = False  # group similar lengths in a batch: less padding
     rerank_candidates: int = 20  # taken from the top of the fused list
     rerank_top: int = 8  # kept after reranking
     rerank_max_words: int = 220  # longer passages are cut: faster, and the start carries the topic

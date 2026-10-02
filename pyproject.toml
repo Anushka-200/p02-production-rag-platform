@@ -5,6 +5,7 @@ description = "Multi-tenant document Q&A: hybrid retrieval, reranking, citations
 requires-python = ">=3.12"
 # Runtime dependencies are added at the task that first needs them.
 dependencies = [
+    "fastapi>=0.142.2",
     "fastembed>=0.8.1",
     "langfuse>=4.16.0",
     "litellm>=1.103.1",
@@ -16,6 +17,7 @@ dependencies = [
     "pyyaml>=6.0.3",
     "rq>=2.12.0",
     "selectolax>=0.4.13",
+    "uvicorn>=0.54.0",
 ]
 
 [dependency-groups]
@@ -30,6 +32,9 @@ line-length = 100
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["fastapi.Depends"]  # the standard FastAPI pattern
 
 [tool.ruff.lint.per-file-ignores]
 "scripts/*" = ["E501"]  # demo scripts print long lines on purpose

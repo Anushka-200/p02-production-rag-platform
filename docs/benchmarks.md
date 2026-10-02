@@ -112,3 +112,33 @@ Real retrieval (hybrid, 20 reranked, top 8, 3,000-token context), real Haiku 4.5
   passage, so that item is probably mislabelled (an example of what the skipped human review would have caught).
 - Reranker scores (MiniLM logits) are not comparable across questions (range about -9 to +6), so a fixed score threshold for refusals needs
   calibration on the eval set (task 2.11); it stays disabled until then.
+
+## B-011 INFORMAL retrieval metrics preview (2026-10-02, task 2.9)
+79 answerable LLM-drafted, UNREVIEWED questions; chunker B; hybrid weights 1.0 / 0.3; Tenant A and B scored against their own corpus.
+Not a result (the official run is task 2.11); a sanity check that the metric code works on real data.
+
+| mode | Recall@1 | Recall@5 | Recall@10 | Recall@50 | MRR | nDCG@10 |
+|---|---|---|---|---|---|---|
+| dense | 0.41 | 0.66 | 0.75 | 0.84 | 0.56 | 0.59 |
+| keyword | 0.02 | 0.29 | 0.41 | 0.58 | 0.15 | 0.20 |
+| hybrid | 0.36 | 0.66 | 0.75 | 0.84 | 0.52 | 0.57 |
+
+By subset (hybrid, Recall@5): single-fact 0.79 (n=61), multi-hop 0.56 (n=8, partial credit), **follow-up 0.00 (n=10)**: a follow-up like
+"How many topics are available for these sessions?" cannot be retrieved without the chat history (query rewriting, Phase 5). IRS Pub 969 1.00,
+Pub 15-B 0.67, GitLab 0.62, PostHog 0.69. Recall@50 = 0.84 is the ceiling for the reranker (it can only reorder what was found);
+the follow-ups alone account for 10/79 = 12.7% of the missing 16%.
+
+## B-012 Real API smoke test (2026-10-02, tasks 2.7-2.8)
+Real uvicorn server, real models, real database, real Haiku call, one question, WARM server (models loaded and warmed at startup, server ready in 12 s).
+Cold first request for comparison: first token 5.4 s (rerank 2.0 s cold, tokenizer load 0.76 s) -> warm-up at startup added.
+
+| stage | warm |
+|---|---|
+| retrieve (embed + dense + keyword + fuse) | 64 ms |
+| **rerank (20 candidates, local MiniLM-L6)** | **1,919 ms** |
+| context assembly | 18 ms |
+| LLM time to first token | ~0.9 s |
+| **time to first token (total)** | **2.9 s** (target < 2.5 s) |
+| answer complete | 5.7 s |
+| LLM cost | $0.0036 |
+The reranker is about two thirds of the wait. Task 2.13: fewer candidates (10), shorter passages, quantised ONNX, or the hosted reranker.

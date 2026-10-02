@@ -204,3 +204,5 @@ for Tenant A + PDFs; prompt caching needs identical text per window and one prim
 cost guard in front of every model-calling script; embedding-model checklist saved in ADR 006.
 
 **2026-10-02 (task 1.16):** bulk ingest done (7,156 child chunks, 0 failed jobs); filtered-HNSW problem measured and fixed with the iterative scan; benchmarks started in docs/benchmarks.md.
+
+**2026-10-02 (Phase 1 closed):** the human review of the eval set (task 1.14) was skipped by the owner's decision, so all 94 items stay `reviewed: false` and 7 unanswerable items carry a `maybe_answerable` flag. The README must say so plainly (limitation: LLM-drafted, not human-reviewed). Optional later: spot-check 20 items, or a Sonnet cross-check labelled as such.

@@ -37,8 +37,8 @@ Start time: 19:01 (2026-09-30). Owner's phase-level estimate (all 16 tasks toget
 | 1.11 | RQ worker + job status + failure handling | infra | Some | | | | | 1.0 | | | | | | |
 | 1.12 | Live run + fix: ingest a small tenant A slice end to end | integration | New | | | | | 1.4 | | | | | | |
 | 1.13 | Eval set: LLM drafts 80 + 15 candidates (with tagged subsets) | data | Some | | | | | 1.0 | | | | | | |
-| 1.14 | Eval set: YOUR review of all items, set reviewed flag | data | Some | | | | | 1.0 | | | | | | |
-| 1.15 | Tests: ingestion unit + one integration test | testing-evals | New | | | | | 1.1 | | | | | | |
+| 1.14 | Eval set: YOUR review of all items, set reviewed flag (SKIPPED by owner decision 2026-10-02: items stay reviewed=false) | data | Some | | | | | 1.0 | | | | 0 | | skipped; limitation to state in the README |
+| 1.15 | Tests: ingestion unit + one integration test (CLOSED by coverage: 205 tests written with each task, incl. a worker end-to-end test on real Postgres) | testing-evals | New | | | | | 1.1 | | | | 0 | | no separate work needed |
 | 1.16 | Live run + fix: bulk-ingest full corpus (cost and time check) | integration | New | | | | | 1.4 | | | | | | |
 | 1.17 | Cost guard: projected cost + confirmation above $0.50 for model-calling scripts | llm-logic | New | | | | | 1.0 | | | | | | |
 | | **Phase total** | | | 1 | 1.25 | 1.5 | 1.25 | | 1.25 | | | | | |
@@ -169,12 +169,20 @@ Start time: 19:01 (2026-09-30). Owner's phase-level estimate (all 16 tasks toget
 | 1.4 | n/a | 2026-10-01 18:04 | end recorded when the code walkthrough was delivered; start not captured |
 | 1.5 | 2026-10-01 18:04 | 2026-10-01 19:10 | end given by owner; overlaps 1.6 work done while the owner read 1.5 |
 | 1.6 | 2026-10-01 18:57 | 2026-10-01 19:32 | end given by owner |
-| 1.7 | 2026-10-01 19:19 | | owner said go while reading 1.6 (1.6 end left open until the owner says) |
-| 1.8 | 2026-10-01 19:44 | | owner said go while reading 1.7 (1.7 end left open until the owner says) |
-| 1.17 | 2026-10-01 20:51 | | owner said go for 1.9; cost guard built first because 1.9 spends money (1.7 and 1.8 ends left open until the owner says) |
-| 1.9 | 2026-10-01 20:53 | | started right after 1.17 (owner said go); ends of 1.7, 1.8, 1.17 left open until the owner says |
+| 1.7 | 2026-10-01 19:19 | 2026-10-02 14:36 | closed by owner 2026-10-02 14:36; true finish earlier (not reported), so this end is an upper bound |
+| 1.8 | 2026-10-01 19:44 | 2026-10-02 14:36 | closed by owner 2026-10-02 14:36; true finish earlier (not reported), so this end is an upper bound |
+| 1.17 | 2026-10-01 20:51 | 2026-10-02 14:36 | closed by owner 2026-10-02 14:36; true finish earlier (not reported), so this end is an upper bound |
+| 1.9 | 2026-10-01 20:53 | 2026-10-02 14:36 | closed by owner 2026-10-02 14:36; true finish earlier (not reported), so this end is an upper bound |
 | 1.10 | 2026-10-01 21:36 | 2026-10-01 23:24 | end given by owner |
 | 1.11 | 2026-10-01 23:01 | 2026-10-01 23:44 | end given by owner |
-| 1.12 | 2026-10-01 23:34 | | owner said go while reading 1.11; ends of 1.7, 1.8, 1.9, 1.11, 1.17 open until the owner says |
-| 1.13 | 2026-10-01 23:44 | | owner said go while reading 1.12 |
-| 1.16 | 2026-10-02 00:06 | | owner said go (skipping the review tool for now) |
+| 1.12 | 2026-10-01 23:34 | 2026-10-02 14:36 | closed by owner 2026-10-02 14:36; true finish earlier (not reported), so this end is an upper bound |
+| 1.13 | 2026-10-01 23:44 | 2026-10-02 14:36 | closed by owner 2026-10-02 14:36; true finish earlier (not reported), so this end is an upper bound |
+| 1.16 | 2026-10-02 00:06 | 2026-10-02 14:36 | closed by owner 2026-10-02 14:36; true finish earlier (not reported), so this end is an upper bound |
+| 1.14 | - | 2026-10-02 14:36 | skipped by owner decision; reviewed stays false |
+| 1.15 | - | 2026-10-02 14:36 | closed by coverage |
+
+### Phase 1 close-out (2026-10-02 14:36)
+Closed by the owner. Owner estimate: PERT 1.25 h (O 1 / M 1.25 / P 1.5). Claude's sealed estimate (revealed now): 17 tasks, PERT 36.1 h, 54.6 h with category multipliers. Actual hours: owner to report (learning vs build); wall-clock from 2026-10-01 19:01 includes nights and a ~13 h laptop sleep, so it is not usable. Lessons: (1) estimates for AI-assisted work were off by more than an order of magnitude in both directions; (2) live runs found real bugs in 1.9 (caching), 1.12 (filename identity), 1.16 (.mdx); (3) learning/Q&A time dominates.
+
+## Phase 2: Retrieval + answers
+Start time: 2026-10-02 14:36 (owner said go).

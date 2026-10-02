@@ -161,6 +161,20 @@ does not directly say (the gold answers are LLM-drafted; only their proof senten
 "faithful" on this data, and faithfulness numbers must be read against that baseline (and compared between configurations, not to 0.90).
 The first version of the calibration set was flawed (12 of 15 "number" cases had no number to swap and fell back to an extra claim); fixed.
 
+## B-014 Reranker latency spike (2026-10-02, task 2.13)
+MiniLM-L6 cross-encoder on this CPU, 69 answerable questions, retrieval done once. Estimated first token = rerank p50 + 982 ms (answer model).
+
+| configuration | rerank p50 | R@1 | R@5 | MRR | est. first token |
+|---|---|---|---|---|---|
+| no reranker (hybrid) | 0 | 0.41 | 0.76 | 0.60 | |
+| 20 cand, 220 words (old default) | 1955 ms | 0.54 | 0.82 | 0.69 | 2.94 s |
+| sorted, 20 cand, 120 words | 1335 ms | 0.48 | 0.80 | 0.65 | 2.32 s |
+| **sorted, 10 cand, 220 words (new default)** | **962 ms** | 0.54 | 0.83 | 0.69 | **1.94 s** |
+| sorted, 5 cand, 160 words | 372 ms | 0.49 | 0.76 | 0.65 | 1.35 s |
+| jina turbo, 10 cand, 160 | 1047 ms | 0.45 | 0.79 | 0.64 | 2.03 s |
+
+Finding: only the top 10 fused candidates matter, so halving the candidates costs no quality and meets the 2.5 s target. Cutting words hurts quality; 5 candidates falls back to no-rerank quality; 6 threads and the jina model did not help. Informal: unreviewed eval set. Defaults changed: `rerank_candidates=10`, `reranker_sort_by_length=True`.
+
 ## Eval runs (appended by `make eval`; LLM-drafted, UNREVIEWED questions)
 | date | label | config | n | Recall@5 | MRR | nDCG@10 | faithfulness | correctness | refusal acc | p50 / p95 ms | $/answer |
 |---|---|---|---|---|---|---|---|---|---|---|---|

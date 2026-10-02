@@ -20,3 +20,6 @@ weights, and exact-term eval questions (the current set favours dense by constru
 
 ## Consequences
 TBD after experiment 3. Risk: a large cross-encoder on CPU may break the 2.5 s budget; measured in a Phase 2 spike.
+
+## Update 2026-10-02 (B-014)
+Reranking only the top 10 fused candidates keeps quality (R@5 0.83, MRR 0.69) and halves rerank latency (about 1.9 s to 0.96 s); length-sorted batching is on. Estimated first token 1.94 s against the 2.5 s target.

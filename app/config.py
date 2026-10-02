@@ -63,7 +63,17 @@ class Settings(BaseSettings):
     retrieval_candidates: int = 50  # how many each method returns before fusion
     rrf_k: int = 60
     rrf_dense_weight: float = 1.0
-    rrf_keyword_weight: float = 1.0
+    # Provisional (informal preview B-008): a noisy keyword list must count for less than dense.
+    rrf_keyword_weight: float = 0.3
+    keyword_max_df: float = 0.02  # drop question words found in more than 2% of a tenant's chunks
+    # Reranker: slow on CPU (~70 ms per pair measured), so only a few candidates are reranked.
+    reranker_provider: Literal["none", "local", "cohere"] = "local"
+    reranker_model: str = "Xenova/ms-marco-MiniLM-L-6-v2"
+    cohere_rerank_model: str = "cohere/rerank-english-v3.0"
+    rerank_candidates: int = 20  # taken from the top of the fused list
+    rerank_top: int = 8  # kept after reranking
+    rerank_max_words: int = 220  # longer passages are cut: faster, and the start carries the topic
+    context_budget_tokens: int = 3000  # how much source text may go into the answer prompt
     embedding_max_tokens: int = 512  # the model silently cuts anything longer
     llm_timeout_s: float = 30.0
     llm_max_retries: int = 3

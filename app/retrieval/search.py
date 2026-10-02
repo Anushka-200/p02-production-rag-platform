@@ -104,15 +104,80 @@ def keyword_query(question: str) -> str:
     return " OR ".join(words)
 
 
+_DF_CACHE: dict[uuid.UUID, tuple[int, dict[str, int]]] = {}
+
+
+def document_frequencies(conn: psycopg.Connection, org_id: uuid.UUID) -> tuple[int, dict[str, int]]:
+    """(number of searchable chunks, {word: in how many of them}) for one tenant.
+
+    Cached per tenant and refreshed when the chunk count changes (an upload or a re-index).
+    """
+    n = conn.execute(
+        "SELECT count(*) FROM chunks WHERE org_id = %s AND level = 0", (org_id,)
+    ).fetchone()[0]  # type: ignore[index]
+    cached = _DF_CACHE.get(org_id)
+    if cached and cached[0] == n:
+        return cached
+    safe_id = uuid.UUID(str(org_id))  # re-parsed: only a well-formed UUID can reach the SQL text
+    rows = conn.execute(
+        "SELECT word, ndoc FROM ts_stat(%s)",
+        (f"SELECT tsv FROM chunks WHERE org_id = '{safe_id}' AND level = 0",),
+    ).fetchall()
+    _DF_CACHE[org_id] = (n, {word: ndoc for word, ndoc in rows})
+    return _DF_CACHE[org_id]
+
+
+def rare_keyword_query(
+    conn: psycopg.Connection,
+    question: str,
+    scope: Scope,
+    max_df: float = 0.02,
+    keep_at_least: int = 3,
+) -> str:
+    """The OR query of the question's INFORMATIVE words.
+
+    Postgres ranking has no inverse document frequency, so words like "how" or "company" would
+    flood the results. We drop words found in more than max_df of the tenant's chunks (and words
+    found nowhere, which cannot match). If every word is common, keep the rarest few.
+    """
+    words = list(dict.fromkeys(w.lower() for w in re.findall(r"[A-Za-z0-9_]{2,}", question)))
+    if not words:
+        return ""
+    lexemes: dict[str, str | None] = dict(
+        conn.execute(
+            "SELECT w, (tsvector_to_array(to_tsvector('english', w)))[1] "
+            "FROM unnest(%s::text[]) AS w",
+            (words,),
+        ).fetchall()
+    )  # word -> its stem; stop words have none
+    n, df = document_frequencies(conn, scope.org_id)
+    known = [
+        (df[lex] / n, w) for w in words if n and (lex := lexemes.get(w)) is not None and lex in df
+    ]
+    rare = [w for ratio, w in known if ratio <= max_df]
+    if not rare:
+        rare = [w for _, w in sorted(known)[:keep_at_least]]
+    return " OR ".join(rare)
+
+
 def keyword_search(
-    conn: psycopg.Connection, question: str, scope: Scope, k: int = 50, normalization: int = 32
+    conn: psycopg.Connection,
+    question: str,
+    scope: Scope,
+    k: int = 50,
+    normalization: int = 32,
+    max_df: float | None = None,
 ) -> list[Candidate]:
     """The k chunks containing the most (and the closest-together) question words.
 
     OR, not AND: AND returns nothing as soon as one word is missing. Ranking sorts out precision.
     `normalization` 32 squeezes the rank into 0..1 (see ADR 003 for ts_rank vs BM25).
     """
-    query = keyword_query(question)
+    query = (
+        rare_keyword_query(conn, question, scope, max_df)
+        if max_df is not None
+        else keyword_query(question)
+    )
     if not query:
         return []
     rows = conn.execute(

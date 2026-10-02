@@ -10,7 +10,13 @@ import psycopg
 from app.config import Settings, get_settings
 from app.embeddings import Embedder
 from app.retrieval.fusion import Fused, fuse
-from app.retrieval.search import Scope, dense_search, keyword_query, keyword_search
+from app.retrieval.search import (
+    Scope,
+    dense_search,
+    keyword_query,
+    keyword_search,
+    rare_keyword_query,
+)
 
 
 @dataclass
@@ -47,10 +53,18 @@ def retrieve(
         vector = timed("embed_ms", lambda: embedder.embed_query(question))
         dense = timed("dense_ms", lambda: dense_search(conn, vector, scope, k_each))
     if mode in {"keyword", "hybrid"}:
-        keyword = timed("keyword_ms", lambda: keyword_search(conn, question, scope, k_each))
+        keyword = timed(
+            "keyword_ms",
+            lambda: keyword_search(conn, question, scope, k_each, max_df=s.keyword_max_df),
+        )
     weights = {
         "dense_weight": s.rrf_dense_weight if mode != "keyword" else 0.0,
         "keyword_weight": s.rrf_keyword_weight if mode != "dense" else 0.0,
     }
     items = timed("fuse_ms", lambda: fuse(dense, keyword, k=s.rrf_k, **weights))
-    return Retrieval(items[: top or len(items)], mode, keyword_query(question), timings)
+    shown_query = (
+        rare_keyword_query(conn, question, scope, s.keyword_max_df)
+        if mode != "dense"
+        else keyword_query(question)
+    )
+    return Retrieval(items[: top or len(items)], mode, shown_query, timings)

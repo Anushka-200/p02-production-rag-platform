@@ -124,7 +124,7 @@ def test_hybrid_combines_both_and_reports_stage_timings(world) -> None:  # type:
         names(got.items)
     )
     assert set(got.timings_ms) == {"embed_ms", "dense_ms", "keyword_ms", "fuse_ms"}
-    assert got.keywords == "how OR many OR vacation OR days OR do OR get"
+    assert got.keywords == "vacation"  # the informative words only (stop and unknown words dropped)
     both = [f for f in got.items if f.dense_rank and f.keyword_rank]
     assert both and all(f.rank >= 1 for f in got.items)
 

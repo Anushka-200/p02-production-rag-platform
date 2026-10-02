@@ -194,3 +194,59 @@ def test_keyword_search_is_scoped_like_dense(w) -> None:  # type: ignore[no-unty
     w.chunk(ann, "acme", "shared vacation policy")
     w.chunk(ann, "acme", "parent vacation text", level=1)
     assert [c.text for c in keyword_search(w.conn, "vacation", ben)] == ["shared vacation policy"]
+
+
+# ---- IDF-aware keyword query (task 2.2b) --------------------------------------------------------
+def test_common_words_are_dropped_and_rare_words_kept(w) -> None:  # type: ignore[no-untyped-def]
+    from app.retrieval.search import rare_keyword_query
+
+    me = w.person("acme", "ann")
+    for i in range(100):
+        w.chunk(me, "acme", f"The company policy number {i} describes company rules")
+    w.chunk(me, "acme", "The company offers a sabbatical after five years")
+    query = rare_keyword_query(
+        w.conn, "What does the company say about a sabbatical?", me, max_df=0.02
+    )
+    assert query == "sabbatical"  # 'company' is in nearly every chunk; 'say' is not in any
+
+
+def test_if_every_word_is_common_the_rarest_few_are_kept(w) -> None:  # type: ignore[no-untyped-def]
+    from app.retrieval.search import rare_keyword_query
+
+    me = w.person("acme", "ann")
+    for i in range(50):
+        w.chunk(me, "acme", "company policy rules apply" + (" extra" if i < 10 else ""))
+    query = rare_keyword_query(w.conn, "company policy rules extra apply", me, max_df=0.001)
+    assert query and set(query.split(" OR ")) <= {"company", "policy", "rules", "extra", "apply"}
+    assert query.split(" OR ")[0] == "extra"  # the rarest word comes first
+
+
+def test_unknown_words_and_stop_words_do_not_reach_the_query(w) -> None:  # type: ignore[no-untyped-def]
+    from app.retrieval.search import rare_keyword_query
+
+    me = w.person("acme", "ann")
+    w.chunk(me, "acme", "vacation days policy")
+    assert rare_keyword_query(w.conn, "what is the zzzunknownword", me) == ""
+    assert rare_keyword_query(w.conn, "", me) == ""
+
+
+def test_the_frequency_table_refreshes_when_chunks_are_added(w) -> None:  # type: ignore[no-untyped-def]
+    from app.retrieval.search import document_frequencies
+
+    me = w.person("acme", "ann")
+    w.chunk(me, "acme", "alpha text")
+    assert document_frequencies(w.conn, me.org_id)[0] == 1
+    w.chunk(me, "acme", "beta text")
+    n, df = document_frequencies(w.conn, me.org_id)
+    assert n == 2 and df["text"] == 2 and df["beta"] == 1
+
+
+def test_keyword_search_with_idf_ranks_the_rare_word_chunk_first(w) -> None:  # type: ignore[no-untyped-def]
+    me = w.person("acme", "ann")
+    for i in range(100):
+        w.chunk(me, "acme", f"company rules and company policy item {i} about things")
+    w.chunk(me, "acme", "sabbatical leave is granted after five years of service")
+    got = keyword_search(
+        w.conn, "What does the company policy say about a sabbatical?", me, max_df=0.02
+    )
+    assert got and got[0].text.startswith("sabbatical leave")

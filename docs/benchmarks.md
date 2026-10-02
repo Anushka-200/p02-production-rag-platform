@@ -80,3 +80,13 @@ dropping them helps. (2) A noisy second list hurts RRF unless it is down-weighte
 passage's words, which favours dense search; exact-term questions (codes, names, numbers), where keyword search shines, are under-represented.
 Next: IDF-aware keyword query or true BM25 (ADR 003 experiment 3), tune the RRF weights, add ~10 exact-term questions to the eval set.
 Stage timings on the real index: embed ~8 ms, dense ~4 ms, keyword ~66 ms (a full scan of the text index for common words), fuse 0.2 ms.
+
+### B-008b Sensitivity sweep (same informal setup; per-tenant document-frequency cutoff x keyword weight; dense alone 0.79)
+| cutoff | keyword alone | hybrid w=0.3 | w=0.5 | w=1.0 |
+|---|---|---|---|---|
+| 2% | 0.31 | **0.79** | 0.74 | 0.69 |
+| 5% | 0.36 | 0.75 | 0.74 | 0.69 |
+| 10% | 0.38 | 0.75 | 0.69 | 0.62 |
+| 20% | 0.30 | 0.79 | 0.79 | 0.62 |
+Hybrid never beat dense on this set. Provisional defaults: cutoff 2%, keyword weight 0.3. The set cannot show hybrid's benefit
+(questions avoid the passage's words); exact-term questions are needed before concluding anything (ADR 003, experiment 3).

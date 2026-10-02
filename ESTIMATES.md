@@ -194,3 +194,4 @@ Owner estimate for 2.7+2.8+2.9: O 15 / M 20 / P 25 min (PERT 20 min).
 
 | 2.7+2.8+2.9 | 2026-10-02 16:04 | | owner said go while still reading 2.4-2.6 (their ends stay open until the owner says); 2.2 and 2.3 ends were logged earlier |
 | 2.10+2.11+2.12+2.13 | 2026-10-02 16:42 | | owner said go for these four; no estimate stated; ends logged only when the owner says (2.7-2.9 also still open) |
+| Phase 2 (2.7-2.13) | | | owner closed all Phase 2 tasks on 2026-10-02; end clock times not stated, so ask once at the Phase 2 close-out for actual hours. 2.13 spike result is still pending (see benchmarks B-014) |

@@ -14,6 +14,7 @@ from collections.abc import Callable
 from dataclasses import dataclass, replace
 
 from app.ingest.models import ParsedDocument, Section
+from app.ingest.scan import scan_text
 
 FURNITURE_MIN_PAGES = 5  # short PDFs are left alone: too little evidence to call anything repeated
 FURNITURE_PAGE_FRACTION = 0.4  # a short paragraph shape on 40%+ of pages is a header or footer
@@ -24,9 +25,26 @@ _PARAGRAPH_BREAK = re.compile(r"\n{2,}")
 _INVISIBLE = dict.fromkeys(map(ord, "​‌‍﻿"), None)  # zero-width characters
 
 
+INVISIBLE_LINE_SHARE = 0.2  # a line that is 20%+ invisible characters is a hidden payload, not text
+
+
 def clean_text(text: str) -> str:
-    """Tidy characters that look like nothing but break matching."""
-    text = text.translate(_INVISIBLE).replace(" ", " ")
+    """Tidy characters that look like nothing but break matching, and drop hidden payloads.
+
+    Stripping zero-width characters would turn "I\u200bg\u200bn\u200bo\u200br\u200be ..." into the
+    readable sentence "Ignore ...", i.e. cleaning would ASSEMBLE a hidden instruction. So a line
+    that is mostly invisible characters is removed entirely, and Unicode "tag" characters (an
+    invisible copy of ASCII) are deleted. Isolated zero-width characters (copy-paste debris) are
+    just stripped.
+    """
+    text = "".join(c for c in text if not 0xE0000 <= ord(c) <= 0xE007F)
+    lines = []
+    for line in text.split("\n"):
+        hidden = sum(1 for c in line if ord(c) in _INVISIBLE)
+        if hidden >= 3 and hidden / len(line) >= INVISIBLE_LINE_SHARE:
+            continue
+        lines.append(line)
+    text = "\n".join(lines).translate(_INVISIBLE).replace("\u00a0", " ")
     return "\n".join(line.rstrip() for line in text.split("\n")).strip()
 
 
@@ -79,8 +97,28 @@ def drop_duplicate_sections(doc: ParsedDocument) -> tuple[ParsedDocument, int]:
     return replace(doc, sections=kept), len(doc.sections) - len(kept)
 
 
+SAFE_TITLE = "Untitled document"
+
+
+def neutralise_title(doc: ParsedDocument) -> ParsedDocument:
+    """A title that reads like an instruction is replaced; it sits in every chunk's heading path.
+
+    The original is kept in metadata["original_title"] so the ingestion scan still reports it.
+    """
+    if not scan_text(doc.title):
+        return doc
+    sections = [replace(s, heading_path=(SAFE_TITLE, *s.heading_path[1:])) for s in doc.sections]
+    return replace(
+        doc,
+        title=SAFE_TITLE,
+        sections=sections,
+        metadata={**doc.metadata, "original_title": doc.title},
+    )
+
+
 def preprocess(doc: ParsedDocument) -> ParsedDocument:
     """Run every cleaning step and record what was removed in doc.metadata["preprocess"]."""
+    doc = neutralise_title(doc)
     doc = replace(
         doc,
         sections=[s for s in (replace(s, text=clean_text(s.text)) for s in doc.sections) if s.text],

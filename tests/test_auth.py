@@ -166,3 +166,28 @@ def test_garbage_tokens_are_401(client) -> None:  # type: ignore[no-untyped-def]
     for header in ("Bearer nonsense", "Bearer ", "Basic abc", "Bearer a.b.c"):
         r = make().post("/chat", json={"question": "q"}, headers={"Authorization": header})
         assert r.status_code == 401, header
+
+
+def test_the_same_email_in_two_orgs_logs_into_the_one_whose_password_matches(client) -> None:  # type: ignore[no-untyped-def]
+    make, ann, _bob, w = client
+    other = w.person("initech", "ann")  # ann@x.com again, in another organisation
+    w.conn.execute(
+        "UPDATE users SET password_hash = %s WHERE id = %s",
+        (hash_password("initech-pass"), other.user_id),
+    )
+    c = make()
+    first = c.post("/auth/login", json={"email": "ann@x.com", "password": "ann-pass"})
+    second = c.post("/auth/login", json={"email": "ann@x.com", "password": "initech-pass"})
+    assert read_token(settings(), first.json()["access_token"]) == (ann.user_id, ann.org_id)
+    assert read_token(settings(), second.json()["access_token"]) == (other.user_id, other.org_id)
+
+
+def test_an_ambiguous_login_is_refused_not_guessed(client) -> None:  # type: ignore[no-untyped-def]
+    make, _ann, _bob, w = client
+    other = w.person("initech", "ann")
+    w.conn.execute(
+        "UPDATE users SET password_hash = %s WHERE id = %s",
+        (hash_password("ann-pass"), other.user_id),
+    )  # the same email AND the same password in two organisations
+    r = make().post("/auth/login", json={"email": "ann@x.com", "password": "ann-pass"})
+    assert r.status_code == 401

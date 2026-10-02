@@ -196,5 +196,7 @@ Owner estimate for 2.7+2.8+2.9: O 15 / M 20 / P 25 min (PERT 20 min).
 | 2.10+2.11+2.12+2.13 | 2026-10-02 16:42 | | owner said go for these four; no estimate stated; ends logged only when the owner says (2.7-2.9 also still open) |
 | Phase 2 (2.7-2.13) | | | owner closed all Phase 2 tasks on 2026-10-02; end clock times not stated, so ask once at the Phase 2 close-out for actual hours. 2.13 spike result is still pending (see benchmarks B-014) |
 | Phase 3 block 1 (3.1 learning) | 2026-10-02 17:44 | 2026-10-02 18:05 | owner estimate 15/20/25 min per block (6 blocks); start logged when owner said to start block 1; end given by owner (said "now" with their block 1 answers) |
-| Phase 3 block 2 (3.2+3.3+3.14: RLS, JWT, tenant context, pool test) | 2026-10-02 17:45 | | built while owner read block 1; end only when owner says |
-| Phase 3 block 3 (3.4+3.5: private/shared docs, SQL-level RLS tests) | 2026-10-02 18:05 | | started while owner reads block 2; 15/20/25 min |
+| Phase 3 block 2 (3.2+3.3+3.14: RLS, JWT, tenant context, pool test) | 2026-10-02 17:45 | 2026-10-02 18:36 | end given by owner (said to end blocks 2 and 3 together) |
+| Phase 3 block 3 (3.4+3.5: private/shared docs, SQL-level RLS tests) | 2026-10-02 18:05 | 2026-10-02 18:36 | end given by owner (ended together with block 2); 15/20/25 min |
+| Phase 3 block 4 (3.6+3.7+3.8: adversarial docs, isolation suite, injection defences) | 2026-10-02 18:10 | | built while owner reads block 3; end only when owner says |
+| Phase 3 block 5 (3.9-3.12: chat history, memory, PII redaction, memory tests) | 2026-10-02 18:36 | | built while owner reads block 4; end only when owner says |

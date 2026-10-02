@@ -134,13 +134,19 @@ def create_app(
     def login(body: LoginRequest) -> dict[str, str]:
         conn = open_connection()
         try:
-            row = conn.execute("SELECT * FROM login_lookup(%s)", (body.email.strip(),)).fetchone()
+            rows = conn.execute("SELECT * FROM login_lookup(%s)", (body.email.strip(),)).fetchall()
         finally:
             conn.close()
-        user_id, org_id, role, stored = row if row else (None, None, None, _DUMMY_HASH)
-        ok = verify_password(body.password, stored)
-        if not ok or user_id is None:
+        # The same email may exist in several organisations (different passwords). Check every
+        # match, so an unknown email costs the same time as a known one; log in only on EXACTLY one
+        # match, never guess which organisation was meant.
+        candidates = rows or [(None, None, None, _DUMMY_HASH)]
+        matches = [
+            r for r in candidates if verify_password(body.password, r[3]) and r[0] is not None
+        ]
+        if len(matches) != 1:
             raise HTTPException(401, "wrong email or password")
+        user_id, org_id, role, _ = matches[0]
         try:
             token = create_token(s, user_id, org_id, role)
         except TokenError as exc:

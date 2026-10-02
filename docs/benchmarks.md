@@ -175,6 +175,16 @@ MiniLM-L6 cross-encoder on this CPU, 69 answerable questions, retrieval done onc
 
 Finding: only the top 10 fused candidates matter, so halving the candidates costs no quality and meets the 2.5 s target. Cutting words hurts quality; 5 candidates falls back to no-rerank quality; 6 threads and the jina model did not help. Informal: unreviewed eval set. Defaults changed: `rerank_candidates=10`, `reranker_sort_by_length=True`.
 
+## B-015 Injection defences and isolation attacks (2026-10-02, tasks 3.6-3.8)
+| check | result |
+|---|---|
+| Adversarial isolation suite (`make adversarial`): forged ids/headers/tokens, other tenants' document ids, hostile questions, 8 uploaded attack documents | **47 attacks, 0 leaks** |
+| Ingestion scan on the 8 attack documents (comment, zero-width, Unicode tags, CSS-hidden, title, visible, forged `<source>`, exfil image) | 8 of 8 flagged |
+| Ingestion scan false positives on the real corpus (4,582 Markdown/HTML files) | first version 102 flagged (2.2%); after tightening each rule to the attack shape **12 flagged (0.26%)**, all benign (CDN image URLs with query strings, one lab describing a system prompt) |
+| Live model (Haiku 4.5, real prompt), 8 attack documents (`scripts/injection_live.py`) | **obeyed 0 of 8**; cost $0.0038 |
+
+Findings: (1) the cleaning step itself ASSEMBLED a zero-width-spaced instruction into readable text; fixed by dropping lines that are mostly invisible characters. (2) A document title lands in every chunk's heading path, so an instruction-like title is replaced. (3) My first test counted the attacker's own question echoed in the prompt as a leak; the harness now inspects retrieved context only. Informal: simple attacks and one model; the red-team pass in Phase 7 uses garak/promptfoo.
+
 ## Eval runs (appended by `make eval`; LLM-drafted, UNREVIEWED questions)
 | date | label | config | n | Recall@5 | MRR | nDCG@10 | faithfulness | correctness | refusal acc | p50 / p95 ms | $/answer |
 |---|---|---|---|---|---|---|---|---|---|---|---|

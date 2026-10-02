@@ -4,6 +4,7 @@ Pure orchestration: it takes the connection, embedder and model function as argu
 run it with fakes and the worker runs it with the real ones.
 """
 
+import logging
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
@@ -22,10 +23,13 @@ from app.ingest.contextual import (
     embedding_text,
     project_blurb_cost,
 )
-from app.ingest.models import ParseError
+from app.ingest.models import ParsedDocument, ParseError
 from app.ingest.parsers import parse
 from app.ingest.preprocess import preprocess
+from app.ingest.scan import scan_text, summarize
 from app.ingest.store import plan_ingest, write_version
+
+logger = logging.getLogger(__name__)
 
 
 def run_pipeline(
@@ -55,6 +59,10 @@ def run_pipeline(
 
     set_stage("parse")
     parsed = preprocess(parse(job["source_type"], raw, job["source_uri"]))
+    scan = scan_summary(raw, job["source_type"], parsed)
+    if scan["flagged"]:
+        logger.warning("document flagged by the ingestion scan",
+                       extra={"source_uri": job["source_uri"], "scan": scan})  # fmt: skip
     if not parsed.sections:
         raise ParseError("no readable text was found in the file")
 
@@ -120,6 +128,21 @@ def run_pipeline(
         "parents": len(chunks) - len(children),
         "chunks_replaced": written.chunks_deleted,
         "preprocess": parsed.metadata.get("preprocess", {}),
+        "scan": scan,
         "blurb_cost_usd": round(blurb_cost, 5),
         "embedding_model": embedder.model,
     }
+
+
+def scan_summary(raw: bytes, source_type: str, parsed: ParsedDocument) -> dict[str, Any]:
+    """Scan what a reader would NOT see (the raw file) as well as what will be indexed.
+
+    Text formats are scanned raw, so comments, hidden CSS and invisible characters are still there.
+    PDF/DOCX are binary: the extracted text and the title are scanned instead.
+    """
+    if source_type in {"md", "txt", "html"}:
+        text = raw.decode("utf-8", errors="replace")
+    else:
+        text = "\n".join(s.text for s in parsed.sections)
+    title = parsed.metadata.get("original_title", parsed.title)
+    return summarize(scan_text(f"{title}\n{text}"))

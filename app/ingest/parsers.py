@@ -32,6 +32,11 @@ _FENCE = re.compile(r"^\s*(```|~~~)")
 _ESCAPED_SHORTCODE = re.compile(r"\{\{[%<]/\*.*?\*/[%>]\}\}")
 
 _md = MarkdownIt()
+_HIDDEN_NODE_STYLE = re.compile(
+    r"display\s*:\s*none|visibility\s*:\s*hidden|font-size\s*:\s*0(?:px|pt|em|rem)?\b"
+    r"|color\s*:\s*(?:#fff(?:fff)?\b|white\b)",
+    re.IGNORECASE,
+)
 
 
 def decode(raw: bytes) -> str:
@@ -67,12 +72,41 @@ def _clean_line(line: str) -> str | None:
     return _JSX_TAG.sub("", line)
 
 
+def _drop_comments(line: str, in_comment: bool) -> tuple[str | None, bool]:
+    """Remove <!-- ... --> (also across lines). Returns (line or None if nothing is left, state)."""
+    kept: list[str] = []
+    pos = 0
+    while pos < len(line):
+        if in_comment:
+            end = line.find("-->", pos)
+            if end == -1:
+                pos = len(line)
+            else:
+                in_comment, pos = False, end + 3
+        else:
+            start = line.find("<!--", pos)
+            if start == -1:
+                kept.append(line[pos:])
+                pos = len(line)
+            else:
+                kept.append(line[pos:start])
+                in_comment, pos = True, start + 4
+    out = "".join(kept)
+    return (out if out.strip() or not line.strip() else None), in_comment
+
+
 def _strip_markup(text: str) -> str:
     """Remove Hugo shortcodes, MDX imports, JSX tags; keep inner text. Code fences are untouched."""
     out: list[str] = []
     in_fence = False
+    in_comment = False  # inside an HTML comment: invisible to readers, so never indexed
     fence_start = 0  # index in `out` of the line that opened the current fence
     for line in text.split("\n"):
+        if not in_fence:
+            visible, in_comment = _drop_comments(line, in_comment)
+            if visible is None:
+                continue
+            line = visible
         fence = _FENCE.match(line)
         if fence and line.count(fence.group(1)) < 2:  # 2+ on one line = inline code, not a fence
             in_fence = not in_fence
@@ -158,6 +192,10 @@ def parse_html(raw: bytes | str, filename: str = "") -> ParsedDocument:
     tree = HTMLParser(html)
     for node in tree.css(_DROP_TAGS):
         node.decompose()
+    for node in tree.css("[style], [hidden]"):  # text a human cannot see is not content
+        style = node.attributes.get("style") or ""
+        if "hidden" in node.attributes or _HIDDEN_NODE_STYLE.search(style):
+            node.decompose()
     title_node = tree.css_first("title")
     title = (
         (title_node.text(strip=True) if title_node else "") or PurePath(filename).stem or "Untitled"

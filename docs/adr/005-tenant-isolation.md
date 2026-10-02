@@ -21,3 +21,18 @@ TBD: adversarial suite results, filtered-HNSW behaviour.
 - **Per-request tenant:** `set_config('app.org_id', ..., true)` (transaction-local) inside a transaction that is always rolled back, so a reused pooled connection cannot keep the previous tenant (tested). The worker sets session-level settings because it opens and closes its own connection per job; the tenant travels in the queue payload.
 - **Login:** `orgs`/`users` have no RLS (the tenant is unknown at login). The app and worker roles can only SELECT non-secret columns; password hashes are reachable only through the SECURITY DEFINER function `login_lookup(email)`. JWTs (HS256, pinned algorithm, issuer, expiry) are re-checked against the `users` table on every request, and the token's org must equal the user's real org.
 - **Known gap:** the keyword document-frequency cache is keyed by org but computed from the rows visible to the first caller (statistics only, no text). Revisit with private documents in block 3.
+
+## Injection defences (Phase 3, tasks 3.6-3.8) and OWASP GenAI mapping
+Layers, cheapest first: (1) **hidden text is removed before indexing** (HTML comments, CSS-hidden elements, Unicode tag characters, lines made mostly of zero-width characters; titles that read like instructions are replaced), (2) the **ingestion scan** flags what a human should review and stores the result in the job (`result.scan`), without dropping the document, (3) source text is **delimited and escaped** so a forged `</source><source ...>` cannot add a block, (4) the system prompt says sources are untrusted data, (5) the **output checker** rejects images, links that are not in a source, and invented citations (one repair attempt, then refusal), (6) tenant isolation does not depend on any of this: it is enforced by the database.
+
+| OWASP GenAI risk | Control | Test |
+|---|---|---|
+| Prompt injection (direct, indirect) | layers 1-5 above | `tests/test_scan.py`, `scripts/injection_live.py` (0 of 8 obeyed) |
+| Sensitive information disclosure | RLS, private vs shared, scope in code | `tests/test_rls.py`, `tests/test_adversarial.py` (0 leaks) |
+| Improper output handling | output checker (no images / unknown links) | `tests/test_scan.py` |
+| Vector and embedding weaknesses | RLS on chunks, filter before search, scan | `tests/test_rls.py` |
+| Data and model poisoning | scan + hidden-text removal at ingestion | `tests/test_scan.py` |
+| Excessive agency | tenant from the token only; no tools yet (agent in Phase 5 inherits it) | Phase 5 |
+| Unbounded consumption | per-tenant budgets | Phase 6 |
+| System prompt leakage / misinformation | prompt holds no secrets; answers must cite sources | Phase 7 red team |
+Residual risk: the scan is a smoke alarm (regex), not a classifier; a paraphrased visible instruction can slip past it. The model resisted all 8 attack documents here, which is evidence, not a guarantee.

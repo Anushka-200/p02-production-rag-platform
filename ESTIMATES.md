@@ -188,4 +188,5 @@ Closed by the owner. Owner estimate: PERT 1.25 h (O 1 / M 1.25 / P 1.5). Claude'
 Start time: 2026-10-02 14:36 (owner said go).
 Owner estimate for Phase 2, per PAIR of sub-phases: O 15 / M 20 / P 25 min (PERT 20 min).
 
-| 2.2+2.3 | 2026-10-02 14:52 | | owner said go; working mode: code one task, explain it, then start the next automatically |
+| 2.2+2.3 | 2026-10-02 14:52 | 2026-10-02 15:17 | end given by owner (about 22 min of work by Claude's clock, owner estimate 15/20/25) |
+| 2.2b+2.4+2.5+2.6 | 2026-10-02 15:17 | | owner chose option A and asked for these four in one round; owner permitted logging the end when the explanation is delivered |

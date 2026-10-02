@@ -68,7 +68,7 @@ If no org is set, policies must match nothing (fail closed), never everything.
 | feedback, leads, audit_log, semantic_cache | cache keyed by org + visibility scope + doc versions |
 
 RLS on chunks: `org_id = current_setting('app.org_id')::uuid AND (visibility='org' OR owner_id = current_setting('app.user_id')::uuid)`,
-plus `WITH CHECK` on writes. HNSW + filter can return fewer than N rows: test pgvector iterative scans, and compare
+plus `WITH CHECK` on writes. HNSW + filter can return fewer than N rows (MEASURED: 35 of 50 on average, min 8; fixed by `SET LOCAL hnsw.iterative_scan = relaxed_order`, see docs/benchmarks.md B-007). Compare
 with exact search for small tenants (filter first, no HNSW).
 **Anonymous channels:** widget and WhatsApp visitors are not org members. They get a separate `anonymous` scope that
 sees only `visibility = 'public'` documents, never org-internal ones (migration in Phase 4, with leak tests).
@@ -202,3 +202,5 @@ Open item: widget host page. Proposed a static demo page instead of Next.js; con
 embedding model's 512-token limit); embedding batch size 16 (default 256 swapped an 8 GB machine); contextual blurbs only
 for Tenant A + PDFs; prompt caching needs identical text per window and one priming call per window (found in a live run);
 cost guard in front of every model-calling script; embedding-model checklist saved in ADR 006.
+
+**2026-10-02 (task 1.16):** bulk ingest done (7,156 child chunks, 0 failed jobs); filtered-HNSW problem measured and fixed with the iterative scan; benchmarks started in docs/benchmarks.md.

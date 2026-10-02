@@ -137,7 +137,11 @@ def test_cohere_retries_temporary_errors_then_gives_up() -> None:
 
 def test_the_provider_comes_from_settings(monkeypatch: pytest.MonkeyPatch) -> None:
     assert get_reranker(Settings(_env_file=None, reranker_provider="none")) is None  # type: ignore[call-arg]
-    monkeypatch.setattr(rr, "LocalReranker", lambda model, threads, sort_by_length: ("local", model, threads, sort_by_length))
+    monkeypatch.setattr(
+        rr,
+        "LocalReranker",
+        lambda model, threads, sort_by_length: ("local", model, threads, sort_by_length),
+    )
     got = get_reranker(Settings(_env_file=None, reranker_provider="local", reranker_model="m1"))  # type: ignore[call-arg]
     assert got == ("local", "m1", None, True)  # threads unset, sorting on by default
     cohere = get_reranker(Settings(_env_file=None, reranker_provider="cohere"))  # type: ignore[call-arg]

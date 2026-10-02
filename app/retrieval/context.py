@@ -80,7 +80,8 @@ def build_context(
         if used + size > budget_tokens:
             if not sources:  # never an empty context: cut the best chunk to fit
                 head = count(_block(sid, c.source_uri, c.section_path, pages, ""))
-                words, keep = text.split(), []
+                words = text.split()
+                keep: list[str] = []
                 for word in words:
                     if count(" ".join([*keep, word])) + head > budget_tokens:
                         break

@@ -90,3 +90,25 @@ Stage timings on the real index: embed ~8 ms, dense ~4 ms, keyword ~66 ms (a ful
 | 20% | 0.30 | 0.79 | 0.79 | 0.62 |
 Hybrid never beat dense on this set. Provisional defaults: cutoff 2%, keyword weight 0.3. The set cannot show hybrid's benefit
 (questions avoid the passage's words); exact-term questions are needed before concluding anything (ADR 003, experiment 3).
+
+## B-009 Reranker latency on this CPU (2026-10-02, task 2.4)
+94 real candidates (avg 171 words), local cross-encoders through fastembed, batch 16 (first run measured 94 pairs; per-pair figures recomputed):
+
+| model | size | ms per pair | 20 candidates | 50 candidates |
+|---|---|---|---|---|
+| Xenova/ms-marco-MiniLM-L-6-v2 (default) | 80 MB | ~71 | ~1.4 s | ~3.5 s |
+| jinaai/jina-reranker-v1-turbo-en | 150 MB | ~88 | ~1.8 s | ~4.4 s |
+| Xenova/ms-marco-MiniLM-L-12-v2 | 120 MB | ~120 | ~2.4 s | ~6.0 s |
+| BAAI/bge-reranker-base (1 GB) | not completed | | | |
+Reranking 50 candidates breaks the 2.5 s first-token budget on this machine; the default reranks 20 (task 2.13 tunes: fewer candidates,
+shorter passages, ONNX quantisation, or the hosted reranker).
+
+## B-010 End-to-end baseline, live (2026-10-02, tasks 2.4-2.6) - INFORMAL, 12 drafted unreviewed questions
+Real retrieval (hybrid, 20 reranked, top 8, 3,000-token context), real Haiku 4.5 answers, real database.
+- Cost: $0.042 for 12 questions = **~$0.0035 per answer** (about 3,500 input and 150 output tokens each).
+- Stage latency (typical): retrieve 20-75 ms (first call 450 ms warm-up), **rerank ~1.0-1.1 s**, context 5 ms, LLM 1.9-4.7 s (not streaming yet).
+- Quality (not a metric): 4 of 8 answerable questions were answered with the gold section in context; 2 were refused although the gold
+  section was in context; 3 of 4 "unanswerable" questions were refused; 1 "unanswerable" question was answered with citations to a real
+  passage, so that item is probably mislabelled (an example of what the skipped human review would have caught).
+- Reranker scores (MiniLM logits) are not comparable across questions (range about -9 to +6), so a fixed score threshold for refusals needs
+  calibration on the eval set (task 2.11); it stays disabled until then.

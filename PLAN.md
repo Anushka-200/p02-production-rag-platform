@@ -206,3 +206,5 @@ cost guard in front of every model-calling script; embedding-model checklist sav
 **2026-10-02 (task 1.16):** bulk ingest done (7,156 child chunks, 0 failed jobs); filtered-HNSW problem measured and fixed with the iterative scan; benchmarks started in docs/benchmarks.md.
 
 **2026-10-02 (Phase 1 closed):** the human review of the eval set (task 1.14) was skipped by the owner's decision, so all 94 items stay `reviewed: false` and 7 unanswerable items carry a `maybe_answerable` flag. The README must say so plainly (limitation: LLM-drafted, not human-reviewed). Optional later: spot-check 20 items, or a Sonnet cross-check labelled as such.
+
+**2026-10-02 (tasks 2.2b, 2.4-2.6):** IDF-aware keyword query (provisional defaults: cutoff 2%, weight 0.3); reranker with candidate cap 20 because 50 would take ~3.5 s on this CPU; context assembly with labelled, escaped source blocks; grounded answer with code-side citation validation, repair-then-retry and refusal. Live baseline ~$0.0035 per answer (B-010).

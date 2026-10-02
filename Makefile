@@ -1,4 +1,5 @@
-.PHONY: setup up down migrate test lint typecheck eval bench demo
+
+.PHONY: setup up down migrate test eval eval-fast lint typecheck eval bench demo
 
 setup:  ## Install dependencies
 	uv sync
@@ -22,8 +23,11 @@ lint:  ## Style and static checks
 typecheck:  ## Basic type checking
 	uv run mypy
 
-eval:  ## Retrieval and answer metrics (added in Phase 2)
-	@echo "not implemented yet: Phase 2"
+eval:  ## Full eval: retrieval modes + answers + judge (about $1.5; add ARGS=--yes to skip the cost prompt)
+	uv run python -m evals.run --answers --judge --log $(ARGS)
+
+eval-fast:  ## Retrieval metrics only (free)
+	uv run python -m evals.run --label retrieval-only
 
 bench:  ## Show logged benchmark runs (added in Phase 6)
 	@echo "not implemented yet: Phase 6"

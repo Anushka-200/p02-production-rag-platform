@@ -213,3 +213,22 @@ def test_the_inspector_is_admin_only_and_modes_are_validated(api) -> None:  # ty
     assert inspect(client, mode="nonsense").status_code == 422
     dense = inspect(client, mode="dense").json()
     assert dense["mode"] == "dense" and all(c["keyword_rank"] is None for c in dense["candidates"])
+
+
+def test_documents_list_and_only_the_owner_can_change_visibility(api) -> None:  # type: ignore[no-untyped-def]
+    client = api.make()
+    doc = api.w.conn.execute(
+        "SELECT d.id FROM documents d JOIN orgs o ON o.id = d.org_id WHERE o.name = 'acme'"
+    ).fetchone()[0]
+    listed = client.get("/documents", headers={"X-Dev-User": "ann@x.com"}).json()
+    assert [d["source_uri"].startswith("acme/leave.md") for d in listed] == [True]
+
+    url = f"/documents/{doc}/visibility"
+    colleague = client.patch(
+        url, json={"visibility": "private"}, headers={"X-Dev-User": "member@x.com"}
+    )
+    assert colleague.status_code == 404  # not the owner
+    owner = client.patch(url, json={"visibility": "private"}, headers={"X-Dev-User": "ann@x.com"})
+    assert owner.status_code == 200
+    bad = client.patch(url, json={"visibility": "public"}, headers={"X-Dev-User": "ann@x.com"})
+    assert bad.status_code == 422  # only private | org exist

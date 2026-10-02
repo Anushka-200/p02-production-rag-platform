@@ -130,3 +130,72 @@ def test_the_startup_check_rejects_the_owner_and_accepts_the_app_role(world, db_
     with pytest.raises(RuntimeError, match="bypasses row-level security"):
         check_role_is_restricted(db_schema)  # rag_owner owns the tables
     check_role_is_restricted(app_connection(world))
+
+
+# ---- 3.5: SQL-level checks (the database alone, no Python filtering) ------------------------------
+def test_updating_or_deleting_another_tenants_rows_touches_nothing(world) -> None:  # type: ignore[no-untyped-def]
+    conn = app_connection(world)
+    set_session_tenant(conn, world.bob)
+    assert conn.execute("UPDATE documents SET title = 'hacked'").rowcount == 1  # only bob's own
+    assert conn.execute("DELETE FROM chunks WHERE text LIKE 'acme%'").rowcount == 0
+    set_session_tenant(conn, world.ann)
+    assert "hacked" not in {r[0] for r in conn.execute("SELECT title FROM documents").fetchall()}
+    assert len(texts(conn)) == 2  # ann's chunks are all still there
+
+
+def test_a_forged_scope_cannot_beat_the_database(world) -> None:  # type: ignore[no-untyped-def]
+    """Python code passes bob's scope to the search, but the connection says ann: RLS wins."""
+    from app.retrieval.search import dense_search, keyword_search
+
+    conn = app_connection(world)
+    set_session_tenant(conn, world.ann)  # the verified login
+    assert dense_search(conn, vec(3), world.bob, k=5) == []  # a bug asking for globex's rows
+    assert keyword_search(conn, "globex secret", world.bob, k=5) == []
+
+
+def test_sharing_a_document_flows_to_its_chunks_and_back(world) -> None:  # type: ignore[no-untyped-def]
+    from app.documents import set_visibility
+
+    conn = app_connection(world)
+    private_doc = world.conn.execute(
+        "SELECT id FROM documents WHERE source_uri LIKE 'priv.md%'"
+    ).fetchone()[0]
+    set_session_tenant(conn, world.ann)
+    set_visibility(conn, world.ann, private_doc, "org")
+    set_session_tenant(conn, world.amy)
+    assert "ann private notes" in texts(conn)  # shared now
+    set_session_tenant(conn, world.ann)
+    set_visibility(conn, world.ann, private_doc, "private")
+    set_session_tenant(conn, world.amy)
+    assert "ann private notes" not in texts(conn)  # private again: the chunks followed at once
+
+
+def test_a_colleague_cannot_change_someone_elses_document(world) -> None:  # type: ignore[no-untyped-def]
+    from app.documents import DocumentError, set_visibility
+
+    shared_doc = world.conn.execute(
+        "SELECT id FROM documents WHERE source_uri LIKE 'shared.md%'"
+    ).fetchone()[0]
+    conn = app_connection(world)
+    set_session_tenant(conn, world.amy)  # sees it (shared) but does not own it
+    with pytest.raises(DocumentError):
+        set_visibility(conn, world.amy, shared_doc, "private")
+    set_session_tenant(conn, world.bob)  # another org: cannot even see it; same message
+    with pytest.raises(DocumentError, match="not found"):
+        set_visibility(conn, world.bob, shared_doc, "private")
+
+
+def test_jobs_are_private_to_their_owner(world) -> None:  # type: ignore[no-untyped-def]
+    world.conn.execute(
+        "INSERT INTO ingestion_jobs (org_id, owner_id, source_uri, source_type, visibility, "
+        "content_hash, raw_path, idempotency_key) VALUES (%s,%s,'a.md','md','org','h','/x','k1')",
+        (world.ann.org_id, world.ann.user_id),
+    )
+    conn = app_connection(world)
+    count = lambda: conn.execute("SELECT count(*) FROM ingestion_jobs").fetchone()[0]  # noqa: E731
+    set_session_tenant(conn, world.ann)
+    assert count() == 1
+    set_session_tenant(conn, world.amy)  # same org, different user
+    assert count() == 0
+    set_session_tenant(conn, world.bob)
+    assert count() == 0

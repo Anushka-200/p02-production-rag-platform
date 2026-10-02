@@ -26,15 +26,21 @@ def set_session_tenant(conn: psycopg.Connection, scope: Scope) -> None:
 
 @contextmanager
 def tenant_connection(
-    connect: Callable[[], psycopg.Connection], scope: Scope
+    connect: Callable[[], psycopg.Connection], scope: Scope, *, write: bool = False
 ) -> Iterator[psycopg.Connection]:
-    """A connection whose queries see only `scope`'s rows. Read-only use: always rolled back."""
+    """A connection whose queries see only `scope`'s rows.
+
+    Read-only by default: always rolled back. With write=True the work is committed when the block
+    ends normally and rolled back if it raises.
+    """
     conn = connect()
     try:
         conn.rollback()  # a connection handed back mid-transaction must not keep stale settings
         conn.autocommit = False
         conn.execute(_SET, (str(scope.org_id), True, str(scope.user_id), True))
         yield conn
+        if write:
+            conn.commit()
     finally:
         try:
             conn.rollback()  # ends the transaction, which also drops the tenant settings

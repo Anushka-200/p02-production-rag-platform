@@ -5,6 +5,7 @@ Run: uv run uvicorn app.api.main:app --port 8001
 
 import json
 import logging
+import uuid
 from collections.abc import AsyncIterator, Callable, Iterator
 from contextlib import asynccontextmanager
 from typing import Any
@@ -18,6 +19,7 @@ from app.api.auth import Principal, current_principal
 from app.api.security import TokenError, create_token, hash_password, verify_password
 from app.config import Settings, get_settings
 from app.db.tenant import check_role_is_restricted, tenant_connection
+from app.documents import DocumentError, list_documents, set_visibility
 from app.embeddings import Embedder, get_embedder, get_token_counter
 from app.llm import complete
 from app.rag import ask_stream
@@ -39,6 +41,10 @@ class LoginRequest(BaseModel):
 # Hash of a throwaway password: checked when the email is unknown, so "no such user" and "wrong
 # password" take the same time and answer the same way (no way to find out who has an account).
 _DUMMY_HASH = hash_password("not-a-real-password")
+
+
+class VisibilityRequest(BaseModel):
+    visibility: str = Field(pattern="^(private|org)$")
 
 
 class InspectRequest(BaseModel):
@@ -141,6 +147,22 @@ def create_app(
             logger.error("login unavailable: %s", exc)
             raise HTTPException(503, "login is not configured") from exc
         return {"access_token": token, "token_type": "bearer"}
+
+    @app.get("/documents")
+    def documents(who: Principal = Depends(principal)) -> list[dict[str, Any]]:
+        with tenant_connection(open_connection, who.scope) as conn:
+            return list_documents(conn, who.scope)
+
+    @app.patch("/documents/{document_id}/visibility")
+    def document_visibility(
+        document_id: uuid.UUID, body: VisibilityRequest, who: Principal = Depends(principal)
+    ) -> dict[str, str]:
+        try:
+            with tenant_connection(open_connection, who.scope, write=True) as conn:
+                set_visibility(conn, who.scope, document_id, body.visibility)
+        except DocumentError as exc:
+            raise HTTPException(404, str(exc)) from exc
+        return {"visibility": body.visibility}
 
     @app.post("/chat")
     def chat(body: ChatRequest, who: Principal = Depends(principal)) -> StreamingResponse:

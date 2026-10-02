@@ -186,3 +186,6 @@ Closed by the owner. Owner estimate: PERT 1.25 h (O 1 / M 1.25 / P 1.5). Claude'
 
 ## Phase 2: Retrieval + answers
 Start time: 2026-10-02 14:36 (owner said go).
+Owner estimate for Phase 2, per PAIR of sub-phases: O 15 / M 20 / P 25 min (PERT 20 min).
+
+| 2.2+2.3 | 2026-10-02 14:52 | | owner said go; working mode: code one task, explain it, then start the next automatically |

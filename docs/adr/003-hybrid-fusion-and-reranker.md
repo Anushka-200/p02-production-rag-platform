@@ -13,5 +13,10 @@ Dense misses exact tokens; keyword misses vocabulary mismatch; neither reads que
 ## Decision
 RRF; local bge-reranker; Cohere benchmarked on the same eval. Keep reranker only if Recall@5 gain justifies latency.
 
+## Early evidence (informal, 2026-10-02: benchmarks B-008)
+Equal-weight RRF of dense + OR-keyword (ts_rank_cd) scored 0.64 gold-in-top-5 vs 0.79 for dense alone on 61 unreviewed questions. Cause:
+ts_rank_cd has no IDF, so common words add noise. Dropping words in >2% of chunks + keyword weight 0.5 restored 0.79. Open: true BM25, tuned
+weights, and exact-term eval questions (the current set favours dense by construction).
+
 ## Consequences
 TBD after experiment 3. Risk: a large cross-encoder on CPU may break the 2.5 s budget; measured in a Phase 2 spike.

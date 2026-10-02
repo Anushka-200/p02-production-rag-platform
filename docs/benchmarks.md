@@ -62,3 +62,21 @@ A tenant filter is applied AFTER the index finds its ~40 nearest neighbours acro
 | hnsw.iterative_scan = strict_order | 50 / 50.0 | 1.3 / 2.5 ms | 1.00 |
 
 Decision: every filtered vector query runs with `SET LOCAL hnsw.iterative_scan = relaxed_order` (ADR 001, ADR 005).
+
+## B-008 INFORMAL preview: dense vs keyword vs hybrid (2026-10-02, tasks 2.2-2.3)
+**Caveats first:** 61 single-fact questions, drafted by an LLM and NOT human-reviewed; gold chunk in the top 5; one corpus. A preview to
+steer work, not a result. The official metrics come from tasks 2.9-2.11.
+
+| variant | gold in top 5 |
+|---|---|
+| dense alone | 0.79 |
+| keyword alone (OR of all question words, ts_rank_cd) | 0.28 |
+| hybrid RRF, equal weights | **0.64 (worse than dense alone)** |
+| keyword with words in >2% of chunks dropped | 0.39 |
+| hybrid, those words dropped, keyword weight 0.5 | 0.79 (equal to dense alone) |
+
+Reading: (1) `ts_rank_cd` has no inverse document frequency, so common words ("how", "many", "get") dominate the OR query and add noise;
+dropping them helps. (2) A noisy second list hurts RRF unless it is down-weighted. (3) The eval questions were drafted to AVOID copying the
+passage's words, which favours dense search; exact-term questions (codes, names, numbers), where keyword search shines, are under-represented.
+Next: IDF-aware keyword query or true BM25 (ADR 003 experiment 3), tune the RRF weights, add ~10 exact-term questions to the eval set.
+Stage timings on the real index: embed ~8 ms, dense ~4 ms, keyword ~66 ms (a full scan of the text index for common words), fuse 0.2 ms.

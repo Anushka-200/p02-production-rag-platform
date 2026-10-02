@@ -47,7 +47,7 @@ Start time: 19:01 (2026-09-30). Owner's phase-level estimate (all 16 tasks toget
 | # | Task | Category | Familiarity | O | M | P | PERT | x mult | Planned h | Learning h | Build h | Actual total h | Ratio | Why it was off |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 2.1 | Read RRF explainer, contextual retrieval post + cookbook, Ragas faithfulness docs | learning | New | | | | | 1.0 | | | | | | |
-| 2.2 | Dense and keyword search SQL | retrieval | New | | | | | 2.0 | | | | | | |
+| 2.2 | Dense and keyword search SQL (DONE; follow-up 2.2b: IDF-aware keyword query or BM25, RRF weights, ~10 exact-term eval questions) | retrieval | New | | | | | 2.0 | | | | | | |
 | 2.3 | RRF fusion (k, weights) + unit tests | retrieval | New | | | | | 2.0 | | | | | | |
 | 2.4 | Reranker: local bge + Cohere adapter | retrieval | New | | | | | 2.0 | | | | | | |
 | 2.5 | Context assembly with token budget | retrieval | New | | | | | 2.0 | | | | | | |

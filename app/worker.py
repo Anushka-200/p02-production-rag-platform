@@ -22,6 +22,7 @@ from psycopg.rows import dict_row
 
 from app.config import Settings, get_settings
 from app.cost_guard import BudgetExceeded
+from app.db.tenant import set_session_tenant
 from app.embeddings import Embedder, get_embedder
 from app.ingest.chunking import TokenCounter
 from app.ingest.models import ParseError
@@ -30,6 +31,7 @@ from app.ingest.store import file_hash
 from app.ingest.upload import UploadError
 from app.llm import complete
 from app.log import setup_logging
+from app.retrieval.search import Scope
 
 logger = logging.getLogger(__name__)
 
@@ -115,10 +117,15 @@ def _shared_embedder(settings: Settings) -> Embedder:
         return _embedder
 
 
-def process_job(job_id: str) -> str:
-    """What RQ runs. Opens a database connection as the limited worker role."""
+def process_job(job_id: str, org_id: str, owner_id: str) -> str:
+    """What RQ runs. Opens a database connection as the limited worker role.
+
+    The queue payload carries the tenant (set by the backend when it enqueued, from the verified
+    login), because the worker cannot even read its own job row until it has said whose it is.
+    """
     settings = get_settings()
     with psycopg.connect(settings.database_url("worker")) as conn:
+        set_session_tenant(conn, Scope(uuid.UUID(org_id), uuid.UUID(owner_id)))
         return run_job(
             conn, uuid.UUID(job_id), settings=settings, embedder=_shared_embedder(settings)
         )

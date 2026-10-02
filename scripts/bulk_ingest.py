@@ -16,9 +16,11 @@ from redis import Redis
 from rq import Queue
 
 from app.config import get_settings
+from app.db.tenant import set_session_tenant
 from app.ingest.parsers import parse_markdown
 from app.ingest.preprocess import preprocess
 from app.ingest.upload import enqueue_upload
+from app.retrieval.search import Scope
 from evals.corpus import GITLAB_SLICE, PDFS, RAW
 
 GITLAB = RAW / "gitlab-handbook/content/handbook"
@@ -85,6 +87,9 @@ def main() -> None:
             (org, email),
         ).fetchone()[0]
         org_ids.append(org)
+        set_session_tenant(
+            app_conn, Scope(org, user)
+        )  # row-level security: say whose rows these are
         for uri, path in files[: args.limit]:
             if path.suffix in {".md", ".mdx"} and not has_text(path):
                 skipped_empty += 1  # index stubs with no text: nothing to ingest, not an error

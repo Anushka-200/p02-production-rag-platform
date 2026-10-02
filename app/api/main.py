@@ -14,8 +14,10 @@ from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
-from app.api.auth import Principal, dev_principal
+from app.api.auth import Principal, current_principal
+from app.api.security import TokenError, create_token, hash_password, verify_password
 from app.config import Settings, get_settings
+from app.db.tenant import check_role_is_restricted, tenant_connection
 from app.embeddings import Embedder, get_embedder, get_token_counter
 from app.llm import complete
 from app.rag import ask_stream
@@ -27,6 +29,16 @@ logger = logging.getLogger(__name__)
 
 class ChatRequest(BaseModel):
     question: str = Field(min_length=1, max_length=2000)  # who is asking is NOT in the body
+
+
+class LoginRequest(BaseModel):
+    email: str = Field(min_length=3, max_length=254)
+    password: str = Field(min_length=1, max_length=200)
+
+
+# Hash of a throwaway password: checked when the email is unknown, so "no such user" and "wrong
+# password" take the same time and answer the same way (no way to find out who has an account).
+_DUMMY_HASH = hash_password("not-a-real-password")
 
 
 class InspectRequest(BaseModel):
@@ -88,6 +100,9 @@ def create_app(
 
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+        if connect is None:  # tests inject their own connections; real runs must be restricted
+            with psycopg.connect(s.database_url("app")) as probe:
+                check_role_is_restricted(probe)
         if not state["loaded"]:  # models take ~20 s to load: do it once, at startup
             state["embedder"], state["reranker"] = get_embedder(s), get_reranker(s)
             _warm_up(
@@ -98,7 +113,7 @@ def create_app(
     app = FastAPI(title="P02 RAG platform", lifespan=lifespan)
 
     def principal(request: Request) -> Principal:
-        return dev_principal(request, s, open_connection)
+        return current_principal(request, s, open_connection)
 
     def admin(who: Principal = Depends(principal)) -> Principal:
         if who.role != "admin":
@@ -109,28 +124,46 @@ def create_app(
     def health() -> dict[str, str]:
         return {"status": "ok"}
 
+    @app.post("/auth/login")
+    def login(body: LoginRequest) -> dict[str, str]:
+        conn = open_connection()
+        try:
+            row = conn.execute("SELECT * FROM login_lookup(%s)", (body.email.strip(),)).fetchone()
+        finally:
+            conn.close()
+        user_id, org_id, role, stored = row if row else (None, None, None, _DUMMY_HASH)
+        ok = verify_password(body.password, stored)
+        if not ok or user_id is None:
+            raise HTTPException(401, "wrong email or password")
+        try:
+            token = create_token(s, user_id, org_id, role)
+        except TokenError as exc:
+            logger.error("login unavailable: %s", exc)
+            raise HTTPException(503, "login is not configured") from exc
+        return {"access_token": token, "token_type": "bearer"}
+
     @app.post("/chat")
     def chat(body: ChatRequest, who: Principal = Depends(principal)) -> StreamingResponse:
         def events() -> Iterator[str]:
-            conn = (
-                open_connection()
-            )  # opened here, not as a dependency: streaming outlives dependencies
+            # opened here, not as a dependency: streaming outlives dependencies. The tenant is
+            # set on the connection, so the database itself hides other tenants' rows.
             try:
-                for event in ask_stream(
-                    conn, state["embedder"], state["reranker"], body.question, who.scope,
-                    settings=s, stream_fn=stream_fn, complete_fn=complete_fn,
-                ):  # fmt: skip
-                    if event["type"] == "done":
-                        yield sse("done", _done_payload(event))
-                    else:
-                        yield sse(event["type"], {k: v for k, v in event.items() if k != "type"})
+                with tenant_connection(open_connection, who.scope) as conn:
+                    for event in ask_stream(
+                        conn, state["embedder"], state["reranker"], body.question, who.scope,
+                        settings=s, stream_fn=stream_fn, complete_fn=complete_fn,
+                    ):  # fmt: skip
+                        if event["type"] == "done":
+                            yield sse("done", _done_payload(event))
+                        else:
+                            yield sse(
+                                event["type"], {k: v for k, v in event.items() if k != "type"}
+                            )
             except Exception:
                 logger.exception("chat failed")
                 yield sse(
                     "error", {"message": "something went wrong; please try again"}
                 )  # no internals leaked
-            finally:
-                conn.close()
 
         return StreamingResponse(
             events(), media_type="text/event-stream",
@@ -139,8 +172,7 @@ def create_app(
 
     @app.post("/admin/inspect")
     def inspect(body: InspectRequest, who: Principal = Depends(admin)) -> dict[str, Any]:
-        conn = open_connection()
-        try:
+        with tenant_connection(open_connection, who.scope) as conn:
             return inspect_retrieval(
                 conn,
                 state["embedder"],
@@ -150,8 +182,6 @@ def create_app(
                 settings=s,
                 mode=body.mode,
             )
-        finally:
-            conn.close()
 
     return app
 

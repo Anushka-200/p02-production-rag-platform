@@ -14,7 +14,9 @@ from redis import Redis
 from rq import Queue
 
 from app.config import get_settings
+from app.db.tenant import set_session_tenant
 from app.ingest.upload import enqueue_upload
+from app.retrieval.search import Scope
 
 ROOT = Path("data/raw/gitlab-handbook/content/handbook/total-rewards")
 PAGES = [
@@ -53,6 +55,7 @@ def main() -> None:
     app_conn = psycopg.connect(s.database_url("app"), autocommit=True)  # the API's limited role
     queue = Queue(s.ingest_queue, connection=Redis.from_url(s.redis_url))
     job_ids = []
+    set_session_tenant(app_conn, Scope(org, user))  # row-level security: say whose rows these are
     for uri, path in files:
         r = enqueue_upload(
             app_conn, queue, org_id=org, owner_id=user, visibility="org",

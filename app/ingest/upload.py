@@ -132,6 +132,8 @@ def enqueue_upload(
     queue.enqueue(
         "app.worker.process_job",
         str(job_id),
+        str(org_id),
+        str(owner_id),
         retry=Retry(max=s.job_max_attempts - 1, interval=RETRY_INTERVALS),
         job_timeout=1800,
         job_id=str(job_id),  # one Redis job per database job: never queued twice

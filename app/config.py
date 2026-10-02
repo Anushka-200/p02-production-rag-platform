@@ -28,6 +28,11 @@ class Settings(BaseSettings):
     rag_app_password: SecretStr | None = None
     rag_worker_password: SecretStr | None = None
 
+    # Login tokens (JWT, HS256). No default: a guessable secret would let anyone forge a tenant.
+    jwt_secret: SecretStr | None = None
+    jwt_ttl_minutes: int = 60
+    jwt_issuer: str = "p02-rag"
+
     redis_host: str = "localhost"
     redis_port: int = 6380
 

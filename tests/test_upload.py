@@ -116,7 +116,7 @@ def test_enqueue_creates_a_job_stores_the_file_and_queues_it_with_retries(world)
     )
     assert Path(row[5]).read_bytes() == b"# Title\n\nSome text."  # the original is stored
     ((args, kwargs),) = world.queue.calls
-    assert args == ("app.worker.process_job", str(result.job_id))
+    assert args[:2] == ("app.worker.process_job", str(result.job_id))
     assert kwargs["retry"].max == 2 and kwargs["job_id"] == str(result.job_id)
 
 
@@ -173,7 +173,7 @@ def test_enqueue_really_reaches_redis(world) -> None:  # type: ignore[no-untyped
         assert queue.count == 1
         job = queue.jobs[0]
         assert (
-            job.args == (str(result.job_id),)
+            job.args == (str(result.job_id), str(world.org), str(world.user))
             and job.retries_left == 2
             and job.retry_intervals == [10, 60, 300]
         )

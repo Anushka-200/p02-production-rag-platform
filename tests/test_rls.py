@@ -1,0 +1,132 @@
+"""Row-level security and tenant context, against the real database as the real restricted role.
+
+Setup data is written as the table owner (RLS does not apply to it); every assertion runs as
+`rag_app`, the role the API uses, connected to the same temporary schema.
+"""
+
+import psycopg
+import pytest
+
+from app.config import Settings
+from app.db.tenant import check_role_is_restricted, set_session_tenant, tenant_connection
+from tests.test_search import World, vec
+
+
+@pytest.fixture
+def world(db_schema):  # type: ignore[no-untyped-def]
+    w = World(db_schema)
+    schema = db_schema.execute("SELECT current_schema()").fetchone()[0]
+    db_schema.execute(f"GRANT USAGE ON SCHEMA {schema} TO rag_app")
+    for table in ("documents", "chunks", "ingestion_jobs"):
+        db_schema.execute(f"GRANT SELECT, INSERT, UPDATE, DELETE ON {schema}.{table} TO rag_app")
+    db_schema.execute(f"GRANT SELECT ON {schema}.orgs, {schema}.users TO rag_app")
+    w.schema = schema  # type: ignore[attr-defined]
+    w.ann = w.person("acme", "ann")  # type: ignore[attr-defined]
+    w.amy = w.person("acme", "amy")  # type: ignore[attr-defined]
+    w.bob = w.person("globex", "bob")  # type: ignore[attr-defined]
+    w.chunk(w.ann, "acme", "acme shared handbook", vec(1), visibility="org", uri="shared.md")
+    w.chunk(w.ann, "acme", "ann private notes", vec(2), visibility="private", uri="priv.md")
+    w.chunk(w.bob, "globex", "globex secret", vec(3), visibility="org", uri="g.md")
+    return w
+
+
+def app_connection(world) -> psycopg.Connection:  # type: ignore[no-untyped-def]
+    url = Settings().database_url("app")
+    return psycopg.connect(url, options=f"-c search_path={world.schema},public", autocommit=True)
+
+
+def texts(conn) -> set[str]:  # type: ignore[no-untyped-def]
+    return {r[0] for r in conn.execute("SELECT text FROM chunks").fetchall()}
+
+
+def test_a_tenant_sees_only_its_own_rows_even_with_no_filter(world) -> None:  # type: ignore[no-untyped-def]
+    conn = app_connection(world)
+    set_session_tenant(conn, world.bob)
+    assert texts(conn) == {"globex secret"}
+    set_session_tenant(conn, world.amy)
+    # amy is in acme: she sees the shared doc, but NOT ann's private one, and nothing of globex
+    assert texts(conn) == {"acme shared handbook"}
+    set_session_tenant(conn, world.ann)
+    assert texts(conn) == {"acme shared handbook", "ann private notes"}
+
+
+def test_no_tenant_set_means_no_rows_not_all_rows(world) -> None:  # type: ignore[no-untyped-def]
+    conn = app_connection(world)
+    assert texts(conn) == set()
+    assert conn.execute("SELECT count(*) FROM documents").fetchone()[0] == 0
+
+
+def test_writing_into_another_org_is_refused(world) -> None:  # type: ignore[no-untyped-def]
+    conn = app_connection(world)
+    set_session_tenant(conn, world.bob)
+    with pytest.raises(psycopg.errors.InsufficientPrivilege):  # WITH CHECK violation
+        conn.execute(
+            "INSERT INTO documents (org_id, owner_id, visibility, title, source_type, source_uri, "
+            "content_hash) VALUES (%s, %s, 'org', 'T', 'md', 'x.md', 'h')",
+            (world.ann.org_id, world.ann.user_id),
+        )
+
+
+def test_app_and_worker_roles_cannot_change_users_or_read_password_hashes(db_schema) -> None:  # type: ignore[no-untyped-def]
+    """Checks the grants migration 0004 applied to the real tables (the test schema has none)."""
+    if db_schema.execute("SELECT to_regclass('public.users')").fetchone()[0] is None:
+        pytest.skip("migrations have not been applied to the dev database")
+    for role in ("rag_app", "rag_worker"):
+
+        def can(priv: str, obj: str = "public.users", role: str = role) -> bool:
+            return db_schema.execute(
+                "SELECT has_table_privilege(%s, %s, %s)", (role, obj, priv)
+            ).fetchone()[0]
+
+        assert not can("INSERT") and not can("UPDATE") and not can("DELETE")
+        assert not can("INSERT", "public.orgs") and not can("UPDATE", "public.orgs")
+        assert not db_schema.execute(
+            "SELECT has_column_privilege(%s, 'public.users', 'password_hash', 'SELECT')", (role,)
+        ).fetchone()[0]
+
+
+# ---- 3.14: pooled connections never carry a tenant over ------------------------------------------
+class PooledConnection:
+    """One real connection handed out again and again, like a connection pool does."""
+
+    def __init__(self, conn) -> None:  # type: ignore[no-untyped-def]
+        self._conn = conn
+
+    def __getattr__(self, name: str):  # type: ignore[no-untyped-def]
+        return getattr(self._conn, name)
+
+    def __setattr__(self, name: str, value) -> None:  # type: ignore[no-untyped-def]
+        if name == "_conn":
+            object.__setattr__(self, name, value)
+        else:
+            setattr(self._conn, name, value)
+
+    def close(self) -> None:  # returned to the pool, not closed
+        pass
+
+
+def test_a_reused_connection_never_keeps_the_previous_tenant(world) -> None:  # type: ignore[no-untyped-def]
+    real = app_connection(world)
+    pool = lambda: PooledConnection(real)  # noqa: E731
+
+    with tenant_connection(pool, world.ann) as conn:
+        assert texts(conn) == {"acme shared handbook", "ann private notes"}
+    # back in the pool: nothing may be left behind
+    assert real.execute("SELECT current_setting('app.org_id', true)").fetchone()[0] in (None, "")
+    assert texts(real) == set()  # a request that forgot to set a tenant sees nothing
+
+    with tenant_connection(pool, world.bob) as conn:
+        assert texts(conn) == {"globex secret"}  # bob never sees ann's rows
+
+
+def test_the_tenant_is_dropped_even_when_the_request_fails(world) -> None:  # type: ignore[no-untyped-def]
+    real = app_connection(world)
+    with pytest.raises(RuntimeError), tenant_connection(lambda: PooledConnection(real), world.ann):
+        raise RuntimeError("request blew up")
+    assert real.execute("SELECT current_setting('app.org_id', true)").fetchone()[0] in (None, "")
+
+
+def test_the_startup_check_rejects_the_owner_and_accepts_the_app_role(world, db_schema) -> None:  # type: ignore[no-untyped-def]
+    with pytest.raises(RuntimeError, match="bypasses row-level security"):
+        check_role_is_restricted(db_schema)  # rag_owner owns the tables
+    check_role_is_restricted(app_connection(world))

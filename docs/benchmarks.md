@@ -160,3 +160,8 @@ Reading: the judge reliably catches deliberate local errors. It is also STRICT: 
 does not directly say (the gold answers are LLM-drafted; only their proof sentence was verified). So ~0.83 is the practical ceiling for
 "faithful" on this data, and faithfulness numbers must be read against that baseline (and compared between configurations, not to 0.90).
 The first version of the calibration set was flawed (12 of 15 "number" cases had no number to swap and fell back to an extra claim); fixed.
+
+## Eval runs (appended by `make eval`; LLM-drafted, UNREVIEWED questions)
+| date | label | config | n | Recall@5 | MRR | nDCG@10 | faithfulness | correctness | refusal acc | p50 / p95 ms | $/answer |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 2026-10-02 11:49 | baseline-1 | structured 400t, hybrid, rerank 20/8 local | 69 | 0.82 | 0.69 | 0.72 | 0.954 | 0.841 | 0.6 | 4396 / 5366 | 0.00344 |

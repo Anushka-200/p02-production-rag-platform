@@ -58,6 +58,13 @@ class Settings(BaseSettings):
     job_max_attempts: int = 3  # first try + 2 retries, then the job is marked failed
     blurbs_enabled: bool = False  # contextual blurbs cost money: opt in explicitly
     blurb_max_usd_per_document: float = 1.0  # hard stop per document (unattended: no prompt)
+    # Retrieval (Phase 2). Every stage can be switched for the experiments.
+    retrieval_mode: Literal["dense", "keyword", "hybrid"] = "hybrid"
+    retrieval_candidates: int = 50  # how many each method returns before fusion
+    rrf_k: int = 60
+    rrf_dense_weight: float = 1.0
+    rrf_keyword_weight: float = 1.0
+    embedding_max_tokens: int = 512  # the model silently cuts anything longer
     llm_timeout_s: float = 30.0
     llm_max_retries: int = 3
     langfuse_public_key: str | None = None

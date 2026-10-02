@@ -87,7 +87,13 @@ def run_pipeline(
 
     set_stage("embed")
     children = [c for c in chunks if c.level == 0]
-    vectors = iter(embedder.embed_documents([embedding_text(c) for c in children]))
+    texts = []
+    for c in children:
+        text = embedding_text(c)
+        if c.context_blurb and counter(text) > settings.embedding_max_tokens:
+            text = c.text  # blurb + chunk would be cut by the model: embed the chunk alone
+        texts.append(text)
+    vectors = iter(embedder.embed_documents(texts))
     embeddings = [next(vectors) if c.level == 0 else None for c in chunks]  # parents: no vector
 
     set_stage("save")

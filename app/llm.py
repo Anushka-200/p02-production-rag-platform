@@ -72,7 +72,7 @@ def complete(
     name: str = "llm-call",
     model: str | None = None,
     max_tokens: int = 1024,
-    temperature: float = 0.0,
+    temperature: float | None = 0.0,  # None: do not send it (some models accept only their default)
     settings: Settings | None = None,
     # Injected so tests can run without network, real sleeping or a real key.
     completion_fn: Callable[..., Any] = litellm.completion,
@@ -105,7 +105,7 @@ def _call_with_retries(
     messages: list[dict[str, Any]],
     model: str,
     max_tokens: int,
-    temperature: float,
+    temperature: float | None,
     s: Settings,
     completion_fn: Callable[..., Any],
     cost_fn: Callable[..., float],
@@ -117,14 +117,15 @@ def _call_with_retries(
 
     for attempt in range(1, max_attempts + 1):
         try:
+            extra = {} if temperature is None else {"temperature": temperature}
             response = completion_fn(
                 model=model,
                 messages=messages,
                 max_tokens=max_tokens,
-                temperature=temperature,
                 timeout=s.llm_timeout_s,
                 api_key=api_key,
                 num_retries=0,  # we retry ourselves, so nothing happens behind our back
+                **extra,
             )
             break
         except RETRYABLE as exc:

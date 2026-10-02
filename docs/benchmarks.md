@@ -142,3 +142,21 @@ Cold first request for comparison: first token 5.4 s (rerank 2.0 s cold, tokeniz
 | answer complete | 5.7 s |
 | LLM cost | $0.0036 |
 The reranker is about two thirds of the wait. Task 2.13: fewer candidates (10), shorter passages, quantised ONNX, or the hosted reranker.
+
+## B-013 Judge calibration, SYNTHETIC (2026-10-02, task 2.10)
+Judge: Claude Sonnet 5.5 (default temperature: it accepts only that), cost $0.35 for 48 cases. Not human calibration (the human review was skipped).
+Cases are built from 15 drafted items: the gold answer ("faithful"), the gold answer with its first number changed ("number", only when a number
+exists: 3 cases), the gold answer plus a claim the passage never makes ("extra_claim"), and another question's answer ("other").
+
+| check | result |
+|---|---|
+| corrupted answers with faithfulness < 1.0 | 100% (18 of 18) |
+| swapped number labelled not-correct | 100% (3 of 3) |
+| another question's answer labelled incorrect | 100% (15 of 15) |
+| faithful (gold) answer labelled correct | 100% (15 of 15) |
+| **faithful (gold) answers scored below 1.0 (false alarms)** | **47% (7 of 15); mean faithfulness 0.83** |
+
+Reading: the judge reliably catches deliberate local errors. It is also STRICT: it flags inferences that the gold answer states but the passage
+does not directly say (the gold answers are LLM-drafted; only their proof sentence was verified). So ~0.83 is the practical ceiling for
+"faithful" on this data, and faithfulness numbers must be read against that baseline (and compared between configurations, not to 0.90).
+The first version of the calibration set was flawed (12 of 15 "number" cases had no number to swap and fell back to an extra claim); fixed.

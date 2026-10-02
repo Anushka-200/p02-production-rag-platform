@@ -1,0 +1,529 @@
+{
+ "summary": {
+  "faithfulness_mean_by_variant": {
+   "faithful": 0.832,
+   "number": 0.4,
+   "extra_claim": 0.594
+  },
+  "detection_rate": 1.0,
+  "false_alarm_rate": 0.467,
+  "correctness_correct_for_faithful": 1.0,
+  "correctness_not_correct_for_number": 1.0,
+  "correctness_incorrect_for_other": 1.0,
+  "n_cases": 48
+ },
+ "rows": [
+  {
+   "item": "a-single-021",
+   "variant": "faithful",
+   "faith": 1.0,
+   "label": "correct",
+   "answer": "GitLab Belgium employees receive \u20ac70 per month as a healthcare allowance that they can use to choose their own healthcare plan. This amount is paid automatically through payroll and is subject to taxa",
+   "unsupported_claims": []
+  },
+  {
+   "item": "a-single-021",
+   "variant": "number",
+   "faith": 0.8,
+   "label": "incorrect",
+   "answer": "GitLab Belgium employees receive \u20ac147 per month as a healthcare allowance that they can use to choose their own healthcare plan. This amount is paid automatically through payroll and is subject to tax",
+   "unsupported_claims": [
+    "The healthcare allowance is \u20ac147 per month."
+   ]
+  },
+  {
+   "item": "a-single-021",
+   "variant": "extra_claim",
+   "faith": 0.8,
+   "label": "correct",
+   "answer": "GitLab Belgium employees receive \u20ac70 per month as a healthcare allowance that they can use to choose their own healthcare plan. This amount is paid automatically through payroll and is subject to taxa",
+   "unsupported_claims": [
+    "This benefit is available to all contractors in all countries without exception."
+   ]
+  },
+  {
+   "item": "a-single-021",
+   "variant": "other",
+   "faith": 0.0,
+   "label": "incorrect",
+   "answer": "Navan debits GitLab's bank account on the 25th of each month.",
+   "unsupported_claims": [
+    "Navan debits GitLab's bank account on the 25th of each month."
+   ]
+  },
+  {
+   "item": "a-single-010",
+   "variant": "faithful",
+   "faith": 1.0,
+   "label": "correct",
+   "answer": "Navan debits GitLab's bank account on the 25th of each month.",
+   "unsupported_claims": []
+  },
+  {
+   "item": "a-single-010",
+   "variant": "number",
+   "faith": 0.0,
+   "label": "incorrect",
+   "answer": "Navan debits GitLab's bank account on the 57th of each month.",
+   "unsupported_claims": [
+    "Navan debits GitLab's bank account on the 57th of each month."
+   ]
+  },
+  {
+   "item": "a-single-010",
+   "variant": "extra_claim",
+   "faith": 0.3333333333333333,
+   "label": "correct",
+   "answer": "Navan debits GitLab's bank account on the 25th of each month. The policy was introduced in 1998 and has never been changed.",
+   "unsupported_claims": [
+    "The policy was introduced in 1998.",
+    "The policy has never been changed."
+   ]
+  },
+  {
+   "item": "a-single-010",
+   "variant": "other",
+   "faith": 0.0,
+   "label": "incorrect",
+   "answer": "Managing employee data properly helps ensure the information is accurate for making good hiring and staffing decisions, keeps data consistent across different systems so it's easier to analyze, and pr",
+   "unsupported_claims": [
+    "Managing employee data properly helps ensure the information is accurate for making good hiring and staffing decisions.",
+    "Managing employee data properly keeps data consistent across different systems so it is easier to analyze.",
+    "Managing employee data properly protects employee privacy and confidentiality."
+   ]
+  },
+  {
+   "item": "a-single-026",
+   "variant": "faithful",
+   "faith": 1.0,
+   "label": "correct",
+   "answer": "Managing employee data properly helps ensure the information is accurate for making good hiring and staffing decisions, keeps data consistent across different systems so it's easier to analyze, and pr",
+   "unsupported_claims": []
+  },
+  {
+   "item": "a-single-026",
+   "variant": "extra_claim",
+   "faith": 0.75,
+   "label": "correct",
+   "answer": "Managing employee data properly helps ensure the information is accurate for making good hiring and staffing decisions, keeps data consistent across different systems so it's easier to analyze, and pr",
+   "unsupported_claims": [
+    "Managers must report every use of employee data to the CEO personally."
+   ]
+  },
+  {
+   "item": "a-single-026",
+   "variant": "other",
+   "faith": 0.0,
+   "label": "incorrect",
+   "answer": "Yes, if you use a company car for business purposes, this is considered a working condition benefit and is not taxable to you. The exclusion applies to property and services provided so you can perfor",
+   "unsupported_claims": [
+    "Using a company car for business purposes is considered a working condition benefit.",
+    "A working condition benefit from using a company car for business purposes is not taxable to the employee.",
+    "The working condition benefit exclusion applies to property and services provided to an employee so that the employee can perform their job.",
+    "The exclusion applies only to the extent the cost would be deductible if the employee had paid for it themselves."
+   ]
+  },
+  {
+   "item": "a-single-042",
+   "variant": "faithful",
+   "faith": 0.75,
+   "label": "correct",
+   "answer": "Yes, if you use a company car for business purposes, this is considered a working condition benefit and is not taxable to you. The exclusion applies to property and services provided so you can perfor",
+   "unsupported_claims": [
+    "A working condition benefit is not taxable to the employee."
+   ]
+  },
+  {
+   "item": "a-single-042",
+   "variant": "extra_claim",
+   "faith": 0.8,
+   "label": "correct",
+   "answer": "Yes, if you use a company car for business purposes, this is considered a working condition benefit and is not taxable to you. The exclusion applies to property and services provided so you can perfor",
+   "unsupported_claims": [
+    "Employees at every location also receive a 50% annual bonus."
+   ]
+  },
+  {
+   "item": "a-single-042",
+   "variant": "other",
+   "faith": 0.0,
+   "label": "incorrect",
+   "answer": "You can set up one-on-one coffee chats or participate in team social calls to strengthen relationships. Additionally, actively listening and providing feedback during virtual discussions helps develop",
+   "unsupported_claims": [
+    "You can set up one-on-one coffee chats to strengthen relationships.",
+    "You can participate in team social calls to strengthen relationships.",
+    "Actively listening and providing feedback during virtual discussions helps develop social skills and build connections with colleagues."
+   ]
+  },
+  {
+   "item": "a-single-004",
+   "variant": "faithful",
+   "faith": 0.8333333333333334,
+   "label": "correct",
+   "answer": "You can set up one-on-one coffee chats or participate in team social calls to strengthen relationships. Additionally, actively listening and providing feedback during virtual discussions helps develop",
+   "unsupported_claims": [
+    "The coffee chats are one-on-one."
+   ]
+  },
+  {
+   "item": "a-single-004",
+   "variant": "extra_claim",
+   "faith": 0.75,
+   "label": "correct",
+   "answer": "You can set up one-on-one coffee chats or participate in team social calls to strengthen relationships. Additionally, actively listening and providing feedback during virtual discussions helps develop",
+   "unsupported_claims": [
+    "This benefit is available to all contractors in all countries without exception."
+   ]
+  },
+  {
+   "item": "a-single-004",
+   "variant": "other",
+   "faith": 0.0,
+   "label": "incorrect",
+   "answer": "JiHu annotates these unused database objects to keep track of them and reduce confusion about why they exist in the system.",
+   "unsupported_claims": [
+    "JiHu annotates unused database objects.",
+    "JiHu annotates these objects to keep track of them.",
+    "JiHu annotates these objects to reduce confusion about why they exist in the system."
+   ]
+  },
+  {
+   "item": "a-single-005",
+   "variant": "faithful",
+   "faith": 0.6666666666666666,
+   "label": "correct",
+   "answer": "JiHu annotates these unused database objects to keep track of them and reduce confusion about why they exist in the system.",
+   "unsupported_claims": [
+    "JiHu is the party that annotates these objects."
+   ]
+  },
+  {
+   "item": "a-single-005",
+   "variant": "extra_claim",
+   "faith": 0.25,
+   "label": "correct",
+   "answer": "JiHu annotates these unused database objects to keep track of them and reduce confusion about why they exist in the system. The policy was introduced in 1998 and has never been changed.",
+   "unsupported_claims": [
+    "The annotating is done by JiHu.",
+    "The policy was introduced in 1998.",
+    "The policy has never been changed."
+   ]
+  },
+  {
+   "item": "a-single-005",
+   "variant": "other",
+   "faith": 0.0,
+   "label": "incorrect",
+   "answer": "PostHog AI already understands your specific data structure and how your events are organized, so you don't need to explain your data setup. It can also run queries directly within the platform instea",
+   "unsupported_claims": [
+    "PostHog AI already understands your specific data structure and how your events are organized.",
+    "You don't need to explain your data setup to PostHog AI.",
+    "PostHog AI can run queries directly within the platform.",
+    "PostHog AI does more than generate SQL code that you would have to execute elsewhere."
+   ]
+  },
+  {
+   "item": "b-single-006",
+   "variant": "faithful",
+   "faith": 1.0,
+   "label": "correct",
+   "answer": "PostHog AI already understands your specific data structure and how your events are organized, so you don't need to explain your data setup. It can also run queries directly within the platform instea",
+   "unsupported_claims": []
+  },
+  {
+   "item": "b-single-006",
+   "variant": "extra_claim",
+   "faith": 0.8,
+   "label": "correct",
+   "answer": "PostHog AI already understands your specific data structure and how your events are organized, so you don't need to explain your data setup. It can also run queries directly within the platform instea",
+   "unsupported_claims": [
+    "Managers must report every use of PostHog AI to the CEO personally."
+   ]
+  },
+  {
+   "item": "b-single-006",
+   "variant": "other",
+   "faith": 0.0,
+   "label": "incorrect",
+   "answer": "You should reference the current Standard Vendor Terms and Conditions effective February 24, 2023, the Purchase Order Terms and Conditions effective July 23, 2025, or the GitLab Vendor Security Addend",
+   "unsupported_claims": [
+    "The current Standard Vendor Terms and Conditions are effective February 24, 2023.",
+    "The Purchase Order Terms and Conditions are effective July 23, 2025.",
+    "The GitLab Vendor Security Addendum is effective August 8, 2025.",
+    "Which of these documents applies depends on the type of transaction.",
+    "The applicable agreement is determined by the effective date that matches or precedes when the parties entered into their relationship."
+   ]
+  },
+  {
+   "item": "a-single-035",
+   "variant": "faithful",
+   "faith": 0.6,
+   "label": "correct",
+   "answer": "You should reference the current Standard Vendor Terms and Conditions effective February 24, 2023, the Purchase Order Terms and Conditions effective July 23, 2025, or the GitLab Vendor Security Addend",
+   "unsupported_claims": [
+    "Which of the three current agreements applies depends on the type of transaction.",
+    "The applicable agreement is determined by the effective date that matches or precedes when the parties entered into their relationship."
+   ]
+  },
+  {
+   "item": "a-single-035",
+   "variant": "number",
+   "faith": 0.4,
+   "label": "partial",
+   "answer": "You should reference the current Standard Vendor Terms and Conditions effective February 55 2023, the Purchase Order Terms and Conditions effective July 23, 2025, or the GitLab Vendor Security Addendu",
+   "unsupported_claims": [
+    "The current Standard Vendor Terms and Conditions are effective February 55, 2023.",
+    "Which of the current agreements applies depends on the type of transaction.",
+    "The applicable agreement is determined by the effective date that matches or precedes when the parties entered into their relationship."
+   ]
+  },
+  {
+   "item": "a-single-035",
+   "variant": "extra_claim",
+   "faith": 0.5,
+   "label": "correct",
+   "answer": "You should reference the current Standard Vendor Terms and Conditions effective February 24, 2023, the Purchase Order Terms and Conditions effective July 23, 2025, or the GitLab Vendor Security Addend",
+   "unsupported_claims": [
+    "Which of these three documents to reference depends on the type of transaction.",
+    "The applicable agreement is determined by the effective date that matches or precedes when the parties entered into their relationship.",
+    "Employees at every location also receive a 50% annual bonus."
+   ]
+  },
+  {
+   "item": "a-single-035",
+   "variant": "other",
+   "faith": 0.0,
+   "label": "incorrect",
+   "answer": "The People Group aims to create a high performance and results-driven culture where diverse and inclusive team members can have meaningful careers. They support an environment that helps people do the",
+   "unsupported_claims": [
+    "The People Group aims to create a high performance and results-driven culture.",
+    "The People Group aims for diverse and inclusive team members to be able to have meaningful careers.",
+    "The People Group supports an environment that helps people do their best work.",
+    "The People Group supports an environment that helps people advance their careers.",
+    "The People Group supports an environment that helps people contribute to the company's business goals."
+   ]
+  },
+  {
+   "item": "a-single-007",
+   "variant": "faithful",
+   "faith": 1.0,
+   "label": "correct",
+   "answer": "The People Group aims to create a high performance and results-driven culture where diverse and inclusive team members can have meaningful careers. They support an environment that helps people do the",
+   "unsupported_claims": []
+  },
+  {
+   "item": "a-single-007",
+   "variant": "extra_claim",
+   "faith": 0.8333333333333334,
+   "label": "correct",
+   "answer": "The People Group aims to create a high performance and results-driven culture where diverse and inclusive team members can have meaningful careers. They support an environment that helps people do the",
+   "unsupported_claims": [
+    "This benefit is available to all contractors in all countries without exception."
+   ]
+  },
+  {
+   "item": "a-single-007",
+   "variant": "other",
+   "faith": 0.0,
+   "label": "incorrect",
+   "answer": "GitLab believes that visible leadership support, using data to track how well people are adopting the change, and listening to employee feedback are the three most important elements for successful or",
+   "unsupported_claims": [
+    "GitLab believes that visible leadership support is one of the three most important elements for successful organizational change.",
+    "GitLab believes that using data to track how well people are adopting the change is one of the three most important elements for successful organizational change.",
+    "GitLab believes that listening to employee feedback is one of the three most important elements for successful organizational change."
+   ]
+  },
+  {
+   "item": "a-single-024",
+   "variant": "faithful",
+   "faith": 0.75,
+   "label": "correct",
+   "answer": "GitLab believes that visible leadership support, using data to track how well people are adopting the change, and listening to employee feedback are the three most important elements for successful or",
+   "unsupported_claims": [
+    "Visible leadership, data-driven adoption tracking, and listening to feedback are the three most important elements of successful organizational change at GitLab."
+   ]
+  },
+  {
+   "item": "a-single-024",
+   "variant": "extra_claim",
+   "faith": 0.5,
+   "label": "correct",
+   "answer": "GitLab believes that visible leadership support, using data to track how well people are adopting the change, and listening to employee feedback are the three most important elements for successful or",
+   "unsupported_claims": [
+    "Visible leadership, data-driven adoption tracking, and listening to feedback are the three most important elements for successful organizational change at GitLab.",
+    "The policy was introduced in 1998.",
+    "The policy has never been changed."
+   ]
+  },
+  {
+   "item": "a-single-024",
+   "variant": "other",
+   "faith": 0.0,
+   "label": "incorrect",
+   "answer": "You cannot share confidential information such as technical details about services, business plans, financial data, employee information, customer lists, or other non-public information. Disclosing th",
+   "unsupported_claims": [
+    "You cannot share confidential information such as technical details about services.",
+    "You cannot share confidential information such as business plans, financial data, employee information, customer lists, or other non-public information.",
+    "Disclosing confidential information could harm GitLab, its suppliers, customers, or business partners."
+   ]
+  },
+  {
+   "item": "a-single-038",
+   "variant": "faithful",
+   "faith": 0.875,
+   "label": "correct",
+   "answer": "You cannot share confidential information such as technical details about services, business plans, financial data, employee information, customer lists, or other non-public information. Disclosing th",
+   "unsupported_claims": [
+    "Disclosing this information could harm GitLab."
+   ]
+  },
+  {
+   "item": "a-single-038",
+   "variant": "extra_claim",
+   "faith": 0.6666666666666666,
+   "label": "correct",
+   "answer": "You cannot share confidential information such as technical details about services, business plans, financial data, employee information, customer lists, or other non-public information. Disclosing th",
+   "unsupported_claims": [
+    "Managers must report every use of confidential information to the CEO personally."
+   ]
+  },
+  {
+   "item": "a-single-038",
+   "variant": "other",
+   "faith": 0.0,
+   "label": "incorrect",
+   "answer": "As the month progresses and customer invoice periods end, we close more invoices, which gives us better visibility into what the actual revenue will be for that month.",
+   "unsupported_claims": [
+    "As the month progresses, customer invoice periods end.",
+    "As customer invoice periods end, GitLab closes more invoices.",
+    "Closing more invoices gives GitLab better visibility into what the actual revenue will be for that month."
+   ]
+  },
+  {
+   "item": "b-single-010",
+   "variant": "faithful",
+   "faith": 1.0,
+   "label": "correct",
+   "answer": "As the month progresses and customer invoice periods end, we close more invoices, which gives us better visibility into what the actual revenue will be for that month.",
+   "unsupported_claims": []
+  },
+  {
+   "item": "b-single-010",
+   "variant": "extra_claim",
+   "faith": 0.6666666666666666,
+   "label": "correct",
+   "answer": "As the month progresses and customer invoice periods end, we close more invoices, which gives us better visibility into what the actual revenue will be for that month. Employees at every location also",
+   "unsupported_claims": [
+    "Employees at every location receive a 50% annual bonus."
+   ]
+  },
+  {
+   "item": "b-single-010",
+   "variant": "other",
+   "faith": 0.0,
+   "label": "incorrect",
+   "answer": "Yes, you can have dental coverage in addition to your high-deductible health plan. Dental care is listed as one of the types of coverage you're allowed to maintain while enrolled in an HDHP.",
+   "unsupported_claims": [
+    "You can have dental coverage in addition to your high-deductible health plan.",
+    "Dental care is listed as one of the types of coverage you're allowed to maintain while enrolled in an HDHP."
+   ]
+  },
+  {
+   "item": "a-single-033",
+   "variant": "faithful",
+   "faith": 0.0,
+   "label": "correct",
+   "answer": "Yes, you can have dental coverage in addition to your high-deductible health plan. Dental care is listed as one of the types of coverage you're allowed to maintain while enrolled in an HDHP.",
+   "unsupported_claims": [
+    "You can have dental coverage in addition to your high-deductible health plan (HDHP).",
+    "Dental care is listed as one of the types of coverage you're allowed to maintain while enrolled in an HDHP."
+   ]
+  },
+  {
+   "item": "a-single-033",
+   "variant": "extra_claim",
+   "faith": 0.0,
+   "label": "correct",
+   "answer": "Yes, you can have dental coverage in addition to your high-deductible health plan. Dental care is listed as one of the types of coverage you're allowed to maintain while enrolled in an HDHP. This bene",
+   "unsupported_claims": [
+    "You can have dental coverage in addition to your high-deductible health plan.",
+    "Dental care is listed as one of the types of coverage you're allowed to maintain while enrolled in an HDHP.",
+    "This benefit is available to all contractors in all countries without exception."
+   ]
+  },
+  {
+   "item": "a-single-033",
+   "variant": "other",
+   "faith": 0.0,
+   "label": "incorrect",
+   "answer": "You should report it right away to the Chief People Officer, a People Business Partner, or the Team Member Relations Specialist. You can also use Lighthouse Services for anonymous reporting.",
+   "unsupported_claims": [
+    "You should report it right away to the Chief People Officer.",
+    "You should report it right away to a People Business Partner.",
+    "You should report it right away to the Team Member Relations Specialist.",
+    "You can use Lighthouse Services for anonymous reporting."
+   ]
+  },
+  {
+   "item": "a-single-014",
+   "variant": "faithful",
+   "faith": 1.0,
+   "label": "correct",
+   "answer": "You should report it right away to the Chief People Officer, a People Business Partner, or the Team Member Relations Specialist. You can also use Lighthouse Services for anonymous reporting.",
+   "unsupported_claims": []
+  },
+  {
+   "item": "a-single-014",
+   "variant": "extra_claim",
+   "faith": 0.6,
+   "label": "correct",
+   "answer": "You should report it right away to the Chief People Officer, a People Business Partner, or the Team Member Relations Specialist. You can also use Lighthouse Services for anonymous reporting. The polic",
+   "unsupported_claims": [
+    "The policy was introduced in 1998.",
+    "The policy has never been changed."
+   ]
+  },
+  {
+   "item": "a-single-014",
+   "variant": "other",
+   "faith": 0.0,
+   "label": "incorrect",
+   "answer": "A purchase order (PO) is generated and GitLab officially places the order. You can then begin work and start obtaining the products or services you requested.",
+   "unsupported_claims": [
+    "A purchase order (PO) is generated and GitLab officially places the order.",
+    "After the purchase order is generated, you can begin work and start obtaining the products or services you requested."
+   ]
+  },
+  {
+   "item": "a-single-003",
+   "variant": "faithful",
+   "faith": 1.0,
+   "label": "correct",
+   "answer": "A purchase order (PO) is generated and GitLab officially places the order. You can then begin work and start obtaining the products or services you requested.",
+   "unsupported_claims": []
+  },
+  {
+   "item": "a-single-003",
+   "variant": "extra_claim",
+   "faith": 0.6666666666666666,
+   "label": "correct",
+   "answer": "A purchase order (PO) is generated and GitLab officially places the order. You can then begin work and start obtaining the products or services you requested. Managers must report every use of it to t",
+   "unsupported_claims": [
+    "Managers must report every use of the PO to the CEO personally."
+   ]
+  },
+  {
+   "item": "a-single-003",
+   "variant": "other",
+   "faith": 0.0,
+   "label": "incorrect",
+   "answer": "GitLab Belgium employees receive \u20ac70 per month as a healthcare allowance that they can use to choose their own healthcare plan. This amount is paid automatically through payroll and is subject to taxa",
+   "unsupported_claims": [
+    "GitLab Belgium employees receive \u20ac70 per month as a healthcare allowance.",
+    "Belgium employees can use the healthcare allowance to choose their own healthcare plan.",
+    "The healthcare allowance is paid automatically through payroll.",
+    "The healthcare allowance is subject to taxation."
+   ]
+  }
+ ]
+}

@@ -89,8 +89,9 @@ class Settings(BaseSettings):
     history_budget_tokens: int = 1500  # ...and never more than this many tokens of them
     memory_enabled: bool = True
     memory_max_per_user: int = 200  # oldest-updated memory is dropped beyond this
-    memory_dedupe_similarity: float = 0.90  # a new fact this close to an old one REPLACES it (B-016)
-    memory_min_relevance: float = 0.6  # only facts at least this similar to the question are used (B-016)
+    # Both thresholds were chosen from real embeddings: benchmark B-016.
+    memory_dedupe_similarity: float = 0.90  # a new fact this close to an old one replaces it
+    memory_min_relevance: float = 0.6  # facts less similar to the question are not used
     memory_top_k: int = 3
     llm_timeout_s: float = 30.0
     llm_max_retries: int = 3

@@ -83,6 +83,11 @@ def unsafe_output(text: str, sources: dict[str, Source]) -> str | None:
     return None
 
 
+def _user_prompt(context: Context, question: str, memory_block: str) -> str:
+    notes = f"\n\n{memory_block}" if memory_block else ""
+    return f"{context.text}{notes}\n\nQuestion: {question}"
+
+
 def _parse(text: str) -> AnswerPayload:
     text = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.MULTILINE).strip()
     try:
@@ -117,13 +122,14 @@ def answer_question(
     *,
     complete_fn: Callable[..., LLMResult] = complete,
     model: str | None = None,
+    memory_block: str = "",
 ) -> Answer:
     if not context.sources:
         return Answer(REFUSAL, refused=True, reason="no sources were retrieved")
     sources = {s.id: s for s in context.sources}
     messages: list[dict[str, Any]] = [
         {"role": "system", "content": SYSTEM},
-        {"role": "user", "content": f"{context.text}\n\nQuestion: {question}"},
+        {"role": "user", "content": _user_prompt(context, question, memory_block)},
     ]
     totals = Answer("", refused=True)
     last_error = ""
@@ -196,6 +202,7 @@ def answer_stream(
     stream_fn: Callable[..., LLMStream] = LLMStream,
     complete_fn: Callable[..., LLMResult] = complete,
     model: str | None = None,
+    memory_block: str = "",
 ) -> Iterator[dict[str, Any]]:
     """Yield {"type": "token", "text": ...} pieces, then one {"type": "done", "answer": Answer}.
 
@@ -213,7 +220,7 @@ def answer_stream(
     sources = {s.id: s for s in context.sources}
     messages = [
         {"role": "system", "content": STREAM_SYSTEM},
-        {"role": "user", "content": f"{context.text}\n\nQuestion: {question}"},
+        {"role": "user", "content": _user_prompt(context, question, memory_block)},
     ]
     stream = stream_fn(messages, model=model, max_tokens=700, temperature=0.0)
     held, decided, refusal, shown = "", False, False, False
@@ -269,5 +276,7 @@ def answer_stream(
         yield {"type": "done", "answer": spent, "replaced": False}
         return
     # Streamed text without valid citations: fall back to the validated JSON path.
-    fixed = answer_question(question, context, complete_fn=complete_fn, model=model)
+    fixed = answer_question(
+        question, context, complete_fn=complete_fn, model=model, memory_block=memory_block
+    )
     yield {"type": "done", "answer": _add_costs(spent, fixed), "replaced": True}

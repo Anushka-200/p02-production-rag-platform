@@ -1,0 +1,52 @@
+{"text": "Contact me at ann.lee@acme.com about the contract", "pii": ["EMAIL_ADDRESS"]}
+{"text": "Send the report to first.last+hr@sub.example.co.uk please", "pii": ["EMAIL_ADDRESS"]}
+{"text": "my work mail is j_doe@initech.io", "pii": ["EMAIL_ADDRESS"]}
+{"text": "Reach HR on hr-team@globex.org or by phone", "pii": ["EMAIL_ADDRESS"]}
+{"text": "Call me on (415) 555-0132 tomorrow", "pii": ["PHONE_NUMBER"]}
+{"text": "My number is +44 20 7946 0958", "pii": ["PHONE_NUMBER"]}
+{"text": "phone: 415.555.0132", "pii": ["PHONE_NUMBER"]}
+{"text": "WhatsApp me at +1 415-555-0132", "pii": ["PHONE_NUMBER"]}
+{"text": "Dial +49 30 901820 for the Berlin office", "pii": ["PHONE_NUMBER"]}
+{"text": "My card number is 4111 1111 1111 1111", "pii": ["CREDIT_CARD"]}
+{"text": "pay with 5500 0000 0000 0004 please", "pii": ["CREDIT_CARD"]}
+{"text": "amex 3782 822463 10005 expires next year", "pii": ["CREDIT_CARD"]}
+{"text": "card 4111111111111111", "pii": ["CREDIT_CARD"]}
+{"text": "Transfer to IBAN DE89 3704 0044 0532 0130 00", "pii": ["IBAN_CODE"]}
+{"text": "my iban is GB82 WEST 1234 5698 7654 32", "pii": ["IBAN_CODE"]}
+{"text": "Account FR14 2004 1010 0505 0001 3M02 606 is ours", "pii": ["IBAN_CODE"]}
+{"text": "The server is at 192.168.4.12", "pii": ["IP_ADDRESS"]}
+{"text": "connect to 203.0.113.42 port 22", "pii": ["IP_ADDRESS"]}
+{"text": "ipv6 2001:db8:85a3::8a2e:370:7334 is blocked", "pii": ["IP_ADDRESS"]}
+{"text": "My SSN is 536-90-4399", "pii": ["US_SSN"]}
+{"text": "social security 219-09-9999 on file", "pii": ["US_SSN"]}
+{"text": "SSN: 078 05 1121", "pii": ["US_SSN"]}
+{"text": "Email bob@x.com or call (212) 555-0147", "pii": ["EMAIL_ADDRESS", "PHONE_NUMBER"]}
+{"text": "card 4111 1111 1111 1111, mail eve@corp.net", "pii": ["CREDIT_CARD", "EMAIL_ADDRESS"]}
+{"text": "I prefer short answers.", "pii": []}
+{"text": "Employees accrue 1.5 vacation days per month, capped at 30 days.", "pii": []}
+{"text": "See section 4.2.1 on page 12 of the handbook.", "pii": []}
+{"text": "The policy was updated on 2026-10-02 (version 3.12.1).", "pii": []}
+{"text": "gitlab/people-group/2024-05-01-notes.md", "pii": []}
+{"text": "job 3782fdc2-5512-4ee3-9a55-0eba42121297 finished in 1234 ms", "pii": []}
+{"text": "The deductible is $1,650 for self-only coverage and $3,300 for family coverage.", "pii": []}
+{"text": "Q3 revenue grew 24% to 1,250,000 dollars.", "pii": []}
+{"text": "Contributions are limited to $4,300 in 2025 and $4,400 in 2026.", "pii": []}
+{"text": "Onboarding takes 8 weeks, or 2 billing periods.", "pii": []}
+{"text": "Use Python 3.12 and PostgreSQL 16 with pgvector 0.8.", "pii": []}
+{"text": "The meeting is at 10:30 on 15 March in room 4B.", "pii": []}
+{"text": "Order number 20261002 shipped on 12/03/2026.", "pii": []}
+{"text": "IRS Publication 15-B (2026) covers fringe benefits.", "pii": []}
+{"text": "Employees get 20 days of leave after 3 years of service.", "pii": []}
+{"text": "The API returns HTTP 429 after 100 requests per minute.", "pii": []}
+{"text": "Set the timeout to 30 seconds and retries to 3.", "pii": []}
+{"text": "Form 1095-C is sent by 31 January each year.", "pii": []}
+{"text": "Page 5-6 lists the eligibility rules for plan A and plan B.", "pii": []}
+{"text": "Stock options vest over 48 months with a 12 month cliff.", "pii": []}
+{"text": "Max 8 reports per manager; span of control is 5 to 10.", "pii": []}
+{"text": "The commit abc1234 fixed issue #4521 in release 2026.10.", "pii": []}
+{"text": "Berlin office opens at 8:30 and Priya works in the marketing team.", "pii": []}
+{"text": "Our CI runs 12 jobs in 7 minutes on 4 cores.", "pii": []}
+{"text": "Cafeteria budget is 5000 euros per quarter.", "pii": []}
+{"text": "Use port 8001 for the API and 5434 for Postgres.", "pii": []}
+{"text": "Chapter 2 covers sections 2.1, 2.2 and 2.3.", "pii": []}
+{"text": "Parental leave is 16 weeks; sick leave is 8 days.", "pii": []}

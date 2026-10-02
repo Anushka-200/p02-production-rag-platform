@@ -11,6 +11,12 @@ from typing import Any
 from langfuse import Langfuse
 
 from app.config import get_settings
+from app.pii import redact_any
+
+
+def _mask(*, data: Any, **_: Any) -> Any:
+    """Langfuse calls this on every input/output before upload: scrub emails, cards, phones..."""
+    return redact_any(data)
 
 
 @lru_cache
@@ -22,6 +28,7 @@ def get_client() -> Langfuse | None:
         public_key=s.langfuse_public_key,
         secret_key=s.langfuse_secret_key.get_secret_value(),
         host=s.langfuse_host,
+        mask=_mask,
     )
 
 

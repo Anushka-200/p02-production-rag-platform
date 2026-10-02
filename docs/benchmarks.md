@@ -185,6 +185,25 @@ Finding: only the top 10 fused candidates matter, so halving the candidates cost
 
 Findings: (1) the cleaning step itself ASSEMBLED a zero-width-spaced instruction into readable text; fixed by dropping lines that are mostly invisible characters. (2) A document title lands in every chunk's heading path, so an instruction-like title is replaced. (3) My first test counted the attacker's own question echoed in the prompt as a leak; the harness now inspects retrieved context only. Informal: simple attacks and one model; the red-team pass in Phase 7 uses garak/promptfoo.
 
+## B-016 Memory thresholds and PII redaction (2026-10-02, tasks 3.10-3.11)
+Real embeddings (bge-small) and the real extractor (Haiku 4.5); `scripts/memory_live.py`, `make`-free, cost $0.0018.
+
+| pair (cosine) | similarity | should |
+|---|---|---|
+| "prefers short answers" / "likes brief answers" (paraphrase) | 0.882 | merge |
+| "lives in Berlin" / "lives in Munich" (update) | 0.875 | merge |
+| "works in the Berlin office" / "...Munich office" (update) | 0.904 | merge |
+| "is a nurse" / "works in a hospital" (related, different fact) | 0.883 | keep both |
+| "prefers short answers" / "prefers answers in German" | 0.841 | keep both |
+| unrelated facts | 0.61-0.64 | keep both |
+| question vs a relevant fact | 0.54-0.73 | use |
+| question vs an irrelevant fact | 0.44-0.55 | skip |
+
+Finding: the model squeezes similarities into a narrow band, so cosine cannot separate "update" from "related". Chosen: merge at **0.90** (a wrong merge LOSES a fact; a missed merge only leaves a harmless duplicate the user can delete) and use a memory when relevance is at least **0.60**. Known limits: "Berlin -> Munich" (0.875) is NOT merged, so a stale fact can remain until the user deletes it; style preferences ("short answers") are not topical, so they are only used when the question is similar to them. Both are Phase 6 experiments (always-on preferences, LLM-decided replacement).
+Extractor on 4 messages: kept "nurse in Berlin", "prefers short answers", "works night shifts"; the email and phone number were NOT stored; the injection attempt and a weather chat produced nothing.
+
+PII redaction (Presidio, pattern recognisers only), `python -m evals.pii_check`, 51 hand-written cases: **26/26 planted items caught** (email 6, phone 6, card 5, IBAN 3, IP 3, SSN 3), **0/28 harmless sentences changed** (versions, dates, ids, prices, paths). Informal: I wrote the cases. Name/place/org detection (spaCy small NER) was measured and rejected: it tagged "Email" as a person and "Priya" as an organisation.
+
 ## Eval runs (appended by `make eval`; LLM-drafted, UNREVIEWED questions)
 | date | label | config | n | Recall@5 | MRR | nDCG@10 | faithfulness | correctness | refusal acc | p50 / p95 ms | $/answer |
 |---|---|---|---|---|---|---|---|---|---|---|---|

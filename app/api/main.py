@@ -13,15 +13,35 @@ from typing import Any
 import psycopg
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
+from starlette.background import BackgroundTask
 
 from app.api.auth import Principal, current_principal
 from app.api.security import TokenError, create_token, hash_password, verify_password
+from app.chat_history import (
+    HistoryError,
+    add_message,
+    conversation_exists,
+    create_conversation,
+    delete_conversation,
+    get_messages,
+    list_conversations,
+    recent_messages,
+)
 from app.config import Settings, get_settings
 from app.db.tenant import check_role_is_restricted, tenant_connection
 from app.documents import DocumentError, list_documents, set_visibility
 from app.embeddings import Embedder, get_embedder, get_token_counter
 from app.llm import complete
+from app.memory import (
+    delete_all_memories,
+    delete_memory,
+    extract_facts,
+    format_memory_block,
+    list_memories,
+    relevant_memories,
+    store_facts,
+)
 from app.rag import ask_stream
 from app.retrieval.inspect import inspect_retrieval
 from app.retrieval.rerank import Reranker, get_reranker
@@ -31,6 +51,12 @@ logger = logging.getLogger(__name__)
 
 class ChatRequest(BaseModel):
     question: str = Field(min_length=1, max_length=2000)  # who is asking is NOT in the body
+    conversation_id: uuid.UUID | None = None  # omit to start a new conversation
+
+    @field_validator("question")
+    @classmethod
+    def no_nul_bytes(cls, v: str) -> str:
+        return v.replace("\x00", "")  # Postgres text cannot hold NUL; it would be a 500
 
 
 class LoginRequest(BaseModel):
@@ -90,6 +116,7 @@ def create_app(
     reranker: Reranker | None = None,
     stream_fn: Callable[..., Any] | None = None,
     complete_fn: Callable[..., Any] = complete,
+    memory_complete_fn: Callable[..., Any] | None = None,
 ) -> FastAPI:
     """Everything the API needs can be injected, so tests run without models, network or a key."""
     s = settings or get_settings()
@@ -170,23 +197,73 @@ def create_app(
             raise HTTPException(404, str(exc)) from exc
         return {"visibility": body.visibility}
 
+    def remember(who: Principal, user_message_id: uuid.UUID, conversation_id: uuid.UUID) -> None:
+        """Background step after the answer is sent: learn lasting facts from the user."""
+        try:
+            with tenant_connection(open_connection, who.scope, write=True) as conn:
+                window = recent_messages(
+                    conn, who.scope, conversation_id, max_turns=3, budget_tokens=800
+                )
+                known = [m["fact"] for m in list_memories(conn, who.scope)[:20]]
+                facts, cost = extract_facts(
+                    [m["content"] for m in window if m["role"] == "user"],
+                    known,
+                    complete_fn=memory_complete_fn or complete,
+                )
+                stored = store_facts(
+                    conn, who.scope, state["embedder"], facts,
+                    source_message_id=user_message_id, settings=s,
+                )  # fmt: skip
+            logger.info(
+                "memory updated",
+                extra={"added": stored.added, "merged": stored.merged, "cost_usd": round(cost, 6)},
+            )
+        except Exception:
+            logger.exception("memory update failed")  # never affects the chat the user already got
+
     @app.post("/chat")
     def chat(body: ChatRequest, who: Principal = Depends(principal)) -> StreamingResponse:
+        # (1) one short write transaction: the conversation, the user's message, the memories to use
+        with tenant_connection(open_connection, who.scope, write=True) as conn:
+            if body.conversation_id is not None:
+                if not conversation_exists(conn, who.scope, body.conversation_id):
+                    raise HTTPException(404, "conversation not found")
+                conversation_id = body.conversation_id
+            else:
+                conversation_id = create_conversation(conn, who.scope, body.question)
+            user_message_id = add_message(conn, who.scope, conversation_id, "user", body.question)
+            notes = (
+                relevant_memories(conn, state["embedder"], body.question, who.scope, settings=s)
+                if s.memory_enabled
+                else []
+            )
+
         def events() -> Iterator[str]:
-            # opened here, not as a dependency: streaming outlives dependencies. The tenant is
-            # set on the connection, so the database itself hides other tenants' rows.
+            # (2) the answer, on a read-only connection that is limited to the tenant's rows
+            # (opened here, not as a dependency: streaming outlives dependencies)
             try:
                 with tenant_connection(open_connection, who.scope) as conn:
                     for event in ask_stream(
                         conn, state["embedder"], state["reranker"], body.question, who.scope,
                         settings=s, stream_fn=stream_fn, complete_fn=complete_fn,
+                        memory_block=format_memory_block(notes),
                     ):  # fmt: skip
-                        if event["type"] == "done":
-                            yield sse("done", _done_payload(event))
-                        else:
+                        if event["type"] != "done":
                             yield sse(
                                 event["type"], {k: v for k, v in event.items() if k != "type"}
                             )
+                            continue
+                        payload = _done_payload(event)
+                        try:  # (3) save the answer; a failure here must not lose the answer
+                            with tenant_connection(open_connection, who.scope, write=True) as w:
+                                add_message(
+                                    w, who.scope, conversation_id, "assistant", payload["text"],
+                                    citations=payload["citations"], refused=payload["refused"],
+                                )  # fmt: skip
+                        except Exception:
+                            logger.exception("could not save the assistant message")
+                        payload["conversation_id"] = str(conversation_id)
+                        yield sse("done", payload)
             except Exception:
                 logger.exception("chat failed")
                 yield sse(
@@ -196,7 +273,53 @@ def create_app(
         return StreamingResponse(
             events(), media_type="text/event-stream",
             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+            background=(
+                BackgroundTask(remember, who, user_message_id, conversation_id)
+                if s.memory_enabled
+                else None
+            ),
         )  # fmt: skip
+
+    @app.get("/conversations")
+    def conversations(who: Principal = Depends(principal)) -> list[dict[str, Any]]:
+        with tenant_connection(open_connection, who.scope) as conn:
+            return list_conversations(conn, who.scope)
+
+    @app.get("/conversations/{conversation_id}")
+    def conversation(
+        conversation_id: uuid.UUID, who: Principal = Depends(principal)
+    ) -> list[dict[str, Any]]:
+        try:
+            with tenant_connection(open_connection, who.scope) as conn:
+                return get_messages(conn, who.scope, conversation_id)
+        except HistoryError as exc:
+            raise HTTPException(404, str(exc)) from exc
+
+    @app.delete("/conversations/{conversation_id}")
+    def remove_conversation(
+        conversation_id: uuid.UUID, who: Principal = Depends(principal)
+    ) -> dict[str, bool]:
+        with tenant_connection(open_connection, who.scope, write=True) as conn:
+            if not delete_conversation(conn, who.scope, conversation_id):
+                raise HTTPException(404, "conversation not found")
+        return {"deleted": True}
+
+    @app.get("/memories")
+    def memories(who: Principal = Depends(principal)) -> list[dict[str, Any]]:
+        with tenant_connection(open_connection, who.scope) as conn:
+            return list_memories(conn, who.scope)
+
+    @app.delete("/memories/{memory_id}")
+    def remove_memory(memory_id: uuid.UUID, who: Principal = Depends(principal)) -> dict[str, bool]:
+        with tenant_connection(open_connection, who.scope, write=True) as conn:
+            if not delete_memory(conn, who.scope, memory_id):
+                raise HTTPException(404, "memory not found")
+        return {"deleted": True}
+
+    @app.delete("/memories")
+    def remove_all_memories(who: Principal = Depends(principal)) -> dict[str, int]:
+        with tenant_connection(open_connection, who.scope, write=True) as conn:
+            return {"deleted": delete_all_memories(conn, who.scope)}
 
     @app.post("/admin/inspect")
     def inspect(body: InspectRequest, who: Principal = Depends(admin)) -> dict[str, Any]:

@@ -84,6 +84,14 @@ class Settings(BaseSettings):
     rerank_max_words: int = 220  # longer passages are cut: faster, and the start carries the topic
     context_budget_tokens: int = 3000  # how much source text may go into the answer prompt
     embedding_max_tokens: int = 512  # the model silently cuts anything longer
+    # Chat history and memory (Phase 3)
+    history_max_turns: int = 6  # most recent question+answer pairs that may go into a prompt
+    history_budget_tokens: int = 1500  # ...and never more than this many tokens of them
+    memory_enabled: bool = True
+    memory_max_per_user: int = 200  # oldest-updated memory is dropped beyond this
+    memory_dedupe_similarity: float = 0.90  # a new fact this close to an old one REPLACES it (B-016)
+    memory_min_relevance: float = 0.6  # only facts at least this similar to the question are used (B-016)
+    memory_top_k: int = 3
     llm_timeout_s: float = 30.0
     llm_max_retries: int = 3
     langfuse_public_key: str | None = None

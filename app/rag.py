@@ -70,6 +70,7 @@ def ask_stream(
     settings: Settings | None = None,
     stream_fn: Callable[..., Any] | None = None,
     complete_fn: Callable[..., Any] = complete,
+    memory_block: str = "",
 ) -> Iterator[dict[str, Any]]:
     """The streaming flow. Events: sources (as soon as retrieval is done), token..., done.
 
@@ -113,8 +114,9 @@ def ask_stream(
     }
     first_token_ms = None
     for event in answer_stream(
-        question, context, stream_fn=stream_fn or LLMStream, complete_fn=complete_fn
-    ):
+        question, context, stream_fn=stream_fn or LLMStream, complete_fn=complete_fn,
+        memory_block=memory_block,
+    ):  # fmt: skip
         if event["type"] == "token" and first_token_ms is None:
             first_token_ms = round((time.perf_counter() - started) * 1000, 1)
         if event["type"] == "done":

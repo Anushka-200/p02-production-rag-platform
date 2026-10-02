@@ -17,7 +17,7 @@ def world(db_schema):  # type: ignore[no-untyped-def]
     w = World(db_schema)
     schema = db_schema.execute("SELECT current_schema()").fetchone()[0]
     db_schema.execute(f"GRANT USAGE ON SCHEMA {schema} TO rag_app")
-    for table in ("documents", "chunks", "ingestion_jobs"):
+    for table in ("documents", "chunks", "ingestion_jobs", "conversations", "messages", "memories"):
         db_schema.execute(f"GRANT SELECT, INSERT, UPDATE, DELETE ON {schema}.{table} TO rag_app")
     db_schema.execute(f"GRANT SELECT ON {schema}.orgs, {schema}.users TO rag_app")
     w.schema = schema  # type: ignore[attr-defined]
@@ -199,3 +199,31 @@ def test_jobs_are_private_to_their_owner(world) -> None:  # type: ignore[no-unty
     assert count() == 0
     set_session_tenant(conn, world.bob)
     assert count() == 0
+
+
+# ---- chat history and memory are private to the USER (stricter than the org) --------------------
+def test_conversations_messages_and_memories_are_invisible_to_colleagues_and_other_orgs(
+    world,
+) -> None:  # type: ignore[no-untyped-def]
+    from app.chat_history import add_message, create_conversation
+    from app.memory import list_memories, store_facts
+    from tests.test_memory import SETTINGS, AxisEmbedder
+
+    conn = app_connection(world)
+    set_session_tenant(conn, world.ann)
+    conv = create_conversation(conn, world.ann, "private")
+    add_message(conn, world.ann, conv, "user", "my secret plan")
+    store_facts(conn, world.ann, AxisEmbedder(), ["User likes green tea"], settings=SETTINGS)
+    count = lambda t: conn.execute(f"SELECT count(*) FROM {t}").fetchone()[0]  # noqa: E731
+    assert (count("conversations"), count("messages"), count("memories")) == (1, 1, 1)
+    for other in (world.amy, world.bob):  # same org colleague, and another org
+        set_session_tenant(conn, other)
+        assert (count("conversations"), count("messages"), count("memories")) == (0, 0, 0)
+        assert list_memories(conn, other) == []
+    set_session_tenant(conn, world.amy)
+    with pytest.raises(psycopg.errors.InsufficientPrivilege):  # WITH CHECK: cannot write as ann
+        conn.execute(
+            "INSERT INTO memories (org_id, user_id, fact, embedding, embedding_model) "
+            "VALUES (%s, %s, 'User x y z abc', %s::vector, 'm')",
+            (world.ann.org_id, world.ann.user_id, "[" + ",".join(["0"] * 384) + "]"),
+        )

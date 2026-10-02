@@ -16,6 +16,12 @@ def clean_settings_env(monkeypatch: pytest.MonkeyPatch) -> None:
 
 
 @pytest.fixture(autouse=True)
+def memory_off_by_default(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Memory extraction calls a model after every chat turn; tests opt in explicitly."""
+    monkeypatch.setenv("MEMORY_ENABLED", "false")
+
+
+@pytest.fixture(autouse=True)
 def no_tracing(monkeypatch: pytest.MonkeyPatch) -> None:
     """Tests must never send traces to Langfuse, even if the developer's .env has real keys."""
     monkeypatch.setattr(tracing, "get_client", lambda: None)

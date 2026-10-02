@@ -10,6 +10,8 @@ from contextvars import ContextVar
 from datetime import UTC, datetime
 from typing import Any
 
+from app.pii import redact_any
+
 # Set once per request or job (e.g. org_id, request_id); every log line in that scope includes it.
 log_context: ContextVar[dict[str, Any] | None] = ContextVar("log_context", default=None)
 
@@ -20,7 +22,14 @@ _STANDARD_ATTRS = set(logging.LogRecord("", 0, "", 0, "", (), None).__dict__) | 
 }
 
 
+_KEEP_AS_IS = {"ts", "level", "logger"}
+
+
 class JsonFormatter(logging.Formatter):
+    def __init__(self, *args: Any, redact_pii: bool = True, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.redact_pii = redact_pii
+
     def format(self, record: logging.LogRecord) -> str:
         entry: dict[str, Any] = {
             "ts": datetime.fromtimestamp(record.created, UTC).isoformat(),
@@ -30,6 +39,8 @@ class JsonFormatter(logging.Formatter):
             **(log_context.get() or {}),
         }
         entry.update({k: v for k, v in record.__dict__.items() if k not in _STANDARD_ATTRS})
+        if self.redact_pii:  # logs outlive the chat: never write an email or card number into them
+            entry = {k: redact_any(v) if k not in _KEEP_AS_IS else v for k, v in entry.items()}
         if record.exc_info:
             entry["exception"] = self.formatException(record.exc_info)
         # default=str keeps logging from crashing on values JSON cannot encode (UUIDs, datetimes).

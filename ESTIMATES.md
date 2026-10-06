@@ -200,3 +200,4 @@ Owner estimate for 2.7+2.8+2.9: O 15 / M 20 / P 25 min (PERT 20 min).
 | Phase 3 block 3 (3.4+3.5: private/shared docs, SQL-level RLS tests) | 2026-10-02 18:05 | 2026-10-02 18:36 | end given by owner (ended together with block 2); 15/20/25 min |
 | Phase 3 block 4 (3.6+3.7+3.8: adversarial docs, isolation suite, injection defences) | 2026-10-02 18:10 | | built while owner reads block 3; end only when owner says |
 | Phase 3 block 5 (3.9-3.12: chat history, memory, PII redaction, memory tests) | 2026-10-02 18:36 | | built while owner reads block 4; end only when owner says |
+| Phase 3 block 6 (3.13: live two-tenant run + fixes) | 2026-10-06 17:27 | | owner said start; end only when owner says |

@@ -11,7 +11,7 @@ from contextlib import asynccontextmanager
 from typing import Any
 
 import psycopg
-from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi import Depends, FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field, field_validator
 from starlette.background import BackgroundTask
@@ -32,6 +32,7 @@ from app.config import Settings, get_settings
 from app.db.tenant import check_role_is_restricted, tenant_connection
 from app.documents import DocumentError, list_documents, set_visibility
 from app.embeddings import Embedder, get_embedder, get_token_counter
+from app.ingest.upload import UploadError, enqueue_upload
 from app.llm import complete
 from app.memory import (
     delete_all_memories,
@@ -117,6 +118,7 @@ def create_app(
     stream_fn: Callable[..., Any] | None = None,
     complete_fn: Callable[..., Any] = complete,
     memory_complete_fn: Callable[..., Any] | None = None,
+    queue: Any = None,
 ) -> FastAPI:
     """Everything the API needs can be injected, so tests run without models, network or a key."""
     s = settings or get_settings()
@@ -180,6 +182,58 @@ def create_app(
             logger.error("login unavailable: %s", exc)
             raise HTTPException(503, "login is not configured") from exc
         return {"access_token": token, "token_type": "bearer"}
+
+    def job_queue() -> Any:
+        if queue is not None:
+            return queue
+        from redis import Redis
+        from rq import Queue
+
+        return Queue(s.ingest_queue, connection=Redis.from_url(s.redis_url))
+
+    @app.post("/documents", status_code=202)
+    def upload_document(
+        file: UploadFile = File(...),  # noqa: B008
+        visibility: str = Form("private", pattern="^(private|org)$"),
+        who: Principal = Depends(principal),
+    ) -> dict[str, Any]:
+        """Accept a file for ingestion. The owner is the logged-in user; it starts private."""
+        limit = s.max_upload_mb * 1_000_000
+        raw = file.file.read(
+            limit + 1
+        )  # read at most one byte over the limit, never the whole stream
+        try:
+            with tenant_connection(open_connection, who.scope, write=True) as conn:
+                result = enqueue_upload(
+                    conn, job_queue(), org_id=who.scope.org_id, owner_id=who.scope.user_id,
+                    visibility=visibility, filename=file.filename or "upload", raw=raw, settings=s,
+                )  # fmt: skip
+        except UploadError as exc:
+            raise HTTPException(422, str(exc)) from exc
+        return {
+            "job_id": str(result.job_id),
+            "status": result.status,
+            "duplicate": not result.created,
+        }
+
+    @app.get("/jobs/{job_id}")
+    def job_status(job_id: uuid.UUID, who: Principal = Depends(principal)) -> dict[str, Any]:
+        with tenant_connection(open_connection, who.scope) as conn:
+            row = conn.execute(
+                "SELECT status, stage, error, attempts, result FROM ingestion_jobs "
+                "WHERE id = %s AND org_id = %s AND owner_id = %s",
+                (job_id, who.scope.org_id, who.scope.user_id),
+            ).fetchone()
+        if row is None:
+            raise HTTPException(404, "job not found")
+        status, stage, error, attempts, result = row
+        return {
+            "status": status,
+            "stage": stage,
+            "error": error,
+            "attempts": attempts,
+            "result": result,
+        }
 
     @app.get("/documents")
     def documents(who: Principal = Depends(principal)) -> list[dict[str, Any]]:

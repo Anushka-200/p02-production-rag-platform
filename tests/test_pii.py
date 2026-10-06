@@ -68,3 +68,14 @@ def test_log_lines_are_redacted_but_ids_and_timestamps_are_not() -> None:
     assert line["ts"].startswith("20")
     unredacted = json.loads(JsonFormatter(redact_pii=False).format(record))
     assert "ann@x.com" in unredacted["message"]
+
+
+def test_a_warning_logged_while_redacting_cannot_start_a_loop() -> None:
+    """The redactor logs through the redacting formatter; that must not call the redactor again."""
+    import app.pii as pii
+
+    pii._busy.on = True  # pretend we are inside redact()
+    try:
+        assert redact("mail ann@x.com").text == "mail ann@x.com"  # skipped, not recursed
+    finally:
+        pii._busy.on = False

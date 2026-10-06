@@ -15,7 +15,9 @@ A cheap pre-check (every pattern we redact contains a digit or an '@') skips Pre
 text, because the first call is slow (about 1 s model load) and logs are written constantly.
 """
 
+import logging
 import re
+import threading
 from dataclasses import dataclass
 from functools import lru_cache
 from typing import Any
@@ -47,12 +49,20 @@ class Redaction:
     found: tuple[str, ...]  # entity types that were replaced, in order of appearance
 
 
+_busy = threading.local()  # redaction is already running on this thread
+
+
 @lru_cache
 def _engines() -> tuple[Any, Any]:
     from presidio_analyzer import AnalyzerEngine
     from presidio_analyzer.nlp_engine import NlpEngineProvider
     from presidio_anonymizer import AnonymizerEngine
 
+    # Presidio warns once per sentence about entity labels it does not use. Those warnings go
+    # through our own (redacting) log formatter, which calls Presidio again: a feedback loop that
+    # made the test suite twice as slow and filled the worker log. Only real errors are wanted.
+    logging.getLogger("presidio-analyzer").setLevel(logging.ERROR)
+    logging.getLogger("presidio-anonymizer").setLevel(logging.ERROR)
     nlp = NlpEngineProvider(
         nlp_configuration={
             "nlp_engine_name": "spacy",
@@ -65,13 +75,19 @@ def _engines() -> tuple[Any, Any]:
 def redact(text: str) -> Redaction:
     if not text or not _MAYBE_PII.search(text) or _OWN_ID.fullmatch(text.strip()):
         return Redaction(text, ())
-    analyzer, anonymizer = _engines()
-    hits = analyzer.analyze(
-        text=text, language="en", entities=list(REDACTED), score_threshold=MIN_SCORE
-    )
-    if not hits:
+    if getattr(_busy, "on", False):  # a log line written BY the redactor: never recurse
         return Redaction(text, ())
-    result = anonymizer.anonymize(text=text, analyzer_results=hits)
+    _busy.on = True
+    try:
+        analyzer, anonymizer = _engines()
+        hits = analyzer.analyze(
+            text=text, language="en", entities=list(REDACTED), score_threshold=MIN_SCORE
+        )
+        if not hits:
+            return Redaction(text, ())
+        result = anonymizer.anonymize(text=text, analyzer_results=hits)
+    finally:
+        _busy.on = False
     return Redaction(result.text, tuple(h.entity_type for h in sorted(hits, key=lambda h: h.start)))
 
 

@@ -1,5 +1,5 @@
 
-.PHONY: setup up down migrate test eval eval-fast lint typecheck eval bench demo adversarial
+.PHONY: setup up down migrate test eval eval-fast lint typecheck eval bench demo adversarial demo-tenants
 
 setup:  ## Install dependencies
 	uv sync
@@ -34,6 +34,9 @@ eval-fast:  ## Retrieval metrics only (free)
 
 bench:  ## Show logged benchmark runs (added in Phase 6)
 	@echo "not implemented yet: Phase 6"
+
+demo-tenants: ## live two-company run (needs: API with ENVIRONMENT=prod on 8001 and the worker running)
+	uv run python -m scripts.two_tenant_demo --yes
 
 demo:  ## Run the demo (added in Phase 8)
 	@echo "not implemented yet: Phase 8"

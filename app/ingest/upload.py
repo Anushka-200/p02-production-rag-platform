@@ -129,6 +129,7 @@ def enqueue_upload(
         )
     else:
         job_id = row[0]
+    conn.commit()  # the worker must be able to SEE the job row the moment it is queued
     queue.enqueue(
         "app.worker.process_job",
         str(job_id),

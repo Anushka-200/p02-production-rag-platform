@@ -204,6 +204,11 @@ Extractor on 4 messages: kept "nurse in Berlin", "prefers short answers", "works
 
 PII redaction (Presidio, pattern recognisers only), `python -m evals.pii_check`, 51 hand-written cases: **26/26 planted items caught** (email 6, phone 6, card 5, IBAN 3, IP 3, SSN 3), **0/28 harmless sentences changed** (versions, dates, ids, prices, paths). Informal: I wrote the cases. Name/place/org detection (spaCy small NER) was measured and rejected: it tagged "Email" as a person and "Priya" as an organisation.
 
+## B-017 Live two-tenant run (2026-10-06, task 3.13)
+`make demo-tenants`: real API (ENVIRONMENT=prod, restricted DB role), real RQ worker, real embeddings and Haiku 4.5, two companies (Initech with two users, Hooli with one). **22 checks, 0 failed**, answer spend $0.0049 (memory extraction not included, about $0.0005 per turn). Covers login, upload and ingestion (4 documents, one with a hidden instruction: flagged), cited answers per company, no cross-company or cross-colleague leaks (secret code words, private note, document ids, forged token), sharing and un-sharing, conversation history, memory (learned, private, deleted).
+
+Bugs the live run found that 465 passing tests had missed: (1) `process_job` set the tenant before switching the worker connection to autocommit, so EVERY worker job crashed (fixed by `prepare_worker_connection`, regression test added); (2) Presidio warnings flowed back through the redacting log formatter and called Presidio again (a feedback loop that doubled the test-suite time and flooded the worker log; fixed with a log-level setting and a re-entrancy guard); (3) there was no upload endpoint or way to create a user with a password (added `POST /documents`, `GET /jobs/{id}`, `scripts/create_user.py`); (4) `enqueue_upload` queued the job before committing it, so a fast worker could not see the row (commit first).
+
 ## Eval runs (appended by `make eval`; LLM-drafted, UNREVIEWED questions)
 | date | label | config | n | Recall@5 | MRR | nDCG@10 | faithfulness | correctness | refusal acc | p50 / p95 ms | $/answer |
 |---|---|---|---|---|---|---|---|---|---|---|---|

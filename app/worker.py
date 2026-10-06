@@ -117,6 +117,13 @@ def _shared_embedder(settings: Settings) -> Embedder:
         return _embedder
 
 
+def prepare_worker_connection(conn: psycopg.Connection, tenant: Scope) -> None:
+    """Autocommit FIRST, then the tenant: the other order opens a transaction, and psycopg then
+    refuses to switch to autocommit (found by the live two-tenant run; unit tests missed it)."""
+    conn.autocommit = True
+    set_session_tenant(conn, tenant)
+
+
 def process_job(job_id: str, org_id: str, owner_id: str) -> str:
     """What RQ runs. Opens a database connection as the limited worker role.
 
@@ -125,7 +132,7 @@ def process_job(job_id: str, org_id: str, owner_id: str) -> str:
     """
     settings = get_settings()
     with psycopg.connect(settings.database_url("worker")) as conn:
-        set_session_tenant(conn, Scope(uuid.UUID(org_id), uuid.UUID(owner_id)))
+        prepare_worker_connection(conn, Scope(uuid.UUID(org_id), uuid.UUID(owner_id)))
         return run_job(
             conn, uuid.UUID(job_id), settings=settings, embedder=_shared_embedder(settings)
         )

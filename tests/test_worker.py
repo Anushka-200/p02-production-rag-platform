@@ -217,3 +217,23 @@ def test_a_blown_blurb_budget_fails_the_job_without_retrying(world) -> None:  # 
     assert (
         world.conn.execute("SELECT count(*) FROM chunks").fetchone()[0] == 0
     )  # nothing half-saved
+
+
+def test_a_fresh_worker_connection_can_be_prepared_for_a_tenant() -> None:
+    """Regression: set the tenant on a NEW (non-autocommit) connection, as process_job does."""
+    import psycopg
+
+    from app.config import Settings
+    from app.retrieval.search import Scope
+    from app.worker import prepare_worker_connection
+
+    try:
+        conn = psycopg.connect(Settings().database_url("owner"), connect_timeout=3)
+    except Exception as exc:
+        pytest.skip(f"database not available: {type(exc).__name__}")
+    org, user = uuid.uuid4(), uuid.uuid4()
+    with conn:
+        prepare_worker_connection(conn, Scope(org, user))
+        assert conn.autocommit is True
+        got = conn.execute("SELECT current_setting('app.org_id'), current_setting('app.user_id')")
+        assert got.fetchone() == (str(org), str(user))

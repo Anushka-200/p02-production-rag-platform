@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Initech (demo customer site)</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 760px; margin: 40px auto; padding: 0 16px; line-height: 1.5; color: #222; }
+    header { border-bottom: 2px solid #2b5fd9; margin-bottom: 24px; }
+    .box { background: #f3f5f9; border-radius: 8px; padding: 12px 16px; font-size: 14px; }
+    code { background: #e8ebf2; padding: 1px 5px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <header><h1>Initech</h1><p>We make software for people who like paperwork.</p></header>
+  <h2>Opening hours</h2>
+  <p>Our office is open weekdays from 8:30 to 17:00.</p>
+  <h2>Contact</h2>
+  <p>Questions? Use the chat in the corner, it can answer from our public information.</p>
+  <p class="box" id="hint"></p>
+
+  <script>
+    // This is how a customer would install the widget: ONE script tag. Here it is created from the
+    // address bar (?key=pk_...&api=http://localhost:8001) so the demo needs no editing.
+    var q = new URLSearchParams(location.search);
+    var key = q.get("key"), api = q.get("api") || "http://localhost:8001";
+    if (!key) {
+      document.getElementById("hint").innerHTML =
+        "Open this page as <code>?key=YOUR_SITE_KEY</code> (create one with <code>scripts/create_site.py</code>).";
+    } else {
+      var s = document.createElement("script");
+      s.src = api + "/widget.js";
+      s.setAttribute("data-site-key", key);
+      s.setAttribute("data-api", api);
+      document.body.appendChild(s);
+    }
+  </script>
+</body>
+</html>

@@ -200,7 +200,11 @@ def test_a_valid_key_from_an_allowed_origin_gives_an_anonymous_scope(site) -> No
     conn, org, key = site
     for origin in ("https://www.acme.com", "https://WWW.acme.com/", "http://localhost:8080"):
         who = resolve(conn, key, origin)
-        assert who.role == "anonymous" and who.scope == Scope(org, None) and who.scope.anonymous
+        assert who.role == "anonymous" and who.scope.anonymous
+        assert (who.scope.org_id, who.scope.user_id) == (
+            org,
+            None,
+        ) and who.scope.site_id == who.site_id
 
 
 @pytest.mark.parametrize(

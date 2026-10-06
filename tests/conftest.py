@@ -27,11 +27,13 @@ def no_tracing(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(tracing, "get_client", lambda: None)
 
 
-@pytest.fixture
-def db_schema():  # type: ignore[no-untyped-def]
-    """A throwaway schema in the dev database, with all migrations applied. Skips without a DB.
+@pytest.fixture(scope="session")
+def _test_schema():  # type: ignore[no-untyped-def]
+    """ONE throwaway schema per test run, with every migration applied once.
 
-    Tests never touch real tables: the schema is created for the test and dropped after.
+    Creating a schema and applying all migrations took several seconds per test (the suite grew
+    to 37 minutes). Now it is done once; each test just empties the tables (see `db_schema`).
+    Tests never touch real tables: the schema is dropped at the end of the run.
     """
     import uuid
 
@@ -47,8 +49,55 @@ def db_schema():  # type: ignore[no-untyped-def]
     schema = f"test_{uuid.uuid4().hex[:8]}"
     try:
         apply_migrations(conn, schema=schema)
-        yield conn
+        tables = [
+            r[0]
+            for r in conn.execute(
+                "SELECT tablename FROM pg_tables WHERE schemaname = %s "
+                "AND tablename <> 'schema_migrations'",
+                (schema,),
+            ).fetchall()
+        ]
+        # children before parents, so DELETE never trips a foreign key
+        edges = conn.execute(
+            "SELECT c.conrelid::regclass::text, c.confrelid::regclass::text FROM pg_constraint c "
+            "JOIN pg_namespace n ON n.oid = c.connamespace WHERE c.contype = 'f' AND n.nspname = %s",
+            (schema,),
+        ).fetchall()
+        children: dict[str, set[str]] = {t: set() for t in tables}
+        for child, parent in edges:
+            child, parent = child.split(".")[-1], parent.split(".")[-1]
+            if child != parent and child in children and parent in children:
+                children[parent].add(child)
+        order: list[str] = []
+
+        def visit(table: str) -> None:
+            if table in order:
+                return
+            for child in children[table]:
+                visit(child)
+            order.append(table)  # a table is appended after all tables that reference it
+
+        for table in tables:
+            visit(table)
+        yield url, schema, order
     finally:
         conn.autocommit = True
         conn.execute(f"DROP SCHEMA IF EXISTS {schema} CASCADE")
+        conn.close()
+
+
+@pytest.fixture
+def db_schema(_test_schema):  # type: ignore[no-untyped-def]
+    """A connection to the (empty) test schema. Each test starts with no rows in any table."""
+    import psycopg
+
+    url, schema, order = _test_schema
+    conn = psycopg.connect(url, autocommit=True)
+    try:
+        conn.execute(f"SET search_path TO {schema}, public")
+        # DELETE, not TRUNCATE: on this machine TRUNCATE costs ~6 s per test (file syncs), DELETE ~ms
+        for table in order:
+            conn.execute(f"DELETE FROM {schema}.{table}")
+        yield conn
+    finally:
         conn.close()

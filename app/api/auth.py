@@ -22,13 +22,25 @@ from app.retrieval.search import Scope
 
 
 @dataclass(frozen=True)
+class SiteInfo:
+    """What the API needs to know about an embedded site: its limits."""
+
+    id: uuid.UUID
+    name: str
+    daily_budget_usd: float
+    rate_limit_per_minute: int
+
+
+@dataclass(frozen=True)
 class Principal:
     email: str
     role: str  # "admin" | "member" | "anonymous"
     scope: Scope
-    site_id: uuid.UUID | None = (
-        None  # set for anonymous visitors: which embedded site they came from
-    )
+    site: SiteInfo | None = None  # set for anonymous visitors: which embedded site they came from
+
+    @property
+    def site_id(self) -> uuid.UUID | None:
+        return self.site.id if self.site else None
 
 
 def dev_principal(
@@ -100,7 +112,9 @@ def site_principal(
     conn = connect()
     try:
         row = conn.execute(
-            "SELECT id, org_id, allowed_origins, enabled FROM sites WHERE site_key = %s",
+            "SELECT id, org_id, allowed_origins, enabled, daily_budget_usd, "
+            "rate_limit_per_minute, name "
+            "FROM sites WHERE site_key = %s",
             (site_key.strip(),),
         ).fetchone()
     finally:
@@ -110,4 +124,5 @@ def site_principal(
     allowed = {normalise_origin(o) for o in row[2]}
     if origin is None or normalise_origin(origin) not in allowed:
         raise HTTPException(403, "this site is not allowed from this origin")
-    return Principal("anonymous", "anonymous", Scope(row[1], None), site_id=row[0])
+    site = SiteInfo(row[0], str(row[6]), float(row[4]), int(row[5]))
+    return Principal("anonymous", "anonymous", Scope(row[1], None, site.id), site=site)

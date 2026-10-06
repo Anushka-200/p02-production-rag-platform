@@ -25,6 +25,7 @@ class Scope:
 
     org_id: uuid.UUID
     user_id: uuid.UUID | None
+    site_id: uuid.UUID | None = None  # set for widget visitors: which embedded site they are on
 
     @property
     def anonymous(self) -> bool:

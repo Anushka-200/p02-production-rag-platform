@@ -170,4 +170,5 @@ def test_the_admin_page_is_closed_to_members_and_open_to_admins(stack) -> None: 
         "Retrieval inspector",
         "Ingestion status",
         "Chunk previews",
+        "Leads & handoffs",
     ]

@@ -3,22 +3,27 @@
 Run: uv run uvicorn app.api.main:app --port 8001
 """
 
-import json
 import logging
 import uuid
 from collections.abc import AsyncIterator, Callable, Iterator
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Any
 
 import psycopg
 from fastapi import Depends, FastAPI, File, Form, HTTPException, Query, Request, UploadFile
-from fastapi.responses import StreamingResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel, Field, field_validator
 from starlette.background import BackgroundTask
 
 from app.admin import list_admin_documents, list_chunks, list_jobs
 from app.api.auth import Principal, current_principal
 from app.api.security import TokenError, create_token, hash_password, verify_password
+from app.api.sse import done_payload as _done_payload
+from app.api.sse import sse
+from app.api.whatsapp import build_whatsapp_router
+from app.api.widget import WidgetContext, build_widget_router, register_cors
+from app.channels.whatsapp import Deps as WhatsAppDeps
 from app.chat_history import (
     HistoryError,
     add_message,
@@ -45,10 +50,13 @@ from app.memory import (
     store_facts,
 )
 from app.rag import ask_stream
+from app.ratelimit import RateLimiter, default_limiter
 from app.retrieval.inspect import inspect_retrieval
 from app.retrieval.rerank import Reranker, get_reranker
+from app.widget import list_handoffs, list_leads, resolve_handoff, transcript
 
 logger = logging.getLogger(__name__)
+WIDGET_DIR = Path(__file__).resolve().parents[2] / "widget"
 
 
 class ChatRequest(BaseModel):
@@ -80,27 +88,6 @@ class InspectRequest(BaseModel):
     mode: str | None = Field(default=None, pattern="^(dense|keyword|hybrid)$")
 
 
-def sse(event: str, data: dict[str, Any]) -> str:
-    """One Server-Sent Event: the browser (or curl) receives it the moment it is written."""
-    return f"event: {event}\ndata: {json.dumps(data, default=str)}\n\n"
-
-
-def _done_payload(event: dict[str, Any]) -> dict[str, Any]:
-    """What the browser gets at the end of the stream: the validated answer and what it cost."""
-    a = event["answer"]
-    return {
-        "text": a.text,
-        "refused": a.refused,
-        "reason": a.reason,
-        "replaced": event["replaced"],  # True: the streamed text was corrected after validation
-        "citations": [vars(c) for c in a.citations],
-        "model": a.model,
-        "cost_usd": round(a.cost_usd, 6),
-        "llm_calls": a.llm_calls,
-        "timings_ms": event["result"].timings_ms,
-    }
-
-
 def _warm_up(s: Settings, embedder: Embedder, reranker: Reranker | None) -> None:
     """Run each model once at startup, so the first USER request does not pay the cold-start cost
     (measured: rerank 2 s cold vs ~1 s warm, tokenizer load 0.7 s)."""
@@ -120,6 +107,7 @@ def create_app(
     complete_fn: Callable[..., Any] = complete,
     memory_complete_fn: Callable[..., Any] | None = None,
     queue: Any = None,
+    limiter: RateLimiter | None = None,
 ) -> FastAPI:
     """Everything the API needs can be injected, so tests run without models, network or a key."""
     s = settings or get_settings()
@@ -147,6 +135,33 @@ def create_app(
         yield
 
     app = FastAPI(title="P02 RAG platform", lifespan=lifespan)
+
+    # The embeddable widget: its own router (anonymous visitors) and per-site CORS.
+    widget_ctx = WidgetContext(
+        settings=s, open_connection=open_connection, state=state,
+        limiter=limiter or default_limiter(s.redis_url),
+        stream_fn=stream_fn, complete_fn=complete_fn,
+    )  # fmt: skip
+    register_cors(app, widget_ctx)
+    app.include_router(build_widget_router(widget_ctx))
+    app.include_router(
+        build_whatsapp_router(
+            WhatsAppDeps(
+                settings=s,
+                open_connection=open_connection,
+                state=state,
+                limiter=widget_ctx.limiter,
+                complete_fn=complete_fn,
+            )  # fmt: skip
+        )
+    )
+
+    @app.get("/widget.js", include_in_schema=False)
+    def widget_script() -> FileResponse:
+        return FileResponse(
+            WIDGET_DIR / "p02-widget.js", media_type="application/javascript",
+            headers={"Cache-Control": "public, max-age=300"},
+        )  # fmt: skip
 
     def principal(request: Request) -> Principal:
         return current_principal(request, s, open_connection)
@@ -383,6 +398,32 @@ def create_app(
     def remove_all_memories(who: Principal = Depends(principal)) -> dict[str, int]:
         with tenant_connection(open_connection, who.scope, write=True) as conn:
             return {"deleted": delete_all_memories(conn, who.scope)}
+
+    @app.get("/admin/leads")
+    def admin_leads(who: Principal = Depends(admin)) -> list[dict[str, Any]]:
+        with tenant_connection(open_connection, who.scope) as conn:
+            return list_leads(conn, who.scope)
+
+    @app.get("/admin/handoffs")
+    def admin_handoffs(who: Principal = Depends(admin)) -> list[dict[str, Any]]:
+        with tenant_connection(open_connection, who.scope) as conn:
+            return list_handoffs(conn, who.scope)
+
+    @app.get("/admin/handoffs/{session_id}")
+    def admin_handoff_transcript(
+        session_id: uuid.UUID, who: Principal = Depends(admin)
+    ) -> list[dict[str, Any]]:
+        with tenant_connection(open_connection, who.scope) as conn:
+            return transcript(conn, who.scope, session_id)
+
+    @app.post("/admin/handoffs/{session_id}/resolve")
+    def admin_resolve_handoff(
+        session_id: uuid.UUID, who: Principal = Depends(admin)
+    ) -> dict[str, bool]:
+        with tenant_connection(open_connection, who.scope, write=True) as conn:
+            if not resolve_handoff(conn, who.scope, session_id):
+                raise HTTPException(404, "no such handoff")
+        return {"resolved": True}
 
     @app.get("/me")
     def me(who: Principal = Depends(principal)) -> dict[str, str]:

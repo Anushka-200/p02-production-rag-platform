@@ -142,6 +142,18 @@ class PlatformClient:
             params["level"] = level
         return self._get(f"/admin/documents/{document_id}/chunks", **params)  # type: ignore[no-any-return]
 
+    def admin_leads(self) -> list[dict[str, Any]]:
+        return self._get("/admin/leads")  # type: ignore[no-any-return]
+
+    def admin_handoffs(self) -> list[dict[str, Any]]:
+        return self._get("/admin/handoffs")  # type: ignore[no-any-return]
+
+    def handoff_transcript(self, session_id: str) -> list[dict[str, Any]]:
+        return self._get(f"/admin/handoffs/{session_id}")  # type: ignore[no-any-return]
+
+    def resolve_handoff(self, session_id: str) -> None:
+        self._check(self.http.post(f"/admin/handoffs/{session_id}/resolve", headers=self._headers))
+
     def inspect(self, question: str, mode: str | None = None) -> dict[str, Any]:
         body: dict[str, Any] = {"question": question, **({"mode": mode} if mode else {})}
         r = self._check(self.http.post("/admin/inspect", json=body, headers=self._headers))

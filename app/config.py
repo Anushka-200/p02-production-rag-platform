@@ -93,6 +93,12 @@ class Settings(BaseSettings):
     memory_dedupe_similarity: float = 0.90  # a new fact this close to an old one replaces it
     memory_min_relevance: float = 0.6  # facts less similar to the question are not used
     memory_top_k: int = 3
+    # WhatsApp through Twilio (Phase 4)
+    twilio_auth_token: SecretStr | None = None
+    twilio_verify_signature: bool = True  # may be switched off ONLY when ENVIRONMENT=dev
+    public_base_url: str | None = None  # e.g. https://abc.trycloudflare.com: the URL Twilio calls
+    whatsapp_session_hours: int = 24  # a quiet chat starts a fresh session after this long
+    trust_proxy: bool = False  # True only behind a proxy that sets X-Forwarded-For (rate limits)
     llm_timeout_s: float = 30.0
     llm_max_retries: int = 3
     langfuse_public_key: str | None = None

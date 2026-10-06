@@ -125,6 +125,28 @@ def chunk_previews(api) -> None:  # type: ignore[no-untyped-def]
             st.caption(f"anchors {c['anchors']} · embedded: {c['embedded']}")
 
 
+def visitors(api) -> None:  # type: ignore[no-untyped-def]
+    st.caption(
+        "People who asked for a person, and contact details visitors left on the website chat."
+    )
+    st.subheader("Handoff requests")
+    handoffs = api.admin_handoffs()
+    if not handoffs:
+        st.info("No handoff requests.")
+    for h in handoffs:
+        state = "resolved" if h["handoff_resolved_at"] else "OPEN"
+        when = f"{h['handoff_at']:%Y-%m-%d %H:%M}"
+        label = f"[{state}] {when} · {h['email'] or 'no contact yet'} · {h['handoff_reason'] or ''}"
+        with st.expander(label):
+            for m in api.handoff_transcript(str(h["id"])):
+                st.markdown(f"**{m['role']}:** {m['content']}")
+            if not h["handoff_resolved_at"] and st.button("Mark resolved", key=f"res-{h['id']}"):
+                api.resolve_handoff(str(h["id"]))
+                st.rerun()
+    st.subheader("Leads")
+    table(api.admin_leads(), ["created_at", "name", "email", "phone", "message", "site"])
+
+
 def main() -> None:
     api = require_login()
     if api is None:
@@ -133,13 +155,17 @@ def main() -> None:
         st.warning("The admin console is for organisation admins.")
         return
     st.title("Admin console")
-    tab1, tab2, tab3 = st.tabs(["Retrieval inspector", "Ingestion status", "Chunk previews"])
+    tab1, tab2, tab3, tab4 = st.tabs(
+        ["Retrieval inspector", "Ingestion status", "Chunk previews", "Leads & handoffs"]
+    )
     with tab1:
         inspector(api)
     with tab2:
         ingestion(api)
     with tab3:
         chunk_previews(api)
+    with tab4:
+        visitors(api)
     if st.button("Refresh"):
         time.sleep(0.1)
         st.rerun()

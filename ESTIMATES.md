@@ -207,3 +207,5 @@ Owner estimate for 2.7+2.8+2.9: O 15 / M 20 / P 25 min (PERT 20 min).
 | Phase 4 block 2 (4.1+4.2: Streamlit chat UI + admin) | 2026-10-06 19:41 | 2026-10-06 21:56 | end given by owner |
 | Phase 4 block 3 (4.3+4.6: widget, CORS, rate limit, leads, handoff, thumbs, budget cap) | 2026-10-06 20:02 | | built while owner reads block 2; owner said go; end only when owner says |
 | Phase 4 block 4 (4.4+4.5: Twilio signature + WhatsApp flow) | 2026-10-06 21:02 | | built while owner reads blocks 1-3; end only when owner says |
+| Phase 4 block 5 (4.7+4.9: widget in a real browser + channel tests) | 2026-10-06 23:26 | | built while owner reads blocks 3-4; end only when owner says |
+| Phase 4 block 6 (4.8: WhatsApp via tunnel) | 2026-10-06 23:26 | | the Twilio-account and phone steps need the owner; end only when owner says |

@@ -12,7 +12,7 @@ from typing import Any
 
 import psycopg
 from fastapi import Depends, FastAPI, File, Form, HTTPException, Query, Request, UploadFile
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from pydantic import BaseModel, Field, field_validator
 from starlette.background import BackgroundTask
 
@@ -135,6 +135,16 @@ def create_app(
         yield
 
     app = FastAPI(title="P02 RAG platform", lifespan=lifespan)
+
+    if s.webhook_only:
+        # For a public tunnel during WhatsApp testing: nothing but the webhook (and health) may be
+        # reached from outside, so demo accounts, documents and the admin API stay private.
+        @app.middleware("http")
+        async def only_the_webhook(request: Request, call_next: Callable[..., Any]) -> Any:
+            path = request.url.path
+            if path == "/health" or path.startswith("/channels/whatsapp/"):
+                return await call_next(request)
+            return JSONResponse({"detail": "not found"}, status_code=404)
 
     # The embeddable widget: its own router (anonymous visitors) and per-site CORS.
     widget_ctx = WidgetContext(

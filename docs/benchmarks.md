@@ -209,6 +209,15 @@ PII redaction (Presidio, pattern recognisers only), `python -m evals.pii_check`,
 
 Bugs the live run found that 465 passing tests had missed: (1) `process_job` set the tenant before switching the worker connection to autocommit, so EVERY worker job crashed (fixed by `prepare_worker_connection`, regression test added); (2) Presidio warnings flowed back through the redacting log formatter and called Presidio again (a feedback loop that doubled the test-suite time and flooded the worker log; fixed with a log-level setting and a re-entrancy guard); (3) there was no upload endpoint or way to create a user with a password (added `POST /documents`, `GET /jobs/{id}`, `scripts/create_user.py`); (4) `enqueue_upload` queued the job before committing it, so a fast worker could not see the row (commit first).
 
+## B-018 Widget in a real browser, channel isolation, test-suite speed (2026-10-06, tasks 4.7, 4.9)
+- **Real browser** (headless Chromium via Playwright; real API under uvicorn; the demo page on a SECOND origin; model faked): 6 tests pass 5 runs in a row. They cover ask, cited answer, thumbs, session continuity across a page reload, handoff plus consent-gated lead, markup shown as text (`window.__pwned` stays undefined), another website blocked by the browser's own CORS, and a 375 px phone viewport. Breaking the widget (answers rendered as HTML) or the origin check makes the matching test fail.
+- **Two flaky-test races found and fixed** (the test acted before the widget's final event had stored the session id). Lesson: a browser test must wait for the event that proves the state it needs, not for text that merely appears earlier in the stream.
+- **Channel tests** (`tests/test_channels.py`, 6): no channel shows another company's or any internal text; staff see only their company's leads and handoffs from BOTH channels; one site's budget or limit does not affect another; web and WhatsApp spend add up in one total; a session id from one company is useless on another's widget.
+- **A real privacy gap found by thinking through these tests:** a phone that switched company (`START other`) left its old conversation and lead behind with no way left to delete them. Now the switch erases the old data first (test fails without it).
+- **Budgets are in whole cents** (`numeric(8,2)`); a budget of 0.0001 silently becomes 0.00 and blocks every request.
+- **Suite speed: 37 min -> 6.5 min** (559 tests). The cause was `TRUNCATE` (about 6.5 s per test on this drive because of file syncs, not the schema creation or the logging loop I first suspected). One shared schema per run plus ordered `DELETE` takes milliseconds.
+- **Chromium on a machine without root:** its four missing system libraries (libnss3, libnspr4, libasound2) were unpacked from `apt-get download` into `~/.cache/chromium-libs`, which the test module adds to `LD_LIBRARY_PATH`.
+
 ## Eval runs (appended by `make eval`; LLM-drafted, UNREVIEWED questions)
 | date | label | config | n | Recall@5 | MRR | nDCG@10 | faithfulness | correctness | refusal acc | p50 / p95 ms | $/answer |
 |---|---|---|---|---|---|---|---|---|---|---|---|

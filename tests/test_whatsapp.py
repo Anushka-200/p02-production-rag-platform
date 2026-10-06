@@ -322,3 +322,24 @@ def test_an_internal_error_becomes_an_apology_not_a_stack_trace(
     params = {"From": PHONE, "To": SANDBOX, "Body": "hi", "MessageSid": "SMe"}
     r = client.post("/channels/whatsapp/webhook", data=params, headers=signed(params))
     assert r.status_code == 200 and "went wrong" in r.text and "secret internals" not in r.text
+
+
+def test_in_webhook_only_mode_nothing_but_the_webhook_and_health_is_reachable(rig: Rig) -> None:
+    client, _ = webhook(rig, webhook_only=True)
+    assert client.get("/health").status_code == 200
+    for path in (
+        "/auth/login",
+        "/docs",
+        "/documents",
+        "/admin/documents",
+        "/widget.js",
+        "/memories",
+    ):
+        r = client.get(path)
+        assert r.status_code == 404 and r.json() == {"detail": "not found"}, path
+    assert client.post("/auth/login", json={"email": "a@b.co", "password": "x"}).status_code == 404
+    params = {"From": PHONE, "To": SANDBOX, "Body": "START acme", "MessageSid": "SMf"}
+    assert (
+        client.post("/channels/whatsapp/webhook", data=params, headers=signed(params)).status_code
+        == 200
+    )

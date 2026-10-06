@@ -202,7 +202,9 @@ def handle_message(
 
         joined = JOIN.match(text)
         if joined or contact is None:
-            return _first_contact(conn, phash, joined.group(1) if joined else None, to_number, text)
+            return _first_contact(
+                deps, conn, phash, contact, channel, joined.group(1) if joined else None, to_number
+            )
         if channel is None or not channel.enabled:
             return BUSY
         scope = Scope(channel.org_id, None, channel.site_id)
@@ -214,13 +216,18 @@ def handle_message(
 
 
 def _first_contact(
-    conn: psycopg.Connection, phash: str, keyword: str | None, to_number: str, text: str
-) -> str:
+    deps: Deps, conn: psycopg.Connection, phash: str, contact: Contact | None,
+    current: Channel | None, keyword: str | None, to_number: str,
+) -> str:  # fmt: skip
     channel = channel_by_keyword(conn, keyword) if keyword else channel_by_number(conn, to_number)
     if channel is None:
         return UNKNOWN_CODE if keyword else NO_CHANNEL
     if not channel.enabled:
         return BUSY
+    if contact is not None and current is not None and current.id != channel.id:
+        # Switching company: the old conversation must not be left behind, because after the
+        # switch the user has no way left to ask for its deletion.
+        _erase(deps, conn, phash, contact, Scope(current.org_id, None, current.site_id))
     save_contact(conn, phash, channel)
     welcome = f"Hi! This is {channel.name}. {DISCLOSURE}\n\n{HELP}"
     return welcome if keyword else f"{welcome}\n\nPlease send your question again."

@@ -9,6 +9,7 @@ role takes effect at once) and the token's org must match the user's real org.
 "dev". In any other environment it refuses every request.
 """
 
+import uuid
 from collections.abc import Callable
 from dataclasses import dataclass
 
@@ -23,8 +24,11 @@ from app.retrieval.search import Scope
 @dataclass(frozen=True)
 class Principal:
     email: str
-    role: str
+    role: str  # "admin" | "member" | "anonymous"
     scope: Scope
+    site_id: uuid.UUID | None = (
+        None  # set for anonymous visitors: which embedded site they came from
+    )
 
 
 def dev_principal(
@@ -78,3 +82,32 @@ def current_principal(
     if request.headers.get("Authorization"):
         return token_principal(request, settings, connect)
     return dev_principal(request, settings, connect)
+
+
+def normalise_origin(origin: str) -> str:
+    return origin.strip().lower().rstrip("/")
+
+
+def site_principal(
+    site_key: str, origin: str | None, connect: Callable[[], psycopg.Connection]
+) -> Principal:
+    """An anonymous visitor of an embedded site: the org comes from the site key, the user is None.
+
+    The key is public (it is in the page's HTML), so it proves nothing about the visitor. It only
+    selects which org's PUBLIC documents may be read. Checks: the key exists and is enabled, and the
+    browser's Origin header is on the site's allow-list, so another website cannot reuse the key.
+    """
+    conn = connect()
+    try:
+        row = conn.execute(
+            "SELECT id, org_id, allowed_origins, enabled FROM sites WHERE site_key = %s",
+            (site_key.strip(),),
+        ).fetchone()
+    finally:
+        conn.close()
+    if row is None or not row[3]:
+        raise HTTPException(401, "unknown or disabled site")
+    allowed = {normalise_origin(o) for o in row[2]}
+    if origin is None or normalise_origin(origin) not in allowed:
+        raise HTTPException(403, "this site is not allowed from this origin")
+    return Principal("anonymous", "anonymous", Scope(row[1], None), site_id=row[0])

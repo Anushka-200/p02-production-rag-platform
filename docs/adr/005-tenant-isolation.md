@@ -36,3 +36,11 @@ Layers, cheapest first: (1) **hidden text is removed before indexing** (HTML com
 | Unbounded consumption | per-tenant budgets | Phase 6 |
 | System prompt leakage / misinformation | prompt holds no secrets; answers must cite sources | Phase 7 red team |
 Residual risk: the scan is a smoke alarm (regex), not a classifier; a paraphrased visible instruction can slip past it. The model resisted all 8 attack documents here, which is evidence, not a guarantee.
+
+## Anonymous visitors and public documents (Phase 4 block 1, 2026-10-06; migrations 0006-0007)
+- **A third level, `public`.** Visibility is now private (owner), org (members), public (members and anonymous visitors). Only an org admin may publish (`NotAllowed` -> 403); changing it cascades to the chunks as before.
+- **Anonymous scope:** `Scope(org_id, user_id=None)`. The org comes from a **site key** (table `sites`), the user is NULL. The policy for reading is `public OR (user is not NULL AND (org OR own))`, so an empty `app.user_id` can never reach org-internal rows. Before this change an org-only setting would have exposed org documents; that is why the policy had to change before any anonymous channel existed.
+- **Reads and writes have separate policies** (0007). With one "can see" policy, whoever could see a row could also delete it; found by a test that tried to delete as a visitor. Now INSERT/UPDATE/DELETE require `owner_id = app_user()`, so visitors (user NULL) can never write, and a member cannot delete a colleague's shared document through SQL either.
+- **The site key is public** (it is in the page's HTML), so it is not a secret. The checks are: key exists and enabled, the browser `Origin` is on the site's allow-list (`site_principal`), then rate limits and budgets (block 3). Anonymous scope can read only public documents, so a leaked or abused key exposes only what the org chose to publish.
+- **Keyword statistics are cached per (org, user)**, so a visitor's numbers (public documents only) never become a member's numbers.
+- **Tested** (`tests/test_anonymous.py`, 25 tests): visitors see only public documents through the restricted role AND through the owner connection (Python filter alone), cannot write, cannot read another org via a forged scope, the full retrieval pipeline stays public-only for 6 hostile questions, pooled connections reset.

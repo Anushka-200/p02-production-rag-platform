@@ -11,11 +11,12 @@ from contextlib import asynccontextmanager
 from typing import Any
 
 import psycopg
-from fastapi import Depends, FastAPI, File, Form, HTTPException, Request, UploadFile
+from fastapi import Depends, FastAPI, File, Form, HTTPException, Query, Request, UploadFile
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field, field_validator
 from starlette.background import BackgroundTask
 
+from app.admin import list_admin_documents, list_chunks, list_jobs
 from app.api.auth import Principal, current_principal
 from app.api.security import TokenError, create_token, hash_password, verify_password
 from app.chat_history import (
@@ -30,7 +31,7 @@ from app.chat_history import (
 )
 from app.config import Settings, get_settings
 from app.db.tenant import check_role_is_restricted, tenant_connection
-from app.documents import DocumentError, list_documents, set_visibility
+from app.documents import DocumentError, NotAllowed, list_documents, set_visibility
 from app.embeddings import Embedder, get_embedder, get_token_counter
 from app.ingest.upload import UploadError, enqueue_upload
 from app.llm import complete
@@ -71,7 +72,7 @@ _DUMMY_HASH = hash_password("not-a-real-password")
 
 
 class VisibilityRequest(BaseModel):
-    visibility: str = Field(pattern="^(private|org)$")
+    visibility: str = Field(pattern="^(private|org|public)$")
 
 
 class InspectRequest(BaseModel):
@@ -194,10 +195,14 @@ def create_app(
     @app.post("/documents", status_code=202)
     def upload_document(
         file: UploadFile = File(...),  # noqa: B008
-        visibility: str = Form("private", pattern="^(private|org)$"),
+        visibility: str = Form("private", pattern="^(private|org|public)$"),
         who: Principal = Depends(principal),
     ) -> dict[str, Any]:
         """Accept a file for ingestion. The owner is the logged-in user; it starts private."""
+        if who.scope.user_id is None:  # anonymous visitors can never upload
+            raise HTTPException(401, "login required")
+        if visibility == "public" and who.role != "admin":
+            raise HTTPException(403, "only an organisation admin can upload public documents")
         limit = s.max_upload_mb * 1_000_000
         raw = file.file.read(
             limit + 1
@@ -246,7 +251,11 @@ def create_app(
     ) -> dict[str, str]:
         try:
             with tenant_connection(open_connection, who.scope, write=True) as conn:
-                set_visibility(conn, who.scope, document_id, body.visibility)
+                set_visibility(
+                    conn, who.scope, document_id, body.visibility, is_admin=who.role == "admin"
+                )
+        except NotAllowed as exc:
+            raise HTTPException(403, str(exc)) from exc
         except DocumentError as exc:
             raise HTTPException(404, str(exc)) from exc
         return {"visibility": body.visibility}
@@ -374,6 +383,30 @@ def create_app(
     def remove_all_memories(who: Principal = Depends(principal)) -> dict[str, int]:
         with tenant_connection(open_connection, who.scope, write=True) as conn:
             return {"deleted": delete_all_memories(conn, who.scope)}
+
+    @app.get("/me")
+    def me(who: Principal = Depends(principal)) -> dict[str, str]:
+        return {"email": who.email, "role": who.role}
+
+    @app.get("/admin/documents")
+    def admin_documents(who: Principal = Depends(admin)) -> list[dict[str, Any]]:
+        with tenant_connection(open_connection, who.scope) as conn:
+            return list_admin_documents(conn, who.scope)
+
+    @app.get("/admin/jobs")
+    def admin_jobs(who: Principal = Depends(admin)) -> list[dict[str, Any]]:
+        with tenant_connection(open_connection, who.scope) as conn:
+            return list_jobs(conn, who.scope)
+
+    @app.get("/admin/documents/{document_id}/chunks")
+    def admin_chunks(
+        document_id: uuid.UUID,
+        level: int | None = Query(None, ge=0, le=2),
+        limit: int = Query(50, ge=1, le=200),
+        who: Principal = Depends(admin),
+    ) -> list[dict[str, Any]]:
+        with tenant_connection(open_connection, who.scope) as conn:
+            return list_chunks(conn, who.scope, document_id, level=level, limit=limit)
 
     @app.post("/admin/inspect")
     def inspect(body: InspectRequest, who: Principal = Depends(admin)) -> dict[str, Any]:

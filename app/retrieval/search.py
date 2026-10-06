@@ -17,10 +17,18 @@ from app.embeddings import vector_literal
 
 @dataclass(frozen=True)
 class Scope:
-    """Who is asking. Comes from the verified login, never from the question or the model."""
+    """Who is asking. Comes from the verified login, never from the question or the model.
+
+    `user_id` is None for an ANONYMOUS visitor (widget, WhatsApp): they belong to an org's public
+    site but are nobody in particular, and may see only documents marked 'public'.
+    """
 
     org_id: uuid.UUID
-    user_id: uuid.UUID
+    user_id: uuid.UUID | None
+
+    @property
+    def anonymous(self) -> bool:
+        return self.user_id is None
 
 
 @dataclass
@@ -46,7 +54,8 @@ _COLUMNS = (
     "c.text, c.context_blurb, c.parent_id"
 )
 _ALLOWED = (
-    "c.org_id = %(org)s AND c.level = 0 AND (c.visibility = 'org' OR c.owner_id = %(user)s) "
+    "c.org_id = %(org)s AND c.level = 0 AND (c.visibility = 'public' "
+    "OR (%(user)s::uuid IS NOT NULL AND (c.visibility = 'org' OR c.owner_id = %(user)s::uuid))) "
     "AND d.status = 'ready' AND c.version = d.active_version"
 )
 
@@ -104,18 +113,23 @@ def keyword_query(question: str) -> str:
     return " OR ".join(words)
 
 
-_DF_CACHE: dict[uuid.UUID, tuple[int, dict[str, int]]] = {}
+_DF_CACHE: dict[tuple[uuid.UUID, uuid.UUID | None], tuple[int, dict[str, int]]] = {}
 
 
-def document_frequencies(conn: psycopg.Connection, org_id: uuid.UUID) -> tuple[int, dict[str, int]]:
-    """(number of searchable chunks, {word: in how many of them}) for one tenant.
+def document_frequencies(
+    conn: psycopg.Connection, org_id: uuid.UUID, user_id: uuid.UUID | None = None
+) -> tuple[int, dict[str, int]]:
+    """(number of searchable chunks, {word: in how many of them}) for one org AS SEEN BY one user.
 
-    Cached per tenant and refreshed when the chunk count changes (an upload or a re-index).
+    Row-level security hides chunks the user may not read, so the statistics are computed over
+    what THIS user can see and cached per (org, user): an anonymous visitor's numbers (public
+    documents only) never become a member's numbers. Refreshed when the visible count changes.
     """
     n = conn.execute(
         "SELECT count(*) FROM chunks WHERE org_id = %s AND level = 0", (org_id,)
     ).fetchone()[0]  # type: ignore[index]
-    cached = _DF_CACHE.get(org_id)
+    key = (org_id, user_id)
+    cached = _DF_CACHE.get(key)
     if cached and cached[0] == n:
         return cached
     safe_id = uuid.UUID(str(org_id))  # re-parsed: only a well-formed UUID can reach the SQL text
@@ -123,8 +137,8 @@ def document_frequencies(conn: psycopg.Connection, org_id: uuid.UUID) -> tuple[i
         "SELECT word, ndoc FROM ts_stat(%s)",
         (f"SELECT tsv FROM chunks WHERE org_id = '{safe_id}' AND level = 0",),
     ).fetchall()
-    _DF_CACHE[org_id] = (n, {word: ndoc for word, ndoc in rows})
-    return _DF_CACHE[org_id]
+    _DF_CACHE[key] = (n, {word: ndoc for word, ndoc in rows})
+    return _DF_CACHE[key]
 
 
 def rare_keyword_query(
@@ -150,7 +164,7 @@ def rare_keyword_query(
             (words,),
         ).fetchall()
     )  # word -> its stem; stop words have none
-    n, df = document_frequencies(conn, scope.org_id)
+    n, df = document_frequencies(conn, scope.org_id, scope.user_id)
     known = [
         (df[lex] / n, w) for w in words if n and (lex := lexemes.get(w)) is not None and lex in df
     ]

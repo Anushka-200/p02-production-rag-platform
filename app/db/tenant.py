@@ -20,8 +20,13 @@ from app.retrieval.search import Scope
 _SET = "SELECT set_config('app.org_id', %s, %s), set_config('app.user_id', %s, %s)"
 
 
+def _user(scope: Scope) -> str:
+    """The user id as text; an anonymous visitor has none, which the policies read as NULL."""
+    return "" if scope.user_id is None else str(scope.user_id)
+
+
 def set_session_tenant(conn: psycopg.Connection, scope: Scope) -> None:
-    conn.execute(_SET, (str(scope.org_id), False, str(scope.user_id), False))
+    conn.execute(_SET, (str(scope.org_id), False, _user(scope), False))
 
 
 @contextmanager
@@ -37,7 +42,7 @@ def tenant_connection(
     try:
         conn.rollback()  # a connection handed back mid-transaction must not keep stale settings
         conn.autocommit = False
-        conn.execute(_SET, (str(scope.org_id), True, str(scope.user_id), True))
+        conn.execute(_SET, (str(scope.org_id), True, _user(scope), True))
         yield conn
         if write:
             conn.commit()

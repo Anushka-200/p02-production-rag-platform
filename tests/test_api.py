@@ -230,5 +230,5 @@ def test_documents_list_and_only_the_owner_can_change_visibility(api) -> None:  
     assert colleague.status_code == 404  # not the owner
     owner = client.patch(url, json={"visibility": "private"}, headers={"X-Dev-User": "ann@x.com"})
     assert owner.status_code == 200
-    bad = client.patch(url, json={"visibility": "public"}, headers={"X-Dev-User": "ann@x.com"})
-    assert bad.status_code == 422  # only private | org exist
+    bad = client.patch(url, json={"visibility": "secret"}, headers={"X-Dev-User": "ann@x.com"})
+    assert bad.status_code == 422  # only private | org | public exist

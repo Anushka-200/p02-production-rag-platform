@@ -65,7 +65,7 @@ def test_a_user_can_upload_as_shared_but_not_as_something_else(rig) -> None:  # 
     assert upload(client, visibility="org").status_code == 202
     assert w.conn.execute("SELECT visibility FROM ingestion_jobs").fetchone()[0] == "org"
     assert (
-        upload(client, name="b.md", content=b"# B\n\ntext", visibility="public").status_code == 422
+        upload(client, name="b.md", content=b"# B\n\ntext", visibility="secret").status_code == 422
     )
 
 
@@ -87,3 +87,23 @@ def test_a_job_is_visible_only_to_its_owner(rig) -> None:  # type: ignore[no-unt
     job = upload(client).json()["job_id"]
     assert client.get(f"/jobs/{job}", headers=ANN).json()["status"] == "queued"
     assert client.get(f"/jobs/{job}", headers=AMY).status_code == 404  # same org, other user
+
+
+def test_only_an_admin_can_upload_or_publish_a_public_document(rig) -> None:  # type: ignore[no-untyped-def]
+    w, queue, client = rig
+    assert upload(client, visibility="public").status_code == 403  # ann is a plain member
+    assert queue.calls == []
+    w.conn.execute("UPDATE users SET role = 'admin' WHERE id = %s", (w.ann.user_id,))
+    assert upload(client, visibility="public").status_code == 202
+    assert w.conn.execute("SELECT visibility FROM ingestion_jobs").fetchone()[0] == "public"
+
+
+def test_changing_a_document_to_public_needs_admin_and_says_403_not_404(rig) -> None:  # type: ignore[no-untyped-def]
+    w, _, client = rig
+    w.chunk(w.ann, "acme", "Handbook text", None, visibility="org", uri="h.md")
+    doc = w.conn.execute("SELECT id FROM documents").fetchone()[0]
+    url = f"/documents/{doc}/visibility"
+    assert client.patch(url, json={"visibility": "public"}, headers=ANN).status_code == 403
+    w.conn.execute("UPDATE users SET role = 'admin' WHERE id = %s", (w.ann.user_id,))
+    assert client.patch(url, json={"visibility": "public"}, headers=ANN).status_code == 200
+    assert w.conn.execute("SELECT visibility FROM chunks").fetchone()[0] == "public"

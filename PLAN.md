@@ -184,7 +184,7 @@ multi-tenant posts (free, ~1 h), OWASP LLM10 (free).
 "N attacks, 0 leaks"; demo script from the brief runs end to end; every phase ends with a real run, not just tests.
 
 ## Status
-Phase 0 done (1.35 h). Phase 1 in progress (1.1 and 1.2 done).
+Phases 0-3 done. Phase 4 built except 4.8 (live WhatsApp run, ON HOLD by owner decision 2026-10-07; see README). Phase 5 next.
 Open item: widget host page. Proposed a static demo page instead of Next.js; confirm before Phase 4.
 
 ## Revisions

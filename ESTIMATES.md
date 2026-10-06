@@ -198,6 +198,8 @@ Owner estimate for 2.7+2.8+2.9: O 15 / M 20 / P 25 min (PERT 20 min).
 | Phase 3 block 1 (3.1 learning) | 2026-10-02 17:44 | 2026-10-02 18:05 | owner estimate 15/20/25 min per block (6 blocks); start logged when owner said to start block 1; end given by owner (said "now" with their block 1 answers) |
 | Phase 3 block 2 (3.2+3.3+3.14: RLS, JWT, tenant context, pool test) | 2026-10-02 17:45 | 2026-10-02 18:36 | end given by owner (said to end blocks 2 and 3 together) |
 | Phase 3 block 3 (3.4+3.5: private/shared docs, SQL-level RLS tests) | 2026-10-02 18:05 | 2026-10-02 18:36 | end given by owner (ended together with block 2); 15/20/25 min |
-| Phase 3 block 4 (3.6+3.7+3.8: adversarial docs, isolation suite, injection defences) | 2026-10-02 18:10 | | built while owner reads block 3; end only when owner says |
-| Phase 3 block 5 (3.9-3.12: chat history, memory, PII redaction, memory tests) | 2026-10-02 18:36 | | built while owner reads block 4; end only when owner says |
-| Phase 3 block 6 (3.13: live two-tenant run + fixes) | 2026-10-06 17:27 | | owner said start; end only when owner says |
+| Phase 3 block 4 (3.6+3.7+3.8: adversarial docs, isolation suite, injection defences) | 2026-10-02 18:10 | 2026-10-06 19:11 | built while owner reads block 3; end given by owner (closed Phase 3 "with current time") |
+| Phase 3 block 5 (3.9-3.12: chat history, memory, PII redaction, memory tests) | 2026-10-02 18:36 | 2026-10-06 19:11 | built while owner reads block 4; end given by owner (closed Phase 3 "with current time"); includes a 4-day break, ask for active hours at close-out |
+| Phase 3 block 6 (3.13: live two-tenant run + fixes) | 2026-10-06 17:27 | 2026-10-06 19:11 | owner said start; end given by owner (closed Phase 3 "with current time") |
+| Phase 3 CLOSED | | 2026-10-06 19:11 | owner closed Phase 3. Close-out table (actual learning/build hours per task, ratios, sealed view) still to do when the owner gives hours. 473 tests, 22 live checks, 47 attacks 0 leaks |
+| Phase 4 plan (blocks, not yet started) | | | B1 4.10 public/anonymous scope; B2 4.1+4.2 Streamlit chat+admin; B3 4.3+4.6 widget + leads/handoff (+thumbs, AI disclosure); B4 4.4+4.5 Twilio + WhatsApp flow; B5 4.7+4.9 widget live run + channel tests; B6 4.8 WhatsApp via tunnel live run |

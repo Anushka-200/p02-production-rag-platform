@@ -13,6 +13,7 @@ Run: uv run python -m evals.context_experiments
 """
 
 import json
+import os
 import time
 from pathlib import Path
 from typing import Any
@@ -31,12 +32,21 @@ from evals.schema import EvalItem, GoldRef
 
 QA = Path(__file__).parent / "qa.jsonl"
 RESULTS = Path(__file__).parent / "results"
-GROUPS = ("single", "multi_hop", "paraphrase", "broad")
+GROUPS = ("single", "multi_hop", "paraphrase", "broad", "relationship")
 CONFIGS: dict[str, dict[str, Any]] = {
     "baseline": {"parent_expansion": False},
     "parents<=400": {"parent_expansion": True, "parent_max_tokens": 400},
     "parents<=700": {"parent_expansion": True, "parent_max_tokens": 700},
     "parents<=1200": {"parent_expansion": True, "parent_max_tokens": 1200},
+    "tree": {"parent_expansion": False, "summary_tree": True},
+    "tree-small": {
+        "parent_expansion": False,
+        "summary_tree": True,
+        "summary_top_k": 3,
+        "summary_members_per": 2,
+    },
+    "graph": {"parent_expansion": False, "graph_search": True},
+    "tree+graph": {"parent_expansion": False, "summary_tree": True, "graph_search": True},
 }
 
 
@@ -112,7 +122,8 @@ def main() -> None:
     scopes = scopes_from_db(conn)
     embedder.embed_query("warm up")
     report: dict[str, Any] = {}
-    for name in CONFIGS:
+    wanted = [c for c in os.environ.get("CONFIGS", ",".join(CONFIGS)).split(",") if c]
+    for name in wanted:
         started = time.perf_counter()
         report[name] = run(name, conn, embedder, reranker, items, scopes, s)
         print(f"done {name} ({time.perf_counter() - started:.0f} s)", flush=True)

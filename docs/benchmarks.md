@@ -250,12 +250,40 @@ Production pipeline (hybrid search, rerank the best 10) with each transform on o
 - *Answer quality* (real model + judge, 118 questions, `baseline-2` vs `parents-700`): gold place in context 0.828 vs 0.828; correctness 0.774 vs 0.774; faithfulness 0.947 vs 0.956; cost per answer $0.0035 either way. 72 of 118 contexts and 52 answers changed, and 8 questions changed correctness in BOTH directions (4 better, 4 worse), net zero.
 - **Decision: implemented, OFF by default.** A parent cannot add a place that retrieval did not find; it only widens the text around it, and at a 700-token cap that neither helped nor hurt measurably. Retest on a reviewed set, or only for questions where the first search looks incomplete.
 
-**Summary tree (RAPTOR-style)**: built and tested; the real-corpus MEASUREMENT is pending an approval of its cost.
+**Summary tree (RAPTOR-style), measured on Tenant B (2026-10-07):** the full tree for Tenant B (3,606 chunks) = **409 first-level + 62 second-level summaries for $1.26** (a 8-minute-per-100-calls sequential build, about 25 minutes). Gold place in the context the answer model sees (free, `evals/context_experiments.py`; n=12 broad, 20 relationship, 61 single; one question = 8, 5 and 1.6 points):
+
+| config | single any | broad any / all | relationship any / all |
+|---|---|---|---|
+| baseline | 0.87 | 0.83 / 0.33 | 0.55 / 0.20 |
+| tree (5 summaries x 4 chunks) | 0.85 | 0.75 / 0.33 | 0.40 / 0.05 |
+| tree-small (3 x 2) | 0.87 | 0.75 / 0.33 | 0.50 / 0.20 |
+| tree + graph | 0.85 | 0.75 / 0.33 | 0.65 / 0.15 |
+
+**The tree did NOT help on this corpus at any dose** (broad 0.83 -> 0.75, one question; relationship worse). Consistent with the expectation that hybrid search plus reranking already finds scattered passages when the question shares words with them; summaries are a signpost for THEMATIC questions with no shared words, and our broad questions were drafted from section headings so they do share words. Also seen: the second-level summaries are grab-bags, the retrieval run-to-run noise is about one question (paraphrase baseline read 0.71 and 0.67 in two runs), and the tree adds latency and cost for no measured gain. **Decision: implemented, tested, privacy-proofed, OFF by default.** Retest if broad, truly thematic questions become a real use case (the better first experiment: group by document or section path BEFORE clustering).
 - Real trial on 240 sampled chunks of Tenant B: 27 first-level + 4 second-level summaries for **$0.08**. The summaries keep names, numbers and policy terms. The second-level summaries are grab-bags of unrelated topics (k-means over a mixed handbook does not always find clean topics).
 - Projected cost of the full trees (cost guard): Tenant A **$1.64**, Tenant B **$1.66**.
 - 12 new BROAD questions (answer spread over 3-5 sections of one document, 9 of them Tenant B) drafted for $0.018; kept out of the headline.
 - Privacy by construction: summaries are built per visibility group, never mixing; triggers delete a summary as soon as any source chunk is deleted, re-indexed or made less visible (3 tests fail if the triggers are removed); visitors see only public summaries.
 - A tooling fix: new question groups (paraphrase, broad) no longer enter the answer headline (it had silently grown from 84 to 108 questions, so the `baseline-2` and `parents-700` rows above are on 108 and must not be compared with older rows).
+
+## B-021 GraphRAG slice (2026-10-07, tasks 5.7-5.9)
+Slice: Tenant B customer-facing sections (`cs-and-onboarding`, `onboarding`, `support`): **375 chunks -> 1,532 facts** (subject --relation--> object, each pointing at the chunk that states it) for **$0.66** (about $0.0018 per chunk, 4 parallel workers, 8 minutes). Facts are kept in a Postgres table (`graph_edges`), not a graph database: this slice compares the IDEA, and deep traversal belongs to a later project.
+
+20 RELATIONSHIP questions were generated from real two-step fact chains in that graph (the question names the START of the chain, asks about the END, and may not name the middle) for $0.025. **Caveat that matters:** they were derived from the same extraction the graph search uses, so the graph finding them is partly by construction, and not all 20 truly need two passages (some can be answered from one). Treat the size of the gain as an upper bound.
+
+Gold place in the context the answer model would see (free, no model, `evals/context_experiments.py`):
+
+| group (n) | baseline any / all | + graph any / all | change |
+|---|---|---|---|
+| relationship (20) | 0.55 / 0.20 | **0.85 / 0.35** | +30 / +15 points |
+| single (61) | 0.87 / 0.87 | 0.87 / 0.87 | none |
+| multi-hop (8, mostly outside the slice) | 0.88 / 0.50 | 0.88 / 0.50 | none |
+| paraphrase (24) | 0.71 / 0.71 | 0.67 / 0.67 | -1 question |
+| **broad (12)** | 0.83 / 0.33 | **0.58 / 0.33** | **-25 points** |
+
+**Reading it:** following facts finds the second passage that shares no words with the question (the thing chunk search cannot do), but the extra chunks it adds crowd out the right ones for broad questions (a broad question names things that have many facts, so the walk returns plenty of loosely related chunks). One technique, a big win and a clear loss, depending on the QUESTION TYPE: this is the case for choosing a method per question (a router, block 5), not for switching a technique on globally.
+
+Findings on the data: the extraction is usable but noisy. The same real-world thing appears under several names ("support team", "customer support team", "support engineers"): names are normalised (case, articles, underscores) but not resolved to one entity, so some chains break. A model sometimes wrote names in snake_case, which would have split nodes; fixed by normalising before storing. Cost scales linearly with chunks: the 3,600-chunk tenant would cost about $6.50 to read in full.
 
 ## Eval runs (appended by `make eval`; LLM-drafted, UNREVIEWED questions)
 | date | label | config | n | Recall@5 | MRR | nDCG@10 | faithfulness | correctness | refusal acc | p50 / p95 ms | $/answer |

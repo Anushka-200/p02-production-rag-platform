@@ -57,7 +57,12 @@ def reorder_with_reranker(
     return [r.fused.candidate for r in scored] + [f.candidate for f in fused[len(pool) :]]
 
 
-NOT_HEADLINE = {"follow_up", "paraphrase", "broad"}  # reported apart so old numbers stay comparable
+NOT_HEADLINE = {
+    "follow_up",
+    "paraphrase",
+    "broad",
+    "relationship",
+}  # reported apart so old numbers stay comparable
 
 
 def split_items(items: Sequence[EvalItem]) -> tuple[list[EvalItem], list[EvalItem]]:

@@ -20,6 +20,7 @@ def world(db_schema):  # type: ignore[no-untyped-def]
     for table in (
         "documents", "chunks", "ingestion_jobs", "conversations", "messages", "memories",
         "widget_sessions", "widget_messages", "leads", "feedback", "site_usage",
+        "summary_members", "graph_edges", "graph_extracted",
     ):  # fmt: skip
         db_schema.execute(f"GRANT SELECT, INSERT, UPDATE, DELETE ON {schema}.{table} TO rag_app")
     db_schema.execute(f"GRANT SELECT ON {schema}.orgs, {schema}.users TO rag_app")

@@ -97,6 +97,9 @@ class Settings(BaseSettings):
     summary_tree: bool = False  # also search the RAPTOR-style summary tree and follow it to chunks
     summary_top_k: int = 5  # summaries to take from the tree
     summary_members_per: int = 4  # chunks to take from under each summary
+    graph_search: bool = False  # follow facts (GraphRAG slice) and add the chunks that state them
+    graph_hops: int = 2
+    graph_max_chunks: int = 10
     # Chat history and memory (Phase 3)
     history_max_turns: int = 6  # most recent question+answer pairs that may go into a prompt
     history_budget_tokens: int = 1500  # ...and never more than this many tokens of them

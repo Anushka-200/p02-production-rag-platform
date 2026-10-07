@@ -21,6 +21,7 @@ from app.config import Settings, get_settings
 from app.embeddings import Embedder
 from app.llm import complete
 from app.retrieval.fusion import Fused, fuse, merge_fused
+from app.retrieval.graph import graph_candidates
 from app.retrieval.retrieve import Retrieval, retrieve
 from app.retrieval.search import Scope, dense_search
 from app.retrieval.transform import (
@@ -47,7 +48,7 @@ def retrieve_expanded(
     s = settings or get_settings()
     history = history or []
     use_rewrite = s.query_rewrite and bool(history)
-    if not (use_rewrite or s.multi_query > 0 or s.hyde or s.summary_tree):
+    if not (use_rewrite or s.multi_query > 0 or s.hyde or s.summary_tree or s.graph_search):
         base = retrieve(conn, embedder, question, scope, settings=s, mode=mode)
         base.question, base.queries = question, [question]
         return base
@@ -90,6 +91,14 @@ def retrieve_expanded(
         )  # fmt: skip
         if under:
             lists.append(fuse(under, [], k=s.rrf_k))
+    if s.graph_search:
+        # facts connect passages that share no words with the question: follow them, then add
+        # the chunks that state them as one more ranked list
+        linked = graph_candidates(
+            conn, scope, standalone, hops=s.graph_hops, max_chunks=s.graph_max_chunks
+        )  # fmt: skip
+        if linked:
+            lists.append(fuse(linked, [], k=s.rrf_k))
     items = lists[0] if len(lists) == 1 else merge_fused(lists, k=s.rrf_k)
     first = results[0]
     return Retrieval(

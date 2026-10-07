@@ -4,15 +4,17 @@ Question in -> every candidate the search found, with its dense rank/distance, k
 RRF score, rerank score and whether it made it into the answer's context. No LLM call, no cost.
 """
 
+from collections.abc import Callable
 from typing import Any
 
 import psycopg
 
 from app.config import Settings, get_settings
 from app.embeddings import Embedder, get_token_counter
+from app.llm import complete
 from app.retrieval.context import build_context
+from app.retrieval.expand import retrieve_expanded
 from app.retrieval.rerank import Reranker, rerank
-from app.retrieval.retrieve import retrieve
 from app.retrieval.search import Scope
 
 
@@ -36,9 +38,15 @@ def inspect_retrieval(
     settings: Settings | None = None,
     mode: str | None = None,
     preview_chars: int = 300,
+    history: list[dict[str, str]] | None = None,
+    complete_fn: Callable[..., Any] = complete,
 ) -> dict[str, Any]:
     s = settings or get_settings()
-    retrieval = retrieve(conn, embedder, question, scope, settings=s, mode=mode)
+    retrieval = retrieve_expanded(
+        conn, embedder, question, scope, history=history, settings=s, mode=mode,
+        complete_fn=complete_fn,
+    )  # fmt: skip
+    question = retrieval.question or question
     scored = rerank(  # every reranked candidate, so the inspector can show all of their scores
         retrieval.items, question, reranker,
         candidates=s.rerank_candidates, top=s.rerank_candidates, max_words=s.rerank_max_words,
@@ -79,6 +87,10 @@ def inspect_retrieval(
         "question": question,
         "mode": retrieval.mode,
         "keyword_query": retrieval.keywords,
+        "standalone_question": retrieval.question,
+        "queries": retrieval.queries,
+        "hyde_passage": retrieval.hyde,
+        "transform_cost_usd": retrieval.transform_cost_usd,
         "timings_ms": retrieval.timings_ms,
         "context_tokens": context.tokens,
         "context_sources": len(context.sources),

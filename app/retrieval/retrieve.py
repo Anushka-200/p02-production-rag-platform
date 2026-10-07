@@ -25,6 +25,11 @@ class Retrieval:
     mode: str
     keywords: str  # the OR query that was sent to the keyword search
     timings_ms: dict[str, float] = field(default_factory=dict)
+    # Filled by retrieve_expanded (app/retrieval/expand.py); defaults mean "no transforms ran".
+    question: str = ""  # the question that was searched and should be answered (standalone)
+    queries: list[str] = field(default_factory=list)  # every query variant that was searched
+    hyde: str | None = None  # the made-up passage, if HyDE ran
+    transform_cost_usd: float = 0.0
 
 
 def retrieve(

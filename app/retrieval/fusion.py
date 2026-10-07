@@ -49,3 +49,30 @@ def fuse(
     for position, f in enumerate(ordered, start=1):
         f.rank = position
     return ordered
+
+
+def merge_fused(
+    lists: list[list[Fused]], k: int = 60, weights: list[float] | None = None
+) -> list[Fused]:
+    """Merge several RANKED RESULT LISTS (one per query variant) with the same rank-based maths.
+
+    A chunk found by three phrasings of the question collects points from each, so it beats a chunk
+    only one phrasing found. The chunk keeps the dense/keyword details from the list where it ranked
+    BEST (so the inspector still explains it); its score and position are the merged ones.
+    """
+    weights = weights or [1.0] * len(lists)
+    merged: dict[object, Fused] = {}
+    for items, weight in zip(lists, weights, strict=True):
+        for f in items:
+            key = f.candidate.chunk_id
+            if key not in merged:
+                merged[key] = Fused(
+                    candidate=f.candidate, rrf_score=0.0, dense_rank=f.dense_rank,
+                    dense_distance=f.dense_distance, keyword_rank=f.keyword_rank,
+                    keyword_score=f.keyword_score,
+                )  # fmt: skip
+            merged[key].rrf_score += weight / (k + f.rank)
+    ordered = sorted(merged.values(), key=lambda f: (-f.rrf_score, str(f.candidate.chunk_id)))
+    for position, f in enumerate(ordered, start=1):
+        f.rank = position
+    return ordered

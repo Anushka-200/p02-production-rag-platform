@@ -84,6 +84,13 @@ class Settings(BaseSettings):
     rerank_max_words: int = 220  # longer passages are cut: faster, and the start carries the topic
     context_budget_tokens: int = 3000  # how much source text may go into the answer prompt
     embedding_max_tokens: int = 512  # the model silently cuts anything longer
+    # Query transforms (Phase 5; measured in benchmark B-019, decision in ADR 007).
+    query_rewrite: bool = True  # follow-ups -> standalone question; costs nothing without history
+    multi_query: int = (
+        0  # extra rephrasings to search with: OFF, no measured benefit for its latency
+    )
+    hyde: bool = False  # also search with a made-up answer: OFF, same reason
+    transform_model: str | None = None  # None = llm_default_model
     # Chat history and memory (Phase 3)
     history_max_turns: int = 6  # most recent question+answer pairs that may go into a prompt
     history_budget_tokens: int = 1500  # ...and never more than this many tokens of them

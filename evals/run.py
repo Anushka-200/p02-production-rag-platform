@@ -59,7 +59,15 @@ def reorder_with_reranker(
 
 def split_items(items: Sequence[EvalItem]) -> tuple[list[EvalItem], list[EvalItem]]:
     """(headline items, follow-ups). Follow-ups cannot work without chat history (Phase 5)."""
-    return [i for i in items if i.kind != "follow_up"], [i for i in items if i.kind == "follow_up"]
+    headline = [i for i in items if i.kind not in {"follow_up", "paraphrase"}]
+    return headline, [i for i in items if i.kind == "follow_up"]
+
+
+def paraphrases(items: Sequence[EvalItem]) -> list[EvalItem]:
+    """Reworded copies of single questions: the same gold place, deliberately different words.
+
+    Kept out of the headline so earlier numbers stay comparable; reported as their own column."""
+    return [i for i in items if i.kind == "paraphrase"]
 
 
 @dataclass
@@ -184,9 +192,12 @@ def retrieval_report(
         started = time.perf_counter()
         rep = evaluate(headline, results)
         follow_rep = evaluate(follow, results) if follow else None
+        para = paraphrases(items)
+        para_rep = evaluate(para, results) if para else None
         out[mode] = {
             "headline": rep.overall, "n": rep.n,
             "follow_up": follow_rep.overall if follow_rep else None, "n_follow_up": len(follow),
+            "paraphrase": para_rep.overall if para_rep else None, "n_paraphrase": len(para),
             "subsets": rep.subsets, "seconds": round(time.perf_counter() - started, 1),
         }  # fmt: skip
     return out
@@ -259,13 +270,20 @@ def run_judge(
 
 def render(report: dict[str, Any]) -> str:
     lines = [
-        f"{'config':14} {'n':>3} | {'R@1':>5} {'R@5':>5} {'R@10':>5} {'R@50':>5} | {'MRR':>5} {'nDCG@10':>7} | follow-up R@5"
+        f"{'config':14} {'n':>3} | {'R@1':>5} {'R@5':>5} {'R@10':>5} {'R@50':>5} | {'MRR':>5} {'nDCG@10':>7} | follow-up R@5 | paraphrase R@5"
     ]
     for mode, d in report["retrieval"].items():
         h = d["headline"]
         fu = f"{d['follow_up']['recall@5']:.2f} (n={d['n_follow_up']})" if d["follow_up"] else "-"
+        pa = (
+            f"{d['paraphrase']['recall@5']:.2f} (n={d['n_paraphrase']})"
+            if d.get("paraphrase")
+            else "-"
+        )
         lines.append(
-            f"{mode:14} {d['n']:3} | {h['recall@1']:5.2f} {h['recall@5']:5.2f} {h['recall@10']:5.2f} {h['recall@50']:5.2f} | {h['mrr']:5.2f} {h['ndcg@10']:7.2f} | {fu}"
+            f"{mode:14} {d['n']:3} | {h['recall@1']:5.2f} {h['recall@5']:5.2f} "
+            f"{h['recall@10']:5.2f} {h['recall@50']:5.2f} | {h['mrr']:5.2f} {h['ndcg@10']:7.2f} "
+            f"| {fu} | {pa}"
         )
     if "answers" in report:
         lines.append("\nfull pipeline (hybrid + rerank + answer), headline questions only:")

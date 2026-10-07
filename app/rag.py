@@ -12,8 +12,9 @@ from app.config import Settings, get_settings
 from app.embeddings import Embedder, get_token_counter
 from app.llm import complete
 from app.retrieval.context import Context, build_context
+from app.retrieval.expand import retrieve_expanded
 from app.retrieval.rerank import Reranked, Reranker, rerank
-from app.retrieval.retrieve import Retrieval, retrieve
+from app.retrieval.retrieve import Retrieval
 from app.retrieval.search import Scope
 
 
@@ -36,6 +37,7 @@ def ask(
     *,
     settings: Settings | None = None,
     complete_fn: Callable[..., Any] = complete,
+    history: list[dict[str, str]] | None = None,
 ) -> RagResult:
     s = settings or get_settings()
     timings: dict[str, float] = {}
@@ -46,7 +48,13 @@ def ask(
         timings[name] = round((time.perf_counter() - started) * 1000, 1)
         return result
 
-    retrieval = timed("retrieve_ms", lambda: retrieve(conn, embedder, question, scope, settings=s))
+    retrieval = timed(
+        "retrieve_ms",
+        lambda: retrieve_expanded(
+            conn, embedder, question, scope, history=history, settings=s, complete_fn=complete_fn
+        ),
+    )
+    question = retrieval.question or question  # from here on: the standalone question
     reranked = timed(
         "rerank_ms",
         lambda: rerank(
@@ -71,6 +79,7 @@ def ask_stream(
     stream_fn: Callable[..., Any] | None = None,
     complete_fn: Callable[..., Any] = complete,
     memory_block: str = "",
+    history: list[dict[str, str]] | None = None,
 ) -> Iterator[dict[str, Any]]:
     """The streaming flow. Events: sources (as soon as retrieval is done), token..., done.
 
@@ -88,7 +97,13 @@ def ask_stream(
         timings[name] = round((time.perf_counter() - t) * 1000, 1)
         return result
 
-    retrieval = timed("retrieve_ms", lambda: retrieve(conn, embedder, question, scope, settings=s))
+    retrieval = timed(
+        "retrieve_ms",
+        lambda: retrieve_expanded(
+            conn, embedder, question, scope, history=history, settings=s, complete_fn=complete_fn
+        ),
+    )
+    question = retrieval.question or question  # from here on: the standalone question
     reranked = timed(
         "rerank_ms",
         lambda: rerank(

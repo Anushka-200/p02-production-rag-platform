@@ -85,6 +85,7 @@ class VisibilityRequest(BaseModel):
 
 class InspectRequest(BaseModel):
     question: str = Field(min_length=1, max_length=2000)
+    history: list[dict[str, str]] = Field(default_factory=list, max_length=12)  # to try a rewrite
     mode: str | None = Field(default=None, pattern="^(dense|keyword|hybrid)$")
 
 
@@ -319,6 +320,17 @@ def create_app(
                 conversation_id = body.conversation_id
             else:
                 conversation_id = create_conversation(conn, who.scope, body.question)
+            history = (  # earlier turns, read BEFORE this question is stored (used for rewriting)
+                recent_messages(
+                    conn,
+                    who.scope,
+                    conversation_id,
+                    max_turns=s.history_max_turns,
+                    budget_tokens=s.history_budget_tokens,
+                )  # fmt: skip
+                if s.query_rewrite and body.conversation_id is not None
+                else []
+            )
             user_message_id = add_message(conn, who.scope, conversation_id, "user", body.question)
             notes = (
                 relevant_memories(conn, state["embedder"], body.question, who.scope, settings=s)
@@ -334,7 +346,7 @@ def create_app(
                     for event in ask_stream(
                         conn, state["embedder"], state["reranker"], body.question, who.scope,
                         settings=s, stream_fn=stream_fn, complete_fn=complete_fn,
-                        memory_block=format_memory_block(notes),
+                        memory_block=format_memory_block(notes), history=history,
                     ):  # fmt: skip
                         if event["type"] != "done":
                             yield sse(
@@ -470,6 +482,8 @@ def create_app(
                 who.scope,
                 settings=s,
                 mode=body.mode,
+                history=body.history,
+                complete_fn=complete_fn,
             )
 
     return app

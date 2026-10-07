@@ -218,6 +218,25 @@ Bugs the live run found that 465 passing tests had missed: (1) `process_job` set
 - **Suite speed: 37 min -> 6.5 min** (559 tests). The cause was `TRUNCATE` (about 6.5 s per test on this drive because of file syncs, not the schema creation or the logging loop I first suspected). One shared schema per run plus ordered `DELETE` takes milliseconds.
 - **Chromium on a machine without root:** its four missing system libraries (libnss3, libnspr4, libasound2) were unpacked from `apt-get download` into `~/.cache/chromium-libs`, which the test module adds to `LD_LIBRARY_PATH`.
 
+## B-019 Query rewriting, multi-query, HyDE (2026-10-07, tasks 5.2, 5.3)
+Production pipeline (hybrid search, rerank the best 10) with each transform on or off, per question group. Results are Recall@5 / MRR; `evals/query_experiments.py`, transform calls cached so a repeat run is free and identical. Informal: the eval set is LLM-drafted and not reviewed; the paraphrase group (24, reworded to share few words with the original, often stiffly formal, so a harsh test) is new.
+
+| config | follow-up (n=10) R@5 / MRR | paraphrase (24) R@5 / MRR | single (61) R@5 / MRR | multi-hop (8) R@5 / MRR | latency p50 |
+|---|---|---|---|---|---|
+| baseline | 0.00 / 0.00 | 0.67 / 0.43 | 0.85 / 0.69 | 0.62 / 0.68 | 1.1 s |
+| **rewrite** | **0.60 / 0.47** | 0.67 / 0.43 | 0.85 / 0.69 | 0.62 / 0.68 | 1.1 s |
+| multi-query (3) | 0.00 / 0.01 | 0.62 / 0.44 | 0.85 / 0.71 | 0.56 / 0.59 | 2.8 s |
+| HyDE | 0.00 / 0.01 | 0.62 / 0.42 | 0.89 / 0.72 | 0.62 / 0.70 | 3.5 s |
+| all three | 0.60 / 0.49 | 0.62 / 0.44 | 0.87 / 0.71 | 0.56 / 0.59 | 1.3 s* |
+
+*the "all" run reused cached model outputs from the earlier configs, so its latency is not comparable; the other latencies include live model calls (which add about 0.3 to 2.3 s).
+
+**Reading it (n is small: one paraphrase question = 4 points, one multi-hop question = 12):**
+- **Rewriting works where it should and costs nothing elsewhere:** follow-ups go from 0 of 10 found in the top 5 to 6 of 10; every other group is identical (no history, no model call). It leaves 4 unfixed: 3 where the history never names what "they"/"this" refers to (the model correctly leaves the question unchanged) and 1 resolved correctly but ranked 51st.
+- **Multi-query and HyDE did NOT help paraphrases** (0.67 -> 0.62, one question worse) and add 1.7 to 2.4 s. HyDE gained 2-3 single questions (0.85 -> 0.89) which is within noise at n=61; multi-query may hurt multi-hop (one question). **No demonstrable benefit for the cost: left OFF by default.** They stay available as switches, to be retried on a reviewed, larger set in task 6.9.
+- Why paraphrases stay hard (0.67 vs 0.85 for the originals): the reworded text is the stiff vocabulary a model produces ("remuneration", "contractual obligations"), which sits no closer to the document than the original did; a human re-wording may behave differently.
+- **Bugs the tests caught while building:** the admin inspector called the live model instead of the injected one (it used a real model in a test); three of my own tests depended on tie-breaking by random ids and failed intermittently until they asserted "in the top two" instead of "first".
+
 ## Eval runs (appended by `make eval`; LLM-drafted, UNREVIEWED questions)
 | date | label | config | n | Recall@5 | MRR | nDCG@10 | faithfulness | correctness | refusal acc | p50 / p95 ms | $/answer |
 |---|---|---|---|---|---|---|---|---|---|---|---|

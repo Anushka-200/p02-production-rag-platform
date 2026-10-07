@@ -220,4 +220,4 @@ Owner estimate for 2.7+2.8+2.9: O 15 / M 20 / P 25 min (PERT 20 min).
 | Phase 5 block 7 (5.14 last-updated in citations, 5.15 git-history replay, 5.17 sync tests) | 2026-10-07 22:00 | | built while owner at dinner; end only when owner says; B-024 |
 | Phase 5 block 8 (5.16 LangChain/LangGraph spike + library chunker comparison, ADR 010) | 2026-10-07 22:23 | | built while owner at dinner; end only when owner says; B-025 |
 | Phase 6 block 1 (6.1 baseline, 6.4 retrieval modes, 6.8 HNSW ef_search sweep) | 2026-10-07 22:40 | | auto-started at owner's request while owner reviews Phase 5 blocks 5-7; B-026. Owner message also gave "block 4 end 22:42" but block 4's end was already logged as 20:42: not changed, awaiting owner clarification |
-| Phase 6 block 2 (6.2 chunker A vs B, 6.3 chunk size/overlap sweep) | 2026-10-07 22:55 | | running in background (evals/chunk_experiments.py) |
+| Phase 6 block 2 (6.2 chunker A vs B, 6.3 chunk size/overlap sweep) | 2026-10-07 22:50 | | running in background (evals/chunk_experiments.py) |

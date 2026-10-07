@@ -285,6 +285,25 @@ Gold place in the context the answer model would see (free, no model, `evals/con
 
 Findings on the data: the extraction is usable but noisy. The same real-world thing appears under several names ("support team", "customer support team", "support engineers"): names are normalised (case, articles, underscores) but not resolved to one entity, so some chains break. A model sometimes wrote names in snake_case, which would have split nodes; fixed by normalising before storing. Cost scales linearly with chunks: the 3,600-chunk tenant would cost about $6.50 to read in full.
 
+## B-022 Agentic retrieval (2026-10-07, tasks 5.10, 5.11)
+The agent adds searches to the plain one; measured by whether the gold place(s) are in the context the answer model sees (free of answer cost; the planner and checker are real Haiku 4.5 calls, cached). Informal: eval set unreviewed, relationship questions derived from the graph.
+
+**First design (the planner REPLACED the search): worse than no agent.** single 0.87 -> 0.77, paraphrase 0.67 -> 0.54, multi-hop 0.88/0.50 -> 0.75/0.25, with 2 to 10 extra seconds. Two faults found by inspecting what it did: (1) single-part questions got only 4 sources against the plain pipeline's 8 (a per-part cap meant for multi-part questions), (2) the planner rewrote clear questions into keyword strings that rerank worse. **Fix = a design rule: the plain search of the question as asked ALWAYS runs first and keeps its top 5; the agent may only ADD evidence.**
+
+**Corrected design, always on / gated (agent only when the plain search looks weak):**
+
+| group (n) | plain any / all | always agent | gated | share escalated | est. extra s per question (always -> gated) |
+|---|---|---|---|---|---|
+| single (61) | 0.87 / 0.87 | 0.90 / 0.90 | 0.89 / 0.89 | 11% | 4.3 -> 0.5 |
+| paraphrase (24) | 0.67 / 0.67 | 0.71 / 0.71 | 0.71 / 0.71 | 62% | 3.7 -> 2.1 |
+| multi-hop (8) | 0.88 / 0.50 | 0.88 / 0.50 | 0.88 / 0.50 | 25% | 3.9 -> 0.9 |
+| broad (12) | 0.83 / 0.33 | 0.92 / 0.42 | 0.92 / 0.33 | 25% | 3.9 -> 1.1 |
+| relationship (20) | 0.55 / 0.20 | 0.60 / 0.20 | 0.55 / 0.20 | 15% | 2.6 -> 0.2 |
+
+Cost of the always-on agent: about $0.003 per question (planner and checker). Tools chosen over 125 questions: search 286 (the plain search plus extras), exact 24, broad 15, connections 5; stopped by: 54 hit the 4-search cap, 60 enough, 11 round cap, which shows the planner is over-eager (it proposes extras for questions that did not need them).
+**Calibration of the gate** (single, paraphrase and unanswerable questions): a best rerank score below -1 flags 59% of the questions that missed their gold place and 18% of those that found it. The score cannot spot unanswerable questions (their median best score, 2.19, is nearly as high as good matches': 2.74), so it triggers a second look, never a conclusion. Latency figures use an assumption of about 1 s per small-model call; the first uncached run measured roughly 9 s of extra latency per question for the always-on agent.
+**Decision:** built, tested and **off by default** (`AGENT_ENABLED`); when on, gated by default (`AGENT_ONLY_WHEN_WEAK`). A modest, measured gain (+2 single, +4 paraphrase, +9 broad any-gold) for roughly half a second per ordinary question; worth switching on after a human-reviewed eval confirms it.
+
 ## Eval runs (appended by `make eval`; LLM-drafted, UNREVIEWED questions)
 | date | label | config | n | Recall@5 | MRR | nDCG@10 | faithfulness | correctness | refusal acc | p50 / p95 ms | $/answer |
 |---|---|---|---|---|---|---|---|---|---|---|---|

@@ -8,7 +8,7 @@ from typing import Any
 
 import psycopg
 
-from app.agent.loop import AgentResult, run_agent
+from app.agent.loop import WEAK_SCORE, AgentResult, run_agent
 from app.agent.tools import ToolBox
 from app.answer import Answer, answer_question, answer_stream
 from app.config import Settings, get_settings
@@ -20,7 +20,6 @@ from app.retrieval.parents import expand_to_parents
 from app.retrieval.rerank import Reranked, Reranker, rerank
 from app.retrieval.retrieve import Retrieval
 from app.retrieval.search import Scope
-from app.retrieval.transform import rewrite_query
 
 
 @dataclass
@@ -32,6 +31,41 @@ class RagResult:
     context: Context
     timings_ms: dict[str, float] = field(default_factory=dict)
     agent: AgentResult | None = None
+
+
+def _plain(
+    conn: psycopg.Connection, embedder: Embedder, reranker: Reranker | None, question: str,
+    scope: Scope, s: Settings, history: list[dict[str, str]] | None,
+    complete_fn: Callable[..., Any], timed: Callable[[str, Callable[[], Any]], Any],
+) -> tuple[Retrieval, list[Reranked], str]:  # fmt: skip
+    """The standard search: (optional) rewrite, hybrid search, rerank."""
+    retrieval = timed(
+        "retrieve_ms",
+        lambda: retrieve_expanded(
+            conn, embedder, question, scope, history=history, settings=s, complete_fn=complete_fn
+        ),
+    )
+    standalone = retrieval.question or question
+    reranked = timed(
+        "rerank_ms",
+        lambda: rerank(
+            retrieval.items, standalone, reranker,
+            candidates=s.rerank_candidates, top=s.rerank_top, max_words=s.rerank_max_words,
+        ),
+    )  # fmt: skip
+    return retrieval, reranked, standalone
+
+
+def _looks_weak(reranked: list[Reranked]) -> bool:
+    """True when the plain search deserves a second look: nothing found, or a weak best match.
+
+    Calibrated on the eval set (B-022): a best rerank score below WEAK_SCORE flags about 59% of
+    the questions that missed their answer and only 18% of those that found it. Without a
+    reranker there is no score to judge by, so the agent is allowed to look (it only adds)."""
+    if not reranked:
+        return True
+    best = reranked[0].rerank_score
+    return best is None or best < WEAK_SCORE
 
 
 def _gather(
@@ -47,52 +81,35 @@ def _gather(
 ) -> tuple[Retrieval, list[Reranked], AgentResult | None, str]:
     """Find the evidence for a question. Returns (retrieval, ranked hits, agent run, question).
 
-    With the agent switched on, a planner decides per question which tools to use; if the agent
-    fails or finds nothing, the plain pipeline below runs, so turning the agent on can never leave
-    a question without the search it would have had anyway."""
-    if s.agent_enabled:
-        try:
-            standalone = question
-            if s.query_rewrite and history:
-                standalone = timed(
-                    "rewrite_ms",
-                    lambda: rewrite_query(
-                        question, history, complete_fn=complete_fn, model=s.transform_model
-                    ).text,
-                )  # fmt: skip
-            toolbox = ToolBox(conn, embedder, reranker, scope, s, complete_fn)
-            agent = timed(
-                "agent_ms",
-                lambda: run_agent(
-                    standalone, toolbox, complete_fn=complete_fn, model=s.agent_model,
-                    max_rounds=s.agent_max_rounds, max_tool_calls=s.agent_max_tool_calls,
-                    max_cost_usd=s.agent_max_cost_usd, per_sub=s.agent_per_sub,
-                    total=s.rerank_top,
-                ),
-            )  # fmt: skip
-            if agent.evidence:
-                found = Retrieval(
-                    [h.fused for h in agent.evidence], "agent", "", {}, question=standalone,
-                    queries=[x.text for x in agent.sub_questions],
-                    transform_cost_usd=agent.cost_usd,
-                )  # fmt: skip
-                return found, agent.evidence, agent, standalone
-        except Exception:
-            logging.getLogger(__name__).exception("agent failed; using the plain pipeline")
-    retrieval = timed(
-        "retrieve_ms",
-        lambda: retrieve_expanded(
-            conn, embedder, question, scope, history=history, settings=s, complete_fn=complete_fn
-        ),
+    The plain search always runs first. With the agent switched on AND the plain search looking
+    weak (or `agent_only_when_weak` off), a planner may add searches with other tools; the agent
+    only ADDS evidence, and any failure of it leaves the plain result untouched, so turning the
+    agent on can never leave a question worse off than it was."""
+    retrieval, reranked, standalone = _plain(
+        conn, embedder, reranker, question, scope, s, history, complete_fn, timed
     )
-    standalone = retrieval.question or question
-    reranked = timed(
-        "rerank_ms",
-        lambda: rerank(
-            retrieval.items, standalone, reranker,
-            candidates=s.rerank_candidates, top=s.rerank_top, max_words=s.rerank_max_words,
-        ),
-    )  # fmt: skip
+    if not s.agent_enabled or (s.agent_only_when_weak and not _looks_weak(reranked)):
+        return retrieval, reranked, None, standalone
+    try:
+        toolbox = ToolBox(conn, embedder, reranker, scope, s, complete_fn)
+        agent = timed(
+            "agent_ms",
+            lambda: run_agent(
+                standalone, toolbox, complete_fn=complete_fn, model=s.agent_model,
+                max_rounds=s.agent_max_rounds, max_tool_calls=s.agent_max_tool_calls,
+                max_cost_usd=s.agent_max_cost_usd, total=s.rerank_top,
+            ),
+        )  # fmt: skip
+        if agent.evidence:
+            found = Retrieval(
+                [h.fused for h in agent.evidence], "agent", retrieval.keywords,
+                retrieval.timings_ms,
+                question=standalone, queries=[standalone, *[x.text for x in agent.sub_questions]],
+                transform_cost_usd=agent.cost_usd,
+            )  # fmt: skip
+            return found, agent.evidence, agent, standalone
+    except Exception:
+        logging.getLogger(__name__).exception("agent failed; keeping the plain search")
     return retrieval, reranked, None, standalone
 
 

@@ -102,11 +102,13 @@ class Settings(BaseSettings):
     graph_max_chunks: int = 10
     # Agentic retrieval (Phase 5 block 5); OFF until measured (B-022, ADR 008)
     agent_enabled: bool = False
+    agent_only_when_weak: bool = (
+        True  # plain search first; the agent only when its best match is weak
+    )
     agent_model: str | None = None  # None = llm_default_model
     agent_max_rounds: int = 2  # planning rounds (the second only when the first was not enough)
     agent_max_tool_calls: int = 4
     agent_max_cost_usd: float = 0.01  # the agent's own model calls, per question
-    agent_per_sub: int = 4  # hits kept for each sub-question
     # Chat history and memory (Phase 3)
     history_max_turns: int = 6  # most recent question+answer pairs that may go into a prompt
     history_budget_tokens: int = 1500  # ...and never more than this many tokens of them

@@ -366,3 +366,17 @@ def test_with_the_flag_on_a_broad_question_reaches_chunks_its_own_words_never_ma
     assert all(f.candidate.text for f in on.items) and not any(
         f.candidate.text.startswith("This group") for f in on.items
     )
+
+
+def test_no_cluster_is_bigger_than_what_the_summary_prompt_can_hold() -> None:
+    rng = np.random.default_rng(3)
+    base = rng.normal(size=(1, 16))
+    big = base + 0.01 * rng.normal(
+        size=(40, 16)
+    )  # 40 near-identical vectors: one huge natural cluster
+    other = rng.normal(size=(6, 16))
+    vectors = np.vstack([big, other]).astype(np.float32)
+    vectors /= np.linalg.norm(vectors, axis=1, keepdims=True)
+    groups = st.clusters(vectors, 4)
+    assert max(len(g) for g in groups) <= st.MAX_MEMBERS_IN_PROMPT
+    assert sorted(i for g in groups for i in g) == list(range(46))  # nobody lost, nobody twice

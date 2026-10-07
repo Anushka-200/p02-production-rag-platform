@@ -23,6 +23,7 @@ comparing a hash of its member ids.
 import hashlib
 import json
 import logging
+import math
 import uuid
 from collections import defaultdict
 from collections.abc import Callable
@@ -125,7 +126,33 @@ def clusters(vectors: np.ndarray, target: int) -> list[list[int]]:
             range(len(result)), key=lambda c: float(np.max(vectors[result[c]] @ vectors[index]))
         )
         result[best].append(index)
-    return sorted(result, key=lambda g: g[0])
+    # k-means can leave one cluster much bigger than the rest. The summary prompt holds at most
+    # MAX_MEMBERS_IN_PROMPT passages, so a bigger cluster would CLAIM members its summary never
+    # read. Split any oversized cluster again (by its own vectors) until every one fits.
+    final: list[list[int]] = []
+    pending = result
+    while pending:
+        group = pending.pop()
+        if len(group) <= MAX_MEMBERS_IN_PROMPT:
+            final.append(group)
+            continue
+        sub = kmeans(vectors[group], math.ceil(len(group) / target))
+        parts: dict[int, list[int]] = defaultdict(list)
+        for position, label in enumerate(sub):
+            parts[label].append(group[position])
+        if len(parts) == 1:  # k-means could not split it: cut in order, never loop forever
+            parts = {
+                i: group[i : i + MAX_MEMBERS_IN_PROMPT]
+                for i in range(0, len(group), MAX_MEMBERS_IN_PROMPT)
+            }
+        pieces = [p for p in parts.values() if len(p) >= 2]
+        for single in (p[0] for p in parts.values() if len(p) == 1):
+            if pieces:  # never a piece of one: it joins the smallest other piece (nobody is lost)
+                min(pieces, key=len).append(single)
+            else:
+                pieces.append([single])
+        pending.extend(pieces)
+    return sorted(final, key=lambda g: g[0])
 
 
 # ---- reading the groups --------------------------------------------------------------

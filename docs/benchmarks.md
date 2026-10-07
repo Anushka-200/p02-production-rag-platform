@@ -361,3 +361,28 @@ whose nodes call our own functions, 8 Tenant A questions, live model, $0.059 for
 | Same cited documents | | 8 / 8 |
 | Latency p50 / mean | 3.50 s / 3.67 s | 3.33 s / 3.58 s (difference = model noise) |
 | Rewrite, agent, tree, graph, streaming | built in | would each need a node and routing: not ported |
+
+## B-026 Phase 6 block 1: baseline, retrieval modes, HNSW ef_search (2026-10-07, tasks 6.1, 6.4, 6.8)
+Data: current dev database (11,685 chunks incl. two scratch orgs), 150-question eval set, 69 answerable headline
+questions, unreviewed gold (informal).
+
+**6.1 Baseline per answer** (row baseline-2 above, full pipeline, Haiku 4.5, local embeddings/reranker):
+cost 0.00351 USD per answer; end-to-end p50 3.98 s / p95 4.98 s (retrieval + local rerank ~1 s, the rest is the model call).
+
+**6.4 Retrieval modes** (`python -m evals.run --label modes-p6`, no model cost):
+
+| mode | R@1 | R@5 | R@10 | R@50 | MRR | nDCG@10 | paraphrase R@5 |
+|---|---|---|---|---|---|---|---|
+| dense | 0.46 | 0.76 | 0.86 | 0.94 | 0.64 | 0.67 | 0.62 |
+| keyword | 0.02 | 0.33 | 0.47 | 0.66 | 0.17 | 0.23 | 0.08 |
+| hybrid (RRF) | 0.41 | 0.76 | 0.86 | 0.94 | 0.60 | 0.65 | 0.62 |
+| hybrid + rerank | 0.54 | 0.83 | 0.86 | 0.94 | 0.69 | 0.72 | 0.67 |
+
+Findings: the reranker is the clear win (+7 points R@5, +13 points R@1 over hybrid). Hybrid did NOT beat dense here
+(the brief's +10 points target is not met on this set): keyword search alone is weak on natural-language questions
+(R@5 0.33) and adds noise at rank 1. Cohere rerank was not compared (no key).
+
+**6.8 HNSW ef_search sweep** (`evals/hnsw_sweep.py`, 140 questions, iterative scan on, as in production):
+top-10 overlap with an exact search is 1.000 for every ef_search from 10 to 400, SQL p50 13.0-13.2 ms in every case
+(exact search 13.5 ms). Conclusion: at 10k vectors with tenant filters ef_search does not matter; keep the default (40).
+The cost is dominated by the join and filter, not the graph walk. Revisit at 100k+ chunks.

@@ -91,6 +91,12 @@ class Settings(BaseSettings):
     )
     hyde: bool = False  # also search with a made-up answer: OFF, same reason
     transform_model: str | None = None  # None = llm_default_model
+    # Hierarchical retrieval (Phase 5 block 3); OFF until measured (B-020, ADR 008)
+    parent_expansion: bool = False  # swap each hit for its parent section
+    parent_max_tokens: int = 700  # a parent larger than this is not used
+    summary_tree: bool = False  # also search the RAPTOR-style summary tree and follow it to chunks
+    summary_top_k: int = 5  # summaries to take from the tree
+    summary_members_per: int = 4  # chunks to take from under each summary
     # Chat history and memory (Phase 3)
     history_max_turns: int = 6  # most recent question+answer pairs that may go into a prompt
     history_budget_tokens: int = 1500  # ...and never more than this many tokens of them

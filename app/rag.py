@@ -13,6 +13,7 @@ from app.embeddings import Embedder, get_token_counter
 from app.llm import complete
 from app.retrieval.context import Context, build_context
 from app.retrieval.expand import retrieve_expanded
+from app.retrieval.parents import expand_to_parents
 from app.retrieval.rerank import Reranked, Reranker, rerank
 from app.retrieval.retrieve import Retrieval
 from app.retrieval.search import Scope
@@ -63,6 +64,13 @@ def ask(
         ),
     )  # fmt: skip
     counter = get_token_counter(s)
+    if s.parent_expansion:
+        reranked = timed(
+            "parents_ms",
+            lambda: expand_to_parents(
+                conn, reranked, scope, max_parent_tokens=s.parent_max_tokens, count=counter
+            ),
+        )  # fmt: skip
     context = timed("context_ms", lambda: build_context(reranked, s.context_budget_tokens, counter))
     answer = timed("answer_ms", lambda: answer_question(question, context, complete_fn=complete_fn))
     return RagResult(question, answer, retrieval, reranked, context, timings)
@@ -111,6 +119,14 @@ def ask_stream(
             candidates=s.rerank_candidates, top=s.rerank_top, max_words=s.rerank_max_words,
         ),
     )  # fmt: skip
+    if s.parent_expansion:
+        reranked = timed(
+            "parents_ms",
+            lambda: expand_to_parents(
+                conn, reranked, scope, max_parent_tokens=s.parent_max_tokens,
+                count=get_token_counter(s),
+            ),
+        )  # fmt: skip
     context = timed(
         "context_ms", lambda: build_context(reranked, s.context_budget_tokens, get_token_counter(s))
     )

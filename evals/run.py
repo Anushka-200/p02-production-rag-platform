@@ -57,9 +57,12 @@ def reorder_with_reranker(
     return [r.fused.candidate for r in scored] + [f.candidate for f in fused[len(pool) :]]
 
 
+NOT_HEADLINE = {"follow_up", "paraphrase", "broad"}  # reported apart so old numbers stay comparable
+
+
 def split_items(items: Sequence[EvalItem]) -> tuple[list[EvalItem], list[EvalItem]]:
     """(headline items, follow-ups). Follow-ups cannot work without chat history (Phase 5)."""
-    headline = [i for i in items if i.kind not in {"follow_up", "paraphrase"}]
+    headline = [i for i in items if i.kind not in NOT_HEADLINE]
     return headline, [i for i in items if i.kind == "follow_up"]
 
 
@@ -89,7 +92,7 @@ class AnswerRecord:
 
 
 def answer_metrics(records: Sequence[AnswerRecord]) -> dict[str, Any]:
-    head = [r for r in records if r.kind != "follow_up"]
+    head = [r for r in records if r.kind not in NOT_HEADLINE]
     answerable = [r for r in head if r.answerable]
     unanswerable = [r for r in head if not r.answerable]
     pre_llm = [

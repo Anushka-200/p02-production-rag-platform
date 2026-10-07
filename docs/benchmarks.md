@@ -237,7 +237,29 @@ Production pipeline (hybrid search, rerank the best 10) with each transform on o
 - Why paraphrases stay hard (0.67 vs 0.85 for the originals): the reworded text is the stiff vocabulary a model produces ("remuneration", "contractual obligations"), which sits no closer to the document than the original did; a human re-wording may behave differently.
 - **Bugs the tests caught while building:** the admin inspector called the live model instead of the injected one (it used a real model in a test); three of my own tests depended on tie-breaking by random ids and failed intermittently until they asserted "in the top two" instead of "first".
 
+## B-020 Parent expansion, and the summary tree (2026-10-07, tasks 5.4-5.6)
+**Parent expansion** (swap a hit for its larger parent section), informal, eval set unreviewed.
+- *Context only* (free, no model; `evals/context_experiments.py`): is the gold place in the context the answer model sees?
+
+| config | single: any gold | multi-hop: ALL gold | context tokens | sources |
+|---|---|---|---|---|
+| baseline | 0.87 | 0.50 | 2539 | 7.9 |
+| parents <= 400 tokens | 0.87 | 0.50 | 2539 | 7.9 (no parent is that small: identical) |
+| parents <= 700 | 0.87 | 0.50 | 2611 | 7.4 |
+| parents <= 1200 | 0.85 | 0.50 | 2634 | 4.7 (big parents crowd out other sources) |
+- *Answer quality* (real model + judge, 118 questions, `baseline-2` vs `parents-700`): gold place in context 0.828 vs 0.828; correctness 0.774 vs 0.774; faithfulness 0.947 vs 0.956; cost per answer $0.0035 either way. 72 of 118 contexts and 52 answers changed, and 8 questions changed correctness in BOTH directions (4 better, 4 worse), net zero.
+- **Decision: implemented, OFF by default.** A parent cannot add a place that retrieval did not find; it only widens the text around it, and at a 700-token cap that neither helped nor hurt measurably. Retest on a reviewed set, or only for questions where the first search looks incomplete.
+
+**Summary tree (RAPTOR-style)**: built and tested; the real-corpus MEASUREMENT is pending an approval of its cost.
+- Real trial on 240 sampled chunks of Tenant B: 27 first-level + 4 second-level summaries for **$0.08**. The summaries keep names, numbers and policy terms. The second-level summaries are grab-bags of unrelated topics (k-means over a mixed handbook does not always find clean topics).
+- Projected cost of the full trees (cost guard): Tenant A **$1.64**, Tenant B **$1.66**.
+- 12 new BROAD questions (answer spread over 3-5 sections of one document, 9 of them Tenant B) drafted for $0.018; kept out of the headline.
+- Privacy by construction: summaries are built per visibility group, never mixing; triggers delete a summary as soon as any source chunk is deleted, re-indexed or made less visible (3 tests fail if the triggers are removed); visitors see only public summaries.
+- A tooling fix: new question groups (paraphrase, broad) no longer enter the answer headline (it had silently grown from 84 to 108 questions, so the `baseline-2` and `parents-700` rows above are on 108 and must not be compared with older rows).
+
 ## Eval runs (appended by `make eval`; LLM-drafted, UNREVIEWED questions)
 | date | label | config | n | Recall@5 | MRR | nDCG@10 | faithfulness | correctness | refusal acc | p50 / p95 ms | $/answer |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | 2026-10-02 11:49 | baseline-1 | structured 400t, hybrid, rerank 20/8 local | 69 | 0.82 | 0.69 | 0.72 | 0.954 | 0.841 | 0.6 | 4396 / 5366 | 0.00344 |
+| 2026-10-07 12:49 | parents-700 | structured 400t, hybrid, rerank 10/8 local | 69 | 0.83 | 0.69 | 0.72 | 0.956 | 0.774 | 0.6 | 3968 / 4832 | 0.00357 |
+| 2026-10-07 12:52 | baseline-2 | structured 400t, hybrid, rerank 10/8 local | 69 | 0.83 | 0.69 | 0.72 | 0.947 | 0.774 | 0.6 | 3979 / 4983 | 0.00351 |

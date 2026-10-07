@@ -13,7 +13,7 @@ class GoldRef(BaseModel):
 class EvalItem(BaseModel):
     id: str
     tenant: Literal["A", "B"]  # which organisation's documents the question is about
-    kind: Literal["single", "multi_hop", "follow_up", "unanswerable", "paraphrase"]
+    kind: Literal["single", "multi_hop", "follow_up", "unanswerable", "paraphrase", "broad"]
     question: str
     history: list[dict[str, str]] = Field(default_factory=list)  # earlier turns, for follow-ups
     answerable: bool

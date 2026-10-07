@@ -29,6 +29,7 @@ from app.retrieval.transform import (
     hyde_passage,
     rewrite_query,
 )
+from app.retrieval.tree import tree_candidates
 
 
 def retrieve_expanded(
@@ -46,7 +47,7 @@ def retrieve_expanded(
     s = settings or get_settings()
     history = history or []
     use_rewrite = s.query_rewrite and bool(history)
-    if not (use_rewrite or s.multi_query > 0 or s.hyde):
+    if not (use_rewrite or s.multi_query > 0 or s.hyde or s.summary_tree):
         base = retrieve(conn, embedder, question, scope, settings=s, mode=mode)
         base.question, base.queries = question, [question]
         return base
@@ -81,6 +82,14 @@ def retrieve_expanded(
             vector = embedder.embed_query(hyde.text)
             found = dense_search(conn, vector, scope, s.retrieval_candidates)
             lists.append(fuse(found, [], k=s.rrf_k))  # a dense-only list, same Fused shape
+    if s.summary_tree:
+        # a broad question matches a SUMMARY; the real chunks under the best summaries join the pool
+        under = tree_candidates(
+            conn, embedder.embed_query(standalone), scope,
+            top_k=s.summary_top_k, per_summary=s.summary_members_per,
+        )  # fmt: skip
+        if under:
+            lists.append(fuse(under, [], k=s.rrf_k))
     items = lists[0] if len(lists) == 1 else merge_fused(lists, k=s.rrf_k)
     first = results[0]
     return Retrieval(

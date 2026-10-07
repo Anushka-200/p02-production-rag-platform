@@ -54,9 +54,14 @@ _COLUMNS = (
     "c.id, c.document_id, d.source_uri, c.section_path, c.page_start, c.page_end, c.anchors, "
     "c.text, c.context_blurb, c.parent_id"
 )
+# Which chunks the asker may read: public ones; org and own ones only for a real (non-anonymous)
+# user. Every query here uses it; row-level security is the second lock behind it.
+VISIBLE_SQL = (
+    "(c.visibility = 'public' OR (%(user)s::uuid IS NOT NULL "
+    "AND (c.visibility = 'org' OR c.owner_id = %(user)s::uuid)))"
+)
 _ALLOWED = (
-    "c.org_id = %(org)s AND c.level = 0 AND (c.visibility = 'public' "
-    "OR (%(user)s::uuid IS NOT NULL AND (c.visibility = 'org' OR c.owner_id = %(user)s::uuid))) "
+    f"c.org_id = %(org)s AND c.level = 0 AND {VISIBLE_SQL} "
     "AND d.status = 'ready' AND c.version = d.active_version"
 )
 

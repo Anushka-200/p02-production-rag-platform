@@ -39,15 +39,16 @@ from evals.schema import EvalItem
 QA = Path(__file__).parent / "qa.jsonl"
 RESULTS = Path(__file__).parent / "results"
 CACHE = Path("data/cache/transforms.jsonl")
-OFF = {"query_rewrite": False, "multi_query": 0, "hyde": False}  # every config states all three
+OFF = {"query_rewrite": False, "multi_query": 0, "hyde": False, "summary_tree": False}
 CONFIGS: dict[str, dict[str, Any]] = {
     "baseline": {**OFF},
     "rewrite": {**OFF, "query_rewrite": True},
     "multi-3": {**OFF, "multi_query": 3},
     "hyde": {**OFF, "hyde": True},
-    "all": {"query_rewrite": True, "multi_query": 3, "hyde": True},
+    "all": {"query_rewrite": True, "multi_query": 3, "hyde": True, "summary_tree": False},
+    "tree": {**OFF, "summary_tree": True},
 }
-GROUPS = ("follow_up", "paraphrase", "single", "multi_hop")
+GROUPS = ("follow_up", "paraphrase", "single", "multi_hop", "broad")
 
 
 def run_config(

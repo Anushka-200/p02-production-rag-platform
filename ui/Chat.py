@@ -6,7 +6,7 @@ Run: uv run streamlit run ui/Chat.py --server.port 8502   (API must be running o
 import streamlit as st
 
 from ui.api import ApiError
-from ui.common import AI_NOTICE, require_login, sign_out
+from ui.common import AI_NOTICE, describe_steps, require_login, sign_out
 
 st.set_page_config(page_title="Document assistant", page_icon="💬", layout="wide")
 
@@ -104,6 +104,10 @@ def main() -> None:
         cited = [s for s in sources if s["id"] in {c["id"] for c in done.get("citations", [])}]
         if cited:
             show_sources(cited)
+        if done.get("agent"):
+            with st.expander("How I searched"):
+                for line in describe_steps(done["agent"]):
+                    st.markdown(f"- {line}")
         if done:
             t = done["timings_ms"]
             refused = "Refused: not in the documents. " if done.get("refused") else ""

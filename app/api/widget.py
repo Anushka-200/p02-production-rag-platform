@@ -190,8 +190,8 @@ def build_widget_router(ctx: WidgetContext) -> APIRouter:
                         settings=s, stream_fn=ctx.stream_fn,
                         complete_fn=ctx.complete_fn or _complete(),
                     ):  # fmt: skip
-                        if event["type"] == "sources":
-                            continue  # visitors get citations with the final answer only
+                        if event["type"] in {"sources", "agent"}:
+                            continue  # the agent trace is internal; citations come at the end
                         if event["type"] != "done":
                             yield sse(
                                 event["type"], {k: v for k, v in event.items() if k != "type"}

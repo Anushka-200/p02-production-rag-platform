@@ -44,3 +44,20 @@ def sign_out() -> None:
     for key in ("client", "me", "conversation_id", "messages"):
         st.session_state.pop(key, None)
     st.rerun()
+
+
+def describe_steps(steps: list[dict]) -> list[str]:  # type: ignore[type-arg]
+    """The agent's trace as short readable lines: 'search: how long is leave (5 hits)'."""
+    lines = []
+    for step in steps:
+        kind, tool, query = step.get("kind", ""), step.get("tool"), step.get("query")
+        if kind == "search":
+            hits = step.get("hits", 0)
+            lines.append(
+                f"searched with **{tool}**: {query} ({hits} hit{'s' if hits != 1 else ''})"
+            )
+        elif kind in {"plan", "replan"}:
+            lines.append(f"{'planned' if kind == 'plan' else 're-planned'}: {step.get('note', '')}")
+        elif kind == "check":
+            lines.append(f"checked the results: {step.get('note', '')}")
+    return lines

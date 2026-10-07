@@ -12,6 +12,7 @@ def sse(event: str, data: dict[str, Any]) -> str:
 def done_payload(event: dict[str, Any]) -> dict[str, Any]:
     """What the browser gets at the end of the stream: the validated answer and what it cost."""
     a = event["answer"]
+    agent = event["result"].agent
     return {
         "text": a.text,
         "refused": a.refused,
@@ -22,4 +23,5 @@ def done_payload(event: dict[str, Any]) -> dict[str, Any]:
         "cost_usd": round(a.cost_usd, 6),
         "llm_calls": a.llm_calls,
         "timings_ms": event["result"].timings_ms,
+        "agent": [x.as_dict() for x in agent.steps] if agent else None,
     }

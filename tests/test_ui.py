@@ -172,3 +172,16 @@ def test_the_admin_page_is_closed_to_members_and_open_to_admins(stack) -> None: 
         "Chunk previews",
         "Leads & handoffs",
     ]
+
+
+def test_the_agents_trace_is_described_in_plain_lines() -> None:
+    from ui.common import describe_steps
+
+    steps = [
+        {"n": 1, "kind": "plan", "note": "connections: who owns alerts"},
+        {"n": 2, "kind": "search", "tool": "connections", "query": "who owns alerts", "hits": 1},
+        {"n": 3, "kind": "check", "note": "enough"},
+    ]
+    lines = describe_steps(steps)
+    assert lines[0].startswith("planned") and "connections" in lines[1] and "(1 hit)" in lines[1]
+    assert lines[2] == "checked the results: enough" and describe_steps([]) == []

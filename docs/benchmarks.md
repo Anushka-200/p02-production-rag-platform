@@ -339,3 +339,25 @@ history into a scratch org. Local embeddings, $0. "Embedded" = chunks of the pag
 Four incremental steps re-embedded 1297 chunks against 4283 for four full rebuilds (30%) and took 196 s against about
 600 s. Limit seen: the unit is the whole page, so editing a few lines of a long page re-embeds all its chunks (7 pages
 = 257 chunks). Re-using the embedding of every chunk whose own text hash is unchanged is the next saving (not built).
+
+## B-025 Library chunkers vs ours; LangGraph vs plain Python (2026-10-07, task 5.16, ADR 010)
+**Chunkers** (`evals/chunker_compare.py`): GitLab people-group, 67 pages, same embedding model, in-memory dense search,
+document-level hit, 14 questions with unreviewed gold. Informal; $0.
+
+| Chunker | Chunks | Tokens mean / p95 / max | hit@1 | hit@5 | MRR |
+|---|---|---|---|---|---|
+| Ours (structured, heading-aware, heading path embedded) | 1069 | 251 / 386 / 400 | 0.71 | 1.00 | 0.83 |
+| LangChain recursive (Markdown separators) | 1008 | 259 / 382 / 399 | 0.79 | 0.93 | 0.87 |
+| LangChain header split + recursive | 1491 | 180 / 368 / 413 | 0.71 | 1.00 | 0.84 |
+
+One question is 7 points of hit rate, so these are the same within noise. The library output has no page numbers,
+anchors, parent-child levels or token-exact limits (header split overshoots to 413); ours keeps them.
+
+**Orchestration** (`scripts/langgraph_spike.py`, 111 lines incl. CLI): retrieve > assemble > answer as a LangGraph graph
+whose nodes call our own functions, 8 Tenant A questions, live model, $0.059 for both paths.
+
+| | Plain Python (`rag.ask`) | LangGraph |
+|---|---|---|
+| Same cited documents | | 8 / 8 |
+| Latency p50 / mean | 3.50 s / 3.67 s | 3.33 s / 3.58 s (difference = model noise) |
+| Rewrite, agent, tree, graph, streaming | built in | would each need a node and routing: not ported |

@@ -114,6 +114,7 @@ def run_pipeline(
         source_uri=job["source_uri"],
         source_type=job["source_type"],
         content_hash=job["content_hash"],
+        source_updated_at=job.get("source_updated_at"),
         title=parsed.title,
         chunks=chunks,
         embeddings=embeddings,

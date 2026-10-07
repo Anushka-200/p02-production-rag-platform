@@ -310,3 +310,16 @@ Cost of the always-on agent: about $0.003 per question (planner and checker). To
 | 2026-10-02 11:49 | baseline-1 | structured 400t, hybrid, rerank 20/8 local | 69 | 0.82 | 0.69 | 0.72 | 0.954 | 0.841 | 0.6 | 4396 / 5366 | 0.00344 |
 | 2026-10-07 12:49 | parents-700 | structured 400t, hybrid, rerank 10/8 local | 69 | 0.83 | 0.69 | 0.72 | 0.956 | 0.774 | 0.6 | 3968 / 4832 | 0.00357 |
 | 2026-10-07 12:52 | baseline-2 | structured 400t, hybrid, rerank 10/8 local | 69 | 0.83 | 0.69 | 0.72 | 0.947 | 0.774 | 0.6 | 3979 / 4983 | 0.00351 |
+
+## B-023 Incremental sync of a living wiki (2026-10-07, tasks 5.12, 5.13)
+Real run, GitLab handbook `people-group` (67 Markdown pages), local embeddings, scratch org. Sync 1 = the repo as of
+2026-08-01; sync 2 = HEAD (2026-09-24). Wall-clock on this CPU.
+
+| Run | Pages read + embedded | Skipped (fingerprint equal) | Time |
+|---|---|---|---|
+| Full build (sync 1) | 67 | 0 | 4 min 51 s |
+| Incremental to HEAD (sync 2) | 32 changed | 35 | 1 min 57 s |
+| Sync again, nothing changed | 0 | 67 | seconds |
+
+Incremental sync took 40% of the full-build time, and the saving grows with the size and quietness of the wiki
+(these 67 pages are an unusually busy folder: 48% changed in 8 weeks). Model cost: $0 (no LLM calls, no blurbs).

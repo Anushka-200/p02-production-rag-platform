@@ -323,3 +323,19 @@ Real run, GitLab handbook `people-group` (67 Markdown pages), local embeddings, 
 
 Incremental sync took 40% of the full-build time, and the saving grows with the size and quietness of the wiki
 (these 67 pages are an unusually busy folder: 48% changed in 8 weeks). Model cost: $0 (no LLM calls, no blurbs).
+
+## B-024 Replaying real handbook history (2026-10-07, task 5.15)
+`evals/sync_replay.py`: GitLab `people-group` (Tenant A source), five syncs at fortnightly points of the real git
+history into a scratch org. Local embeddings, $0. "Embedded" = chunks of the pages that sync added or changed.
+
+| Step | Pages changed | Unchanged | Chunks embedded / total | Share of a full rebuild | Seconds |
+|---|---|---|---|---|---|
+| 2026-08-01 (first build) | 67 | 0 | 1072 / 1072 | 100% | 151 |
+| 2026-08-15 | 12 | 55 | 255 / 1071 | 24% | 48 |
+| 2026-09-01 | 7 | 60 | 257 / 1071 | 24% | 39 |
+| 2026-09-15 | 22 | 45 | 609 / 1070 | 57% | 85 |
+| 2026-10-01 | 4 | 63 | 176 / 1070 | 16% | 24 |
+
+Four incremental steps re-embedded 1297 chunks against 4283 for four full rebuilds (30%) and took 196 s against about
+600 s. Limit seen: the unit is the whole page, so editing a few lines of a long page re-embeds all its chunks (7 pages
+= 257 chunks). Re-using the embedding of every chunk whose own text hash is unchanged is the next saving (not built).

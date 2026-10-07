@@ -400,3 +400,22 @@ def test_two_connectors_in_one_org_do_not_touch_each_others_pages(rig: Rig) -> N
         report.added == ["other/x.md"] and not report.deleted
     )  # the first connector's pages are not "deleted" by this one
     assert rig.sql("SELECT count(*) FROM documents")[0][0] == 4
+
+
+def test_search_results_carry_the_sources_last_updated_date_for_citations(rig: Rig) -> None:
+    from app.retrieval.search import Scope, keyword_search
+
+    commit(
+        rig.repo,
+        {"content/people/leave.md": page("Leave zebra")},
+        "edit",
+        date="2026-03-05T12:00:00+00:00",
+    )
+    rig.sync()
+    scope = Scope(rig.ann.org_id, rig.ann.user_id, None)  # type: ignore[arg-type]
+    hit = next(
+        c
+        for c in keyword_search(rig.w.conn, "zebra policy", scope)
+        if c.source_uri == "hb/leave.md"
+    )
+    assert hit.updated == datetime.fromisoformat("2026-03-05T12:00:00+00:00")

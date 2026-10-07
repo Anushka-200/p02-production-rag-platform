@@ -15,7 +15,8 @@ def show_sources(sources: list[dict]) -> None:  # type: ignore[type-arg]
     with st.expander(f"Sources ({len(sources)})"):
         for s in sources:
             pages = f", pages {s['pages']}" if s.get("pages") else ""
-            st.markdown(f"**[{s['id']}]** `{s['document']}` — {s['section']}{pages}")
+            fresh = f" · last updated {s['updated']}" if s.get("updated") else ""
+            st.markdown(f"**[{s['id']}]** `{s['document']}` — {s['section']}{pages}{fresh}")
 
 
 def render_history(api, conversation_id: str) -> None:  # type: ignore[no-untyped-def]

@@ -207,6 +207,7 @@ def ask_stream(
                 "section": x.section,
                 "pages": x.pages,
                 "anchors": x.anchors,
+                "updated": x.updated,
             }
             for x in context.sources
         ],

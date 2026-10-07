@@ -93,6 +93,9 @@ class WidgetContext:
     complete_fn: Callable[..., Any] | None = None
 
 
+CITATION_FIELDS = ("id", "document", "section", "pages", "updated")
+
+
 def client_ip(request: Request, trust_proxy: bool) -> str:
     """The visitor's address. Behind a trusted proxy the real one is the first X-Forwarded-For."""
     if trust_proxy:
@@ -212,7 +215,7 @@ def build_widget_router(ctx: WidgetContext) -> APIRouter:
                             "text": full["text"],
                             "refused": full["refused"],
                             "citations": [
-                                {k: c.get(k) for k in ("id", "document", "section", "pages")}
+                                {k: c.get(k) for k in CITATION_FIELDS}
                                 for c in full["citations"]
                             ],
                             "session_id": str(session_id),

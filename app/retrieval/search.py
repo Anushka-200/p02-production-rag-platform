@@ -8,6 +8,7 @@ row-level security as a second lock; this explicit filter is the first (never tr
 import re
 import uuid
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any
 
 import psycopg
@@ -48,11 +49,12 @@ class Candidate:
     score: (
         float  # dense: cosine distance (smaller is closer); keyword: ts_rank_cd (bigger is better)
     )
+    updated: datetime | None = None  # when the SOURCE last changed the page (connectors only)
 
 
 _COLUMNS = (
     "c.id, c.document_id, d.source_uri, c.section_path, c.page_start, c.page_end, c.anchors, "
-    "c.text, c.context_blurb, c.parent_id"
+    "c.text, c.context_blurb, c.parent_id, d.source_updated_at"
 )
 # Which chunks the asker may read: public ones; org and own ones only for a real (non-anonymous)
 # user. Every query here uses it; row-level security is the second lock behind it.
@@ -81,7 +83,8 @@ def _candidates(rows: list[Any]) -> list[Candidate]:
             context_blurb=r[8],
             parent_id=r[9],
             rank=i,
-            score=float(r[10]),
+            score=float(r[11]),
+            updated=r[10],
         )  # fmt: skip
         for i, r in enumerate(rows, start=1)
     ]

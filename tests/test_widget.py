@@ -153,7 +153,7 @@ def test_a_visitor_gets_a_cited_answer_from_public_documents_only(rig: Rig) -> N
     assert {"model", "cost_usd", "timings_ms", "reason"}.isdisjoint(
         done
     )  # internals are not exposed
-    assert set(done["citations"][0]) == {"id", "document", "section", "pages"}
+    assert set(done["citations"][0]) == {"id", "document", "section", "pages", "updated"}
 
 
 def test_the_session_keeps_the_conversation_and_stores_both_sides(rig: Rig) -> None:

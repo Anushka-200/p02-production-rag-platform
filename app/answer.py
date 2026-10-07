@@ -45,6 +45,7 @@ class Citation:
     pages: str | None
     anchors: list[str]
     chunk_id: Any
+    updated: str | None = None
 
 
 @dataclass
@@ -167,7 +168,7 @@ def answer_question(
             return totals
         cited = list(dict.fromkeys([*payload.citations, *_MARKER.findall(payload.answer)]))
         totals.citations = [
-            Citation(s.id, s.document, s.section, s.pages, s.anchors, s.chunk_id)
+            Citation(s.id, s.document, s.section, s.pages, s.anchors, s.chunk_id, s.updated)
             for s in (sources[c] for c in cited)
         ]
         totals.text, totals.refused, totals.reason = payload.answer.strip(), False, ""
@@ -270,7 +271,7 @@ def answer_stream(
     if markers and all(m in sources for m in markers) and unsafe_output(text, sources) is None:
         spent.text, spent.refused, spent.reason = text, False, ""
         spent.citations = [
-            Citation(s.id, s.document, s.section, s.pages, s.anchors, s.chunk_id)
+            Citation(s.id, s.document, s.section, s.pages, s.anchors, s.chunk_id, s.updated)
             for s in (sources[m] for m in markers)
         ]
         yield {"type": "done", "answer": spent, "replaced": False}

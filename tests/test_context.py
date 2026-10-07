@@ -1,4 +1,5 @@
 import uuid
+from datetime import UTC
 
 from app.retrieval.context import build_context
 from app.retrieval.fusion import Fused
@@ -102,3 +103,13 @@ def test_odd_characters_in_labels_cannot_break_the_attributes() -> None:
 def test_no_candidates_gives_an_empty_context() -> None:
     ctx = build_context([])
     assert ctx.text == "" and ctx.sources == [] and ctx.tokens == 0
+
+
+def test_a_source_carries_the_date_its_page_last_changed_in_the_source_system() -> None:
+    from datetime import datetime
+
+    dated = item("page text")
+    dated.fused.candidate.updated = datetime(2026, 9, 24, 21, 34, tzinfo=UTC)
+    ctx = build_context([dated, item("uploaded text", 2)])
+    assert [s.updated for s in ctx.sources] == ["2026-09-24", None]  # uploads have no source date
+    assert "2026-09-24" not in ctx.text  # shown to the reader, not fed to the model

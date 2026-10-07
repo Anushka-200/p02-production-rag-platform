@@ -26,6 +26,7 @@ class Source:
     anchors: list[str]
     text: str
     tokens: int
+    updated: str | None = None  # date the source page last changed, e.g. "2026-09-24"
 
 
 @dataclass
@@ -105,6 +106,7 @@ def build_context(
                 c.anchors,
                 text,
                 size,
+                c.updated.date().isoformat() if c.updated else None,
             )
         )
         blocks.append(block)

@@ -386,3 +386,24 @@ Findings: the reranker is the clear win (+7 points R@5, +13 points R@1 over hybr
 top-10 overlap with an exact search is 1.000 for every ef_search from 10 to 400, SQL p50 13.0-13.2 ms in every case
 (exact search 13.5 ms). Conclusion: at 10k vectors with tenant filters ef_search does not matter; keep the default (40).
 The cost is dominated by the join and filter, not the graph walk. Revisit at 100k+ chunks.
+
+## B-027 Chunker A vs B and chunk size / overlap (2026-10-07, tasks 6.2, 6.3)
+`evals/chunk_experiments.py`: all of Tenant A (226 documents), same embedding model (bge-small), dense search in memory,
+real eval metrics on 87 Tenant A answerable non-follow-up questions (informal: unreviewed gold; one question is about 1 point).
+No blurbs, no rerank, so chunking is the only change. Free.
+
+| config | chunks | tokens median | R@1 | R@5 | R@10 | MRR | nDCG@10 |
+|---|---|---|---|---|---|---|---|
+| A recursive 400/50 | 4370 | 171 | 0.33 | 0.67 | 0.75 | 0.52 | 0.55 |
+| **B structured 400/50 (production)** | 3547 | 275 | 0.42 | 0.75 | 0.89 | 0.62 | 0.67 |
+| B 200/25 | 6896 | 153 | 0.42 | 0.69 | 0.84 | 0.58 | 0.62 |
+| B 300/40 | 4640 | 219 | 0.46 | 0.73 | 0.86 | 0.64 | 0.67 |
+| B 400/0 | 3515 | 271 | 0.44 | 0.76 | 0.89 | 0.63 | 0.68 |
+| B 400/100 | 3628 | 282 | 0.41 | 0.77 | 0.89 | 0.61 | 0.67 |
+| B 500/50 | 2969 | 319 | 0.48 | 0.79 | 0.90 | 0.66 | 0.70 |
+
+Findings: (1) the heading-aware chunker beats plain recursive splitting by +8 points R@5 and +14 at R@10: this is the
+one large, reliable difference. (2) Size and overlap barely matter between 300 and 500 tokens (R@5 0.73-0.79, within
+noise at n=87); very small chunks (200) are worse (more chunks, less context each). (3) Overlap 0/50/100 makes no
+measurable difference, so overlap can be 0 and save ~1% of chunks. (4) 500 is nominally best but is close to the
+embedding model's 512-token limit (heading prefix + text can be cut), so we keep 400/50 and do not claim a win.

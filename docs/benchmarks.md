@@ -505,3 +505,26 @@ $7 per 3,500 chunks plus every future re-index. Anthropic reports larger gains w
 reranker removing the rest; here the reranker (+7 R@5, B-026) already fixes most of what a blurb would. Decision: keep blurbs
 OFF by default (`BLURBS_ENABLED=false`); not recommended at this corpus size. Not measured: answer-level quality and blurbs in the
 keyword index. Peak memory 2.0 GB.
+
+## B-033 Embedding model comparison (2026-10-08, task 6.6, ADR 006 checklist)
+`evals/embedding_experiments.py`. All of Tenant A (3,547 chunks, same chunks for every model), dense search in memory, the real eval
+metrics on 87 Tenant A answerable non-follow-up questions (unreviewed gold; one question = about 1 point). The 24 PDF/DOCX questions are
+also reported apart (the most specialised text). Shortlist from public MTEB retrieval scores (arctic-m 54.9, bge-base 53.3,
+nomic 53.3: within 1.7 points of each other, so our own data decides) and the checklist (local via fastembed, permissive licence).
+Prefixes: nomic needs `search_query:` / `search_document:` and arctic recommends a query instruction; fastembed adds neither, so
+the script adds them (a first nomic run WITHOUT prefixes scored R@5 0.67, MRR 0.51: handicapped, replaced below).
+
+| model (dim, licence) | R@1 | R@5 | R@10 | MRR | PDF/DOCX R@5 (n=24) | markdown R@5 | embed s / 1000 chunks | query ms |
+|---|---|---|---|---|---|---|---|---|
+| bge-small-en-v1.5 (384, MIT) **current** | 0.42 | 0.75 | 0.89 | 0.62 | 0.79 | 0.73 | 226 | 9 |
+| bge-base-en-v1.5 (768, MIT) | 0.49 | 0.79 | 0.87 | 0.65 | 0.75 | 0.80 | n/a (cached; about 1,000) | 28 |
+| nomic-embed-text-v1.5 (768, Apache-2.0), with prefixes | 0.32 | 0.68 | 0.78 | 0.52 | 0.75 | 0.65 | 570 | 45 |
+| snowflake-arctic-embed-m (768, Apache-2.0), with query prefix | 0.54 | 0.81 | 0.88 | 0.72 | 0.79 | 0.82 | 417 | 39 |
+
+Findings: arctic-m is best on our documents: +6 points R@5, +12 points R@1, +10 points MRR over the current model, at 1.8x the
+embedding time and 2x the vector size (768 vs 384). bge-base gains less and loses on the PDFs. nomic is clearly worse here despite
+its longer input window. For the PDF/DOCX questions no model beat 0.79, so there is no case for a second, specialised model
+(checklist item 6). Not compared: hosted models (Cohere, OpenAI, Voyage: no keys). Measured on dense search only; after the reranker
+the gap may shrink (the reranker lifts R@5 by 7 points, B-026) and should be re-measured before switching. Switching costs: migration to
+vector(768), a full re-embed (about 25 minutes per tenant), a new HNSW index, a re-run of `make eval`. Not switched yet: owner decision.
+Peak memory per run: 1.9-3.0 GB (the 768-dim models are heavier), run one at a time.

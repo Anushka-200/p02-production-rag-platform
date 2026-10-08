@@ -33,6 +33,15 @@ MODELS = {
     "snowflake/snowflake-arctic-embed-m": 768,
 }
 CACHE_DIR = Path("data/cache")
+# (query prefix, document prefix) the model's authors require or recommend; fastembed adds none of them.
+# BGE v1.5 works without an instruction. A first nomic run WITHOUT its prefixes scored R@5 0.67 (unfair).
+PREFIXES = {
+    "nomic-ai/nomic-embed-text-v1.5": ("search_query: ", "search_document: "),
+    "snowflake/snowflake-arctic-embed-m": (
+        "Represent this sentence for searching relevant passages: ",
+        "",
+    ),
+}
 
 
 def main() -> None:
@@ -56,16 +65,18 @@ def main() -> None:
     print("|---|---|---|---|---|---|---|---|---|---|")
     for name in args.models.split(","):
         model = LocalEmbedder(name, MODELS[name], 16)
-        cache_file = CACHE_DIR / f"emb_{hashlib.sha1(name.encode()).hexdigest()[:8]}.npy"
+        qp, dp = PREFIXES.get(name, ("", ""))
+        tag = name if not (qp or dp) else f"{name}|{qp}|{dp}"
+        cache_file = CACHE_DIR / f"emb_{hashlib.sha1(tag.encode()).hexdigest()[:8]}.npy"
         started = time.perf_counter()
         if cache_file.exists():
             matrix, per_1000 = np.load(cache_file), float("nan")
         else:
-            matrix = np.array(model.embed_documents(texts), dtype=np.float32)
+            matrix = np.array(model.embed_documents([dp + t for t in texts]), dtype=np.float32)
             per_1000 = (time.perf_counter() - started) / len(texts) * 1000
             np.save(cache_file, matrix)
         t = time.perf_counter()
-        qvec = {i.id: np.array(model.embed_query(i.question)) for i in items}
+        qvec = {i.id: np.array(model.embed_query(qp + i.question)) for i in items}
         q_ms = (time.perf_counter() - t) / len(items) * 1000
 
         def results(item: EvalItem, matrix: np.ndarray = matrix, qvec: dict = qvec) -> list[Any]:  # type: ignore[type-arg]  # noqa: E501

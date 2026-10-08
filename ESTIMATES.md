@@ -227,3 +227,4 @@ Owner estimate for 2.7+2.8+2.9: O 15 / M 20 / P 25 min (PERT 20 min).
 | Phase 6 block 6 (6.11 long context vs RAG, 6.12 history compression) | 2026-10-08 18:15 | | auto-started while owner at lunch; 6.11 done (B-030, $0.43); 6.12 done (B-031, $0.11); machine froze 2026-10-08 when 3 jobs ran in parallel (rule added to CLAUDE.md) |
 
 | Phase 6 task 6.5 (contextual retrieval experiment) | 2026-10-08 19:00 | | done: B-032, ~$7 of blurbs in total; ran alone, peak RSS 2.0 GB |
+| Phase 6 task 6.6 (embedding models) | 2026-10-08 20:15 | | done: B-033; nomic needed prefixes (rerun), arctic-m best; ran one at a time, peak RSS 3.0 GB |

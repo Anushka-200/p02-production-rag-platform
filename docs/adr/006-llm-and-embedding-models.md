@@ -21,3 +21,10 @@ TBD after experiment 5. Constraint: indexed `vector` columns allow at most 2,000
 4. Check the MTEB leaderboard first; verify licences from primary files (bge-small/base MIT, nomic Apache-2.0 per fastembed metadata).
 5. A model switch = new migration (vector size) + re-embed (~16 min for the Tenant A slice).
 6. Query and chunks must use the same model per index. Two models only with separate columns/indexes and fused results, and only if the PDF gain is large (about +10 pts Recall@5).
+
+## Embedding model: measured (2026-10-08, B-033)
+Four local models compared on all of Tenant A with the real eval metrics. snowflake-arctic-embed-m (768-d, Apache-2.0)
+scored R@5 0.81 / MRR 0.72 against 0.75 / 0.62 for the current bge-small-en-v1.5 (384-d), with no PDF/DOCX advantage for any
+model. bge-base and nomic did not beat it. Recommendation: switch to arctic-m after confirming the gain survives the reranker
+(re-run retrieval with `hybrid+rerank`) and accepting the cost (vector(768) migration, full re-embed, 1.8x slower embedding).
+bge-small stays the default until that is done.

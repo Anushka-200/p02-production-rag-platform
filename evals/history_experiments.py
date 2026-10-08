@@ -134,7 +134,7 @@ def main() -> None:
                 t = rewrite_query(item.question, hist, cache=cache)
                 guard.record(t.cost_usd)
                 cost += t.cost_usd
-                rewritten.append(item.model_copy(update={"question": t.question}))
+                rewritten.append(item.model_copy(update={"question": t.text}))
             guard.record(cost)
             m = evaluate(rewritten, rank).overall
             print(

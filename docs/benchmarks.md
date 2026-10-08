@@ -465,3 +465,24 @@ Findings: RAG was 18x cheaper per answer, 11x faster, and more accurate on this 
 missed answers that were in the context. Long context would only be worth it for a small corpus that fits comfortably and
 for questions that need the whole document. Caveat: one prompt wording and one model; a larger model may do better.
 (An earlier run of this script scored RAG as 0.00 because the saved answers file lacks judge scores; fixed by re-judging.)
+
+## B-031 History compression for follow-up rewriting (2026-10-08, task 6.12)
+`evals/history_experiments.py`. The 10 eval follow-ups were buried in 8-turn conversations (unrelated turns taken from other
+eval questions and their saved answers). Recall of hybrid+rerank on the REWRITTEN question; n=10, so one question = 10 points.
+
+| referenced turn | strategy | R@5 | R@1 | rewrite prompt chars | model cost / question |
+|---|---|---|---|---|---|
+| last turn | none (no rewrite) | 0.00 | 0.00 | 0 | $0 |
+| last turn | window-3 (production) | 0.60 | 0.40 | 1,328 | $0.0005 |
+| last turn | wide (10 turns) | 0.60 | 0.40 | 4,027 | $0.0011 |
+| last turn | summary + last 2 turns | 0.70 | 0.50 | 1,250 | $0.0016 |
+| 4 turns ago | none | 0.00 | 0.00 | 0 | $0 |
+| 4 turns ago | window-3 (production) | 0.00 | 0.00 | 1,595 | $0.0006 |
+| 4 turns ago | wide (10 turns) | 0.20 | 0.20 | 4,035 | $0.0012 |
+| 4 turns ago | summary + last 2 turns | 0.10 | 0.10 | 1,465 | $0.0016 |
+
+Findings: rewriting is what matters (0.00 without it). When the referenced turn is recent, the production window already works
+and compression changes one question at most (0.60 vs 0.70). When the reference is 4 turns back the window loses it (0.00); a
+60-word summary or a 10-turn window recovers only 1-2 of 10, so a short summary drops the very detail the rewriter needs.
+Wide costs 3x the prompt for the same quality on recent references. Decision: keep window-3; no claim that compression helps.
+Spent $0.11. Peak memory 1.1 GB.

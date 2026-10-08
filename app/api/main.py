@@ -53,6 +53,7 @@ from app.rag import ask_stream
 from app.ratelimit import RateLimiter, default_limiter
 from app.retrieval.inspect import inspect_retrieval
 from app.retrieval.rerank import Reranker, get_reranker
+from app.semantic_cache import make_writer
 from app.widget import list_handoffs, list_leads, resolve_handoff, transcript
 
 logger = logging.getLogger(__name__)
@@ -122,6 +123,8 @@ def create_app(
         if connect is not None:
             return connect()
         return psycopg.connect(s.database_url("app"), autocommit=True)
+
+    cache_writer = make_writer(open_connection, s) if s.semantic_cache else None
 
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
@@ -347,6 +350,7 @@ def create_app(
                         conn, state["embedder"], state["reranker"], body.question, who.scope,
                         settings=s, stream_fn=stream_fn, complete_fn=complete_fn,
                         memory_block=format_memory_block(notes), history=history,
+                        cache_writer=cache_writer, use_cache=body.conversation_id is None,
                     ):  # fmt: skip
                         if event["type"] != "done":
                             yield sse(

@@ -216,8 +216,10 @@ Owner estimate for 2.7+2.8+2.9: O 15 / M 20 / P 25 min (PERT 20 min).
 | Phase 5 block 3 (5.4+5.5+5.6: parent expansion, RAPTOR summary tree, tree retrieval) | 2026-10-07 17:46 | 2026-10-07 22:31 | built after block 2 completed, at owner's request; end given by owner (22:31) |
 | Phase 5 block 4 (5.7+5.8+5.9: GraphRAG learn, slice, comparison harness) | 2026-10-07 19:17 | 2026-10-07 20:42 | built while owner reads block 3; end given by owner (20:42) |
 | Phase 5 block 5 (5.10+5.11: agentic RAG loop and its tests) | 2026-10-07 20:06 | 2026-10-07 23:59 | built while owner reads blocks 3-4; end given by owner (23:59) |
-| Phase 5 block 6 (5.12+5.13: connector interface, git connector, change detection, incremental re-index, deletes) | 2026-10-07 21:35 | | built while owner at dinner; end only when owner says; real run: 67 pages 4m51 full, 32 changed 1m57 incremental |
-| Phase 5 block 7 (5.14 last-updated in citations, 5.15 git-history replay, 5.17 sync tests) | 2026-10-07 22:00 | | built while owner at dinner; end only when owner says; B-024 |
-| Phase 5 block 8 (5.16 LangChain/LangGraph spike + library chunker comparison, ADR 010) | 2026-10-07 22:23 | | built while owner at dinner; end only when owner says; B-025 |
+| Phase 5 block 6 (5.12+5.13: connector interface, git connector, change detection, incremental re-index, deletes) | 2026-10-07 21:35 | 2026-10-08 15:09 | built while owner at dinner; end given by owner; real run: 67 pages 4m51 full, 32 changed 1m57 incremental |
+| Phase 5 block 7 (5.14 last-updated in citations, 5.15 git-history replay, 5.17 sync tests) | 2026-10-07 22:00 | 2026-10-08 15:18 | built while owner at dinner; end given by owner; B-024 |
+| Phase 5 block 8 (5.16 LangChain/LangGraph spike + library chunker comparison, ADR 010) | 2026-10-07 22:23 | 2026-10-08 15:23 | built while owner at dinner; end given by owner; B-025 |
 | Phase 6 block 1 (6.1 baseline, 6.4 retrieval modes, 6.8 HNSW ef_search sweep) | 2026-10-07 22:40 | | auto-started at owner's request while owner reviews Phase 5 blocks 5-7; B-026. Owner message also gave "block 4 end 22:42" but block 4's end was already logged as 20:42: not changed, awaiting owner clarification |
 | Phase 6 block 2 (6.2 chunker A vs B, 6.3 chunk size/overlap sweep) | 2026-10-07 22:50 | | running in background (evals/chunk_experiments.py) |
+
+| Phase 6 block 3 (6.5 contextual retrieval, 6.6 embedding model comparison) | 2026-10-08 15:31 | | owner asked to build after Phase 6 blocks 1-2 explanations || Phase 6 block 4 (6.7 semantic cache: table, lookup, tenant-scoped tests, threshold sweep) | 2026-10-08 15:45 | | built while blocks 2-3 experiments run in background |

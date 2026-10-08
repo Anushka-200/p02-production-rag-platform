@@ -407,3 +407,25 @@ one large, reliable difference. (2) Size and overlap barely matter between 300 a
 noise at n=87); very small chunks (200) are worse (more chunks, less context each). (3) Overlap 0/50/100 makes no
 measurable difference, so overlap can be 0 and save ~1% of chunks. (4) 500 is nominally best but is close to the
 embedding model's 512-token limit (heading prefix + text can be cut), so we keep 400/50 and do not claim a win.
+
+## B-028 Semantic cache: threshold and behaviour (2026-10-08, task 6.7)
+`evals/cache_threshold.py` (free, local embeddings): pretend the cache holds an answer for every other eval
+question (140 questions, follow-ups excluded). For each question the nearest neighbour is the entry it would hit.
+Correct = the neighbour has the same gold location; wrong = different gold or the question is unanswerable.
+
+| threshold | hits | correct | WRONG | paraphrases served (of 24) |
+|---|---|---|---|---|
+| 0.80 | 49 | 35 | 14 | 17 |
+| 0.85 | 27 | 22 | 5 | 11 |
+| 0.88 | 8 | 8 | 0 | 4 |
+| 0.90 | 6 | 6 | 0 | 3 |
+| **0.93 (chosen)** | 2 | 2 | 0 | 1 |
+| 0.96 | 2 | 2 | 0 | 1 |
+| 0.98 | 0 | 0 | 0 | 0 |
+
+The closest pair that must NOT share an answer is 0.874 ("how does the support team handle customer issues" vs
+"what resources should support use when investigating customer issues"). At 0.85 29% of hits would be wrong. So the
+threshold sits above the first wrong pair with a margin (0.93), and the local bge-small model means paraphrases
+mostly fall below it: the cache pays for repeats, not for rewordings. A better embedding model (6.6) could move this.
+Hit latency in the API test: about 10 ms total (6 ms lookup) and $0, against a fresh answer at p50 3.98 s and 0.35 cents.
+Live run against the real stack: NOT done, the Anthropic spend limit for the P02 key was reached (see ESTIMATES).

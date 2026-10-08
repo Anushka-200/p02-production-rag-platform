@@ -10,7 +10,7 @@ import psycopg
 
 from app.agent.loop import WEAK_SCORE, AgentResult, run_agent
 from app.agent.tools import ToolBox
-from app.answer import Answer, answer_question, answer_stream
+from app.answer import Answer, Citation, answer_question, answer_stream
 from app.config import Settings, get_settings
 from app.embeddings import Embedder, get_token_counter
 from app.llm import complete
@@ -20,6 +20,7 @@ from app.retrieval.parents import expand_to_parents
 from app.retrieval.rerank import Reranked, Reranker, rerank
 from app.retrieval.retrieve import Retrieval
 from app.retrieval.search import Scope
+from app.semantic_cache import CacheWriter, lookup, usable
 
 
 @dataclass
@@ -161,6 +162,8 @@ def ask_stream(
     complete_fn: Callable[..., Any] = complete,
     memory_block: str = "",
     history: list[dict[str, str]] | None = None,
+    cache_writer: CacheWriter | None = None,
+    use_cache: bool = True,
 ) -> Iterator[dict[str, Any]]:
     """The streaming flow. Events: sources (as soon as retrieval is done), token..., done.
 
@@ -177,6 +180,23 @@ def ask_stream(
         result = fn()
         timings[name] = round((time.perf_counter() - t) * 1000, 1)
         return result
+
+    # The cache is only for standalone, impersonal questions from a signed-in user: a follow-up
+    # depends on the chat (`use_cache` is False inside a conversation), and a personalised answer
+    # depends on the user's memory.
+    cache_vector: list[float] | None = None
+    if s.semantic_cache and use_cache and not history and not memory_block and usable(scope):
+        cache_vector = embedder.embed_query(question)
+        hit = timed(
+            "cache_ms",
+            lambda: lookup(
+                conn, scope, cache_vector or [], threshold=s.semantic_cache_threshold,
+                ttl_hours=s.semantic_cache_ttl_hours,
+            ),
+        )  # fmt: skip
+        if hit is not None:
+            yield from _serve_cached(question, hit.answer, timings, started)
+            return
 
     retrieval, reranked, agent, question = _gather(
         conn, embedder, reranker, question, scope, s, history, complete_fn, timed
@@ -225,4 +245,47 @@ def ask_stream(
             event["result"] = RagResult(
                 question, event["answer"], retrieval, reranked, context, timings, agent
             )
+            _save_to_cache(cache_writer, cache_vector, scope, question, event["answer"], context)
         yield event
+
+
+def _save_to_cache(
+    writer: CacheWriter | None, vector: list[float] | None, scope: Scope, question: str,
+    answer: Answer, context: Context,
+) -> None:  # fmt: skip
+    """Remember a good answer. Refusals are never cached; a failure must not lose the answer."""
+    if writer is None or vector is None or answer.refused or not answer.citations:
+        return
+    fields = {
+        "text": answer.text,
+        "citations": [vars(c) for c in answer.citations],
+        "sources": [
+            {"id": x.id, "document": x.document, "section": x.section, "pages": x.pages,
+             "anchors": x.anchors, "updated": x.updated}
+            for x in context.sources
+        ],
+        "model": answer.model,
+    }  # fmt: skip
+    try:
+        writer(scope, question, vector, fields, context.sources)
+    except Exception:
+        logging.getLogger(__name__).exception("could not save the answer to the semantic cache")
+
+
+def _serve_cached(
+    question: str, entry: dict[str, Any], timings: dict[str, float], started: float
+) -> Iterator[dict[str, Any]]:
+    """Replay a stored answer as the same events a fresh one produces: no search, no model call."""
+    yield {"type": "sources", "sources": entry["sources"]}
+    yield {"type": "token", "text": entry["text"]}
+    timings["first_token_ms"] = timings["total_ms"] = round(
+        (time.perf_counter() - started) * 1000, 1
+    )
+    answer = Answer(
+        entry["text"], False, "served from the semantic cache",
+        [Citation(**c) for c in entry["citations"]], model="cache",
+    )  # fmt: skip
+    result = RagResult(
+        question, answer, Retrieval([], "cache", ""), [], Context("", [], 0), timings, None
+    )
+    yield {"type": "done", "answer": answer, "replaced": False, "result": result}

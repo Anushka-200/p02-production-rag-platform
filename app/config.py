@@ -109,6 +109,11 @@ class Settings(BaseSettings):
     agent_max_rounds: int = 2  # planning rounds (the second only when the first was not enough)
     agent_max_tool_calls: int = 4
     agent_max_cost_usd: float = 0.01  # the agent's own model calls, per question
+    # Semantic cache (Phase 6): off until its threshold is chosen from real data (benchmark B-028)
+    semantic_cache: bool = False
+    semantic_cache_threshold: float = 0.93  # cosine similarity needed to reuse an answer
+    semantic_cache_ttl_hours: float = 24.0
+    semantic_cache_max_per_org: int = 2000
     # Chat history and memory (Phase 3)
     history_max_turns: int = 6  # most recent question+answer pairs that may go into a prompt
     history_budget_tokens: int = 1500  # ...and never more than this many tokens of them

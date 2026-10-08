@@ -428,7 +428,10 @@ The closest pair that must NOT share an answer is 0.874 ("how does the support t
 threshold sits above the first wrong pair with a margin (0.93), and the local bge-small model means paraphrases
 mostly fall below it: the cache pays for repeats, not for rewordings. A better embedding model (6.6) could move this.
 Hit latency in the API test: about 10 ms total (6 ms lookup) and $0, against a fresh answer at p50 3.98 s and 0.35 cents.
-Live run against the real stack: NOT done, the Anthropic spend limit for the P02 key was reached (see ESTIMATES).
+Live run against the real stack (`scripts/cache_live.py`, real model, $0.006): first ask 11.2 s (CPU was busy with
+experiments) and $0.0032; the same question again 19 ms and $0, same citations; a lower-case rewording 19 ms and $0
+(similarity above 0.93); the same words asked as the OTHER tenant: a miss, answered fresh (and correctly refused, since
+Tenant B has no such document). One cache row saved, shareable because only org-visible documents were used.
 
 ## B-029 Per-tenant budget: the runaway-cost test (2026-10-08, task 6.13)
 Fake model, every fresh answer costs $0.002, org cap set to $0.005 (`tests/test_budget.py`). A script hammers `/chat` 50 times:

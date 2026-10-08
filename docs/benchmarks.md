@@ -447,3 +447,21 @@ Fake model, every fresh answer costs $0.002, org cap set to $0.005 (`tests/test_
 Without the check the same loop would have spent $0.10 (50 x $0.002), i.e. 20x the cap. Production default cap: $5 per org per
 day (`ORG_DAILY_BUDGET_USD`, 0 = unlimited, per-org override in `orgs.daily_budget_usd`). Covers member chat, widget and WhatsApp.
 Known limit: parallel requests already in flight when the cap is crossed still finish (overshoot <= parallelism x one answer).
+
+## B-030 Long context vs RAG (2026-10-08, task 6.11)
+`evals/long_context.py`. Corpus: Tenant A `finance` folder, 150,080 tokens, put whole into Haiku 4.5's prompt (prompt-cached).
+17 eval questions whose gold is in that folder; same judge and (unreviewed) gold answers for both sides. Long context is
+told the right folder for free, which RAG (searching all of Tenant A) is not: a generous setup for long context. Informal, n=17.
+
+| approach | correctness strict | correctness lenient | cost per answer | latency median | context |
+|---|---|---|---|---|---|
+| RAG (8 chunks) | 0.91 | 0.91 | $0.0033 | 4.2 s | ~3,000 tokens |
+| Long context (whole folder) | 0.35 | 0.62 | $0.0597 | 46.8 s | 150,080 tokens |
+
+"Strict" counts an answer that opens with the refusal phrase as a refusal; "lenient" judges the whole text, because the
+model often said "I couldn't find this" and then gave related facts (11 of 17 answers). First question $0.20 (cache write),
+the other 16 average $0.051 (cache reads, 10% price). Spent $0.43.
+Findings: RAG was 18x cheaper per answer, 11x faster, and more accurate on this set; with 150k tokens in the prompt the model
+missed answers that were in the context. Long context would only be worth it for a small corpus that fits comfortably and
+for questions that need the whole document. Caveat: one prompt wording and one model; a larger model may do better.
+(An earlier run of this script scored RAG as 0.00 because the saved answers file lacks judge scores; fixed by re-judging.)

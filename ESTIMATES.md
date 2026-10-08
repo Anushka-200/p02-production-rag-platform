@@ -224,4 +224,4 @@ Owner estimate for 2.7+2.8+2.9: O 15 / M 20 / P 25 min (PERT 20 min).
 
 | Phase 6 block 3 (6.5 contextual retrieval, 6.6 embedding model comparison) | 2026-10-08 15:31 | | owner asked to build after Phase 6 blocks 1-2 explanations || Phase 6 block 4 (6.7 semantic cache: table, lookup, tenant-scoped tests, threshold sweep) | 2026-10-08 15:45 | | built while blocks 2-3 experiments run in background |
 | Phase 6 block 5 (6.13 per-tenant budgets + alert + runaway-cost test, 6.14 feedback loop into eval set) | 2026-10-08 17:35 | | auto-started while owner at lunch |
-| Phase 6 block 6 (6.11 long context vs RAG, 6.12 history compression) | 2026-10-08 18:15 | | auto-started while owner at lunch |
+| Phase 6 block 6 (6.11 long context vs RAG, 6.12 history compression) | 2026-10-08 18:15 | | auto-started while owner at lunch; 6.11 done (B-030, $0.43); 6.12 script written, NOT yet run; machine froze 2026-10-08 when 3 jobs ran in parallel (rule added to CLAUDE.md) |

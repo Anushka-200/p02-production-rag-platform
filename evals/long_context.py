@@ -96,15 +96,23 @@ def main() -> None:
         json.loads(line)["item_id"]: json.loads(line)
         for line in RAG_ANSWERS.read_text().splitlines()
     }
-    lc_score, rag_score, rows = [], [], []
+    lc_score, lc_lenient, rag_score, rows = [], [], [], []
     for item in items:
         a = done[item.id]
         refused = a["text"].strip().startswith("I couldn't find")
         v = judge.correctness(item.question, a["text"], item.gold_answer)
         guard.record(v.cost_usd)
         lc_score.append(0.0 if refused else (v.score or 0.0))
+        lc_lenient.append(
+            v.score or 0.0
+        )  # judge the whole text even when it opens with the refusal phrase
         rr = rag.get(item.id)
-        rag_score.append(rr["correctness"] if rr and rr["correctness"] is not None else 0.0)
+        if rr is None or rr["refused"]:
+            rag_score.append(0.0)  # no answer, or wrongly refused an answerable question
+        else:  # the saved answers file does not keep judge scores: re-judge (cached, usually free)
+            rv = judge.correctness(item.question, rr["text"], item.gold_answer)
+            guard.record(rv.cost_usd)
+            rag_score.append(rv.score or 0.0)
         rows.append((item.id, lc_score[-1], rag_score[-1]))
     lc_cost = [done[i.id]["cost_usd"] for i in items]
     lc_lat = [done[i.id]["latency_s"] for i in items]
@@ -112,15 +120,17 @@ def main() -> None:
     rag_lat = [rag[i.id]["timings_ms"].get("answer_ms", 0) / 1000 + rag[i.id]["timings_ms"].get("retrieve_ms", 0) / 1000
                + rag[i.id]["timings_ms"].get("rerank_ms", 0) / 1000 for i in items if i.id in rag]  # fmt: skip
     print(
-        "| approach | correctness (mean of 1 / 0.5 / 0) | cost per answer | latency median s | context tokens |"
+        "| approach | correctness strict | correctness lenient | cost per answer | latency median s | context tokens |"
     )
-    print("|---|---|---|---|---|")
+    print("|---|---|---|---|---|---|")
     print(
-        f"| RAG (8 chunks, searches all of Tenant A) | {statistics.mean(rag_score):.2f} | ${statistics.mean(rag_cost):.4f} | {statistics.median(rag_lat):.1f} | ~3000 |"
+        f"| RAG (8 chunks, searches all of Tenant A) | {statistics.mean(rag_score):.2f} | {statistics.mean(rag_score):.2f} | ${statistics.mean(rag_cost):.4f} | {statistics.median(rag_lat):.1f} | ~3000 |"
     )  # noqa: E501
     print(
-        f"| Long context (whole {FOLDER} folder) | {statistics.mean(lc_score):.2f} | ${statistics.mean(lc_cost):.4f} | {statistics.median(lc_lat):.1f} | {tokens} |"
+        f"| Long context (whole {FOLDER} folder) | {statistics.mean(lc_score):.2f} | {statistics.mean(lc_lenient):.2f} | ${statistics.mean(lc_cost):.4f} | {statistics.median(lc_lat):.1f} | {tokens} |"
     )  # noqa: E501
+    refusals = sum(a["text"].strip().startswith("I couldn't find") for a in done.values())
+    print(f"long context opened with the refusal phrase on {refusals} of {len(done)} questions")
     first = lc_cost[0]
     print(
         f"first question (cache write) ${first:.4f}; the other {len(lc_cost) - 1} average ${statistics.mean(lc_cost[1:]):.4f}"

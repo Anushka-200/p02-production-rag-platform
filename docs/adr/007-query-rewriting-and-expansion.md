@@ -1,6 +1,6 @@
 # ADR 007: Query rewriting and expansion
 
-Status: proposed (2026-09-30)
+Status: accepted (2026-10-08): rewriting ON (follow-ups 0.00 -> 0.60); multi-query and HyDE OFF (no measured benefit); history window kept (B-019, B-031)
 
 ## Context
 Follow-ups are not standalone; vocabulary mismatch hurts recall.

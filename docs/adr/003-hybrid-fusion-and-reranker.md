@@ -1,6 +1,6 @@
 # ADR 003: Hybrid fusion and reranker
 
-Status: proposed (2026-09-30)
+Status: accepted (2026-10-08): hybrid + local reranker is the default; the reranker is the clear win (+7 R@5), hybrid did not beat dense on our meaning-heavy questions (B-026)
 
 ## Context
 Dense misses exact tokens; keyword misses vocabulary mismatch; neither reads query and chunk together.

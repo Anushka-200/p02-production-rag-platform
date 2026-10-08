@@ -1,6 +1,6 @@
 # ADR 008: Hierarchical, GraphRAG and agentic RAG
 
-Status: proposed (2026-09-30)
+Status: accepted (2026-10-08): parents, summary tree, GraphRAG and the agent are built and tested but OFF by default; gains small or mixed (B-020 to B-022)
 
 ## Context
 Some questions need surrounding context, whole-corpus themes, relationships or several searches.

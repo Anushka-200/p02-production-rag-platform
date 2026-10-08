@@ -1,6 +1,6 @@
 # ADR 006: LLM and embedding models
 
-Status: proposed (2026-09-30)
+Status: accepted (2026-10-08) with one open decision: arctic-embed-m beats the current bge-small (B-033), switch pending
 
 ## Context
 Cheap default tier via LiteLLM; Anthropic has no embedding model.

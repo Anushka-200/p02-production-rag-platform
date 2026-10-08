@@ -1,6 +1,6 @@
 # ADR 001: Vector store
 
-Status: proposed (2026-09-30)
+Status: accepted (2026-10-08): pgvector kept; filtered HNSW needs iterative scan (B-007); ef_search does not matter at this size (B-026)
 
 ## Context
 Need dense + keyword search and tenant isolation in one system, self-hostable locally and on RDS.

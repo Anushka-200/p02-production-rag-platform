@@ -1,6 +1,6 @@
 # ADR 009: Connectors and incremental sync
 
-Status: proposed (2026-09-30)
+Status: accepted, implemented in Phase 5 (2026-10-08): fingerprint sync re-embeds only changed pages (B-023, B-024)
 
 ## Context
 Wikis change daily; re-indexing everything is wasteful and stale answers are wrong answers.

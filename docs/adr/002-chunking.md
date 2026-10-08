@@ -1,6 +1,6 @@
 # ADR 002: Chunking strategy
 
-Status: proposed (2026-09-30)
+Status: accepted (2026-10-08): structured 400/50 kept; +8 points R@5 over recursive, size and overlap barely matter (B-003, B-027)
 
 ## Context
 Chunking is fixed at ingestion; a wrong choice means re-embedding everything.

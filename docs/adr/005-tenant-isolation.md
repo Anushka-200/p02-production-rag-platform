@@ -1,6 +1,6 @@
 # ADR 005: Tenant isolation
 
-Status: proposed (2026-09-30)
+Status: accepted, implemented in Phase 3 (2026-10-02); extended to the cache, budget and connector tables in Phase 5-6
 
 ## Context
 Model output must never decide tenant; a forgotten WHERE must not leak.

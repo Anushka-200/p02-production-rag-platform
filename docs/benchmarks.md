@@ -486,3 +486,22 @@ and compression changes one question at most (0.60 vs 0.70). When the reference 
 60-word summary or a 10-turn window recovers only 1-2 of 10, so a short summary drops the very detail the rewriter needs.
 Wide costs 3x the prompt for the same quality on recent references. Decision: keep window-3; no claim that compression helps.
 Spent $0.11. Peak memory 1.1 GB.
+
+## B-032 Contextual retrieval (2026-10-08, task 6.5)
+`evals/contextual_experiment.py`. All of Tenant A (3,547 chunks), the same chunks twice: plain, and with a short Haiku 4.5 blurb
+placed before the chunk text and embedded together (Anthropic's contextual-embeddings idea). bge-small, dense search in memory,
+the real eval metrics on 87 Tenant A answerable non-follow-up questions (unreviewed gold; one question = about 1 point).
+
+| variant | R@1 | R@5 | R@10 | MRR | nDCG@10 |
+|---|---|---|---|---|---|
+| plain chunks | 0.42 | 0.75 | 0.89 | 0.62 | 0.67 |
+| with Haiku blurb | 0.46 | 0.79 | 0.88 | 0.64 | 0.68 |
+
+Cost: 3,547 blurb calls, 0 failures; this final run paid for 1,272 of them ($2.54, 7.9M tokens read from the prompt cache). All
+3,547 at the same rate come to about $7 (about $0.002 per chunk), matching the $7.91 projection in B-004. Generation took about
+80 minutes of wall-clock with 8 parallel calls; embedding the longer texts was slower than plain chunks.
+Findings: +4 points at R@1 and R@5, -1 at R@10, +2 MRR: a small gain of about 3-4 questions, inside the noise at n=87, for about
+$7 per 3,500 chunks plus every future re-index. Anthropic reports larger gains with a weaker keyword/embedding baseline and a
+reranker removing the rest; here the reranker (+7 R@5, B-026) already fixes most of what a blurb would. Decision: keep blurbs
+OFF by default (`BLURBS_ENABLED=false`); not recommended at this corpus size. Not measured: answer-level quality and blurbs in the
+keyword index. Peak memory 2.0 GB.

@@ -24,6 +24,9 @@ from starlette.concurrency import run_in_threadpool
 
 from app.api.auth import Principal, normalise_origin, site_principal
 from app.api.sse import done_payload, sse
+from app.budget import record as record_spend
+from app.budget import run_cost
+from app.budget import status as budget_status
 from app.config import Settings
 from app.db.tenant import tenant_connection
 from app.rag import ask_stream
@@ -176,7 +179,10 @@ def build_widget_router(ctx: WidgetContext) -> APIRouter:
         assert who.site is not None
         scope = who.scope
         with tenant_connection(ctx.open_connection, scope, write=True) as conn:
-            if spent_today(conn, scope) >= who.site.daily_budget_usd:
+            if (
+                spent_today(conn, scope) >= who.site.daily_budget_usd
+                or budget_status(conn, scope, s).exhausted
+            ):
                 logger.warning("site budget reached", extra={"site_id": str(who.site.id)})
                 raise HTTPException(429, BUSY)
             if body.session_id is not None and session_exists(conn, scope, body.session_id):
@@ -208,7 +214,13 @@ def build_widget_router(ctx: WidgetContext) -> APIRouter:
                                     w, scope, session_id, "assistant", full["text"],
                                     citations=full["citations"], refused=full["refused"],
                                 )  # fmt: skip
-                                record_usage(w, scope, full["cost_usd"])
+                                cost = run_cost(event["result"])
+                                record_usage(w, scope, cost)
+                                record_spend(
+                                    w, scope, s, cost_usd=cost,
+                                    input_tokens=event["answer"].input_tokens,
+                                    output_tokens=event["answer"].output_tokens,
+                                )  # fmt: skip
                         except Exception:
                             logger.exception("could not save the widget answer")
                         yield sse("done", {

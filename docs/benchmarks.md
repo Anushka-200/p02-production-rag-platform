@@ -429,3 +429,18 @@ threshold sits above the first wrong pair with a margin (0.93), and the local bg
 mostly fall below it: the cache pays for repeats, not for rewordings. A better embedding model (6.6) could move this.
 Hit latency in the API test: about 10 ms total (6 ms lookup) and $0, against a fresh answer at p50 3.98 s and 0.35 cents.
 Live run against the real stack: NOT done, the Anthropic spend limit for the P02 key was reached (see ESTIMATES).
+
+## B-029 Per-tenant budget: the runaway-cost test (2026-10-08, task 6.13)
+Fake model, every fresh answer costs $0.002, org cap set to $0.005 (`tests/test_budget.py`). A script hammers `/chat` 50 times:
+
+| | result |
+|---|---|
+| requests answered | 3 (spend 0.002, 0.004, 0.006) |
+| requests refused with HTTP 429 | 47 |
+| model calls made | 3 (blocked requests never reach retrieval or the model) |
+| spend at the end | $0.006: the cap plus the one answer that was already running |
+| other tenant, same moment | unaffected, answers normally |
+| alert | one warning at 80% ($0.004), one "exhausted" error at 100%, each logged once per day |
+Without the check the same loop would have spent $0.10 (50 x $0.002), i.e. 20x the cap. Production default cap: $5 per org per
+day (`ORG_DAILY_BUDGET_USD`, 0 = unlimited, per-org override in `orgs.daily_budget_usd`). Covers member chat, widget and WhatsApp.
+Known limit: parallel requests already in flight when the cap is crossed still finish (overshoot <= parallelism x one answer).

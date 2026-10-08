@@ -223,3 +223,4 @@ Owner estimate for 2.7+2.8+2.9: O 15 / M 20 / P 25 min (PERT 20 min).
 | Phase 6 block 2 (6.2 chunker A vs B, 6.3 chunk size/overlap sweep) | 2026-10-07 22:50 | | running in background (evals/chunk_experiments.py) |
 
 | Phase 6 block 3 (6.5 contextual retrieval, 6.6 embedding model comparison) | 2026-10-08 15:31 | | owner asked to build after Phase 6 blocks 1-2 explanations || Phase 6 block 4 (6.7 semantic cache: table, lookup, tenant-scoped tests, threshold sweep) | 2026-10-08 15:45 | | built while blocks 2-3 experiments run in background |
+| Phase 6 block 5 (6.13 per-tenant budgets + alert + runaway-cost test, 6.14 feedback loop into eval set) | 2026-10-08 17:35 | | auto-started while owner at lunch |

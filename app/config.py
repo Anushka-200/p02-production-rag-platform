@@ -114,6 +114,9 @@ class Settings(BaseSettings):
     semantic_cache_threshold: float = 0.93  # cosine similarity needed to reuse an answer
     semantic_cache_ttl_hours: float = 24.0
     semantic_cache_max_per_org: int = 2000
+    # Per-org daily spend cap (Phase 6, app/budget.py); 0 = unlimited; orgs may override it
+    org_daily_budget_usd: float = 5.0
+    budget_alert_fraction: float = 0.8  # a warning is logged and shown in the admin console
     # Chat history and memory (Phase 3)
     history_max_turns: int = 6  # most recent question+answer pairs that may go into a prompt
     history_budget_tokens: int = 1500  # ...and never more than this many tokens of them

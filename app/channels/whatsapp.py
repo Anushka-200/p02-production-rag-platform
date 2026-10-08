@@ -29,6 +29,9 @@ from typing import Any
 
 import psycopg
 
+from app.budget import record as record_spend
+from app.budget import run_cost
+from app.budget import status as budget_status
 from app.channels.twilio import normalise_number, phone_hash
 from app.config import Settings
 from app.db.tenant import tenant_connection
@@ -265,7 +268,10 @@ def _converse(
             update_contact(w, phash, state="chat")
             return "Thank you. A person will contact you on this number."
 
-        if spent_today(w, scope) >= channel.budget:
+        if (
+            spent_today(w, scope) >= channel.budget
+            or budget_status(w, scope, deps.settings).exhausted
+        ):
             logger.warning("site budget reached", extra={"site_id": str(scope.site_id)})
             return BUSY
         add_message(w, scope, session_id, "user", text)
@@ -290,7 +296,12 @@ def _converse(
             citations=citations,
             refused=answer.refused,
         )
-        record_usage(w, scope, answer.cost_usd)
+        cost = run_cost(result)
+        record_usage(w, scope, cost)
+        record_spend(
+            w, scope, deps.settings, cost_usd=cost, input_tokens=answer.input_tokens,
+            output_tokens=answer.output_tokens,
+        )  # fmt: skip
     if answer.refused:
         return f"{answer.text}\n\nReply HUMAN to talk to a person."
     sources = sorted({str(c["section"] or c["document"]) for c in citations})

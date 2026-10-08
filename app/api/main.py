@@ -23,6 +23,9 @@ from app.api.sse import done_payload as _done_payload
 from app.api.sse import sse
 from app.api.whatsapp import build_whatsapp_router
 from app.api.widget import WidgetContext, build_widget_router, register_cors
+from app.budget import record as record_spend
+from app.budget import run_cost, usage_report
+from app.budget import status as budget_status
 from app.channels.whatsapp import Deps as WhatsAppDeps
 from app.chat_history import (
     HistoryError,
@@ -58,6 +61,12 @@ from app.widget import list_handoffs, list_leads, resolve_handoff, transcript
 
 logger = logging.getLogger(__name__)
 WIDGET_DIR = Path(__file__).resolve().parents[2] / "widget"
+
+
+BUDGET_MESSAGE = (
+    "Your organisation has used today's AI budget. Answers resume tomorrow; "
+    "an admin can raise the limit."
+)
 
 
 class ChatRequest(BaseModel):
@@ -317,6 +326,9 @@ def create_app(
     def chat(body: ChatRequest, who: Principal = Depends(principal)) -> StreamingResponse:
         # (1) one short write transaction: the conversation, the user's message, the memories to use
         with tenant_connection(open_connection, who.scope, write=True) as conn:
+            if budget_status(conn, who.scope, s).exhausted:
+                logger.warning("org budget reached", extra={"org_id": str(who.scope.org_id)})
+                raise HTTPException(429, BUDGET_MESSAGE)
             if body.conversation_id is not None:
                 if not conversation_exists(conn, who.scope, body.conversation_id):
                     raise HTTPException(404, "conversation not found")
@@ -363,6 +375,11 @@ def create_app(
                                 add_message(
                                     w, who.scope, conversation_id, "assistant", payload["text"],
                                     citations=payload["citations"], refused=payload["refused"],
+                                )  # fmt: skip
+                                record_spend(
+                                    w, who.scope, s, cost_usd=run_cost(event["result"]),
+                                    input_tokens=event["answer"].input_tokens,
+                                    output_tokens=event["answer"].output_tokens,
                                 )  # fmt: skip
                         except Exception:
                             logger.exception("could not save the assistant message")
@@ -424,6 +441,11 @@ def create_app(
     def remove_all_memories(who: Principal = Depends(principal)) -> dict[str, int]:
         with tenant_connection(open_connection, who.scope, write=True) as conn:
             return {"deleted": delete_all_memories(conn, who.scope)}
+
+    @app.get("/admin/usage")
+    def admin_usage(who: Principal = Depends(admin)) -> dict[str, Any]:
+        with tenant_connection(open_connection, who.scope) as conn:
+            return usage_report(conn, who.scope, s)
 
     @app.get("/admin/leads")
     def admin_leads(who: Principal = Depends(admin)) -> list[dict[str, Any]]:

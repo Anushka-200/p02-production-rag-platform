@@ -228,3 +228,4 @@ Owner estimate for 2.7+2.8+2.9: O 15 / M 20 / P 25 min (PERT 20 min).
 
 | Phase 6 task 6.5 (contextual retrieval experiment) | 2026-10-08 19:00 | | done: B-032, ~$7 of blurbs in total; ran alone, peak RSS 2.0 GB |
 | Phase 6 task 6.6 (embedding models) | 2026-10-08 20:15 | | done: B-033; nomic needed prefixes (rerun), arctic-m best; ran one at a time, peak RSS 3.0 GB |
+| Phase 6 full test-suite run | 2026-10-08 20:55 | | 761 passed in 10m56s; ruff, format, mypy clean; ran alone, peak RSS 0.8 GB |

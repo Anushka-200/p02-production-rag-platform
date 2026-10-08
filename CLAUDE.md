@@ -59,6 +59,15 @@ replaying real edits from a public handbook's git history.
 - Before any push: secrets + personal-data scan across the whole history. Push only when I ask.
 - Run things for real (Docker, demos) before calling a step done - it found a bug almost every time.
 
+## Heavy jobs: one at a time (added 2026-10-08 after the laptop froze twice)
+WSL has about 6 GB of RAM. Three evals/embedding runs in parallel filled it (swap hit 3.4 GB) and froze the machine.
+- **Never run more than one heavy job at once** (evals, embedding runs, blurb generation, load tests, the full
+  test suite). Run them one after another: in the foreground, or as ONE background job.
+- Run `free -h` before each heavy job and report it. Light work (editing, lint, one small test file) may run beside a
+  single heavy job; a second heavy job may not.
+- Watch the job's RSS (`ps -o rss,cmd -p PID`); if it passes 3.5 GB, stop it and tell the owner.
+- Use the caches (`data/cache/*`) so finished work is never redone.
+
 ## Environment
 - WSL and Docker live on D: (C: is small). P01 is running alongside: Postgres **5433**, n8n **5678**,
   and P01 uses API 8000 / dashboard 8501. **P02 must use other ports** (e.g. Postgres 5434, Redis 6380,

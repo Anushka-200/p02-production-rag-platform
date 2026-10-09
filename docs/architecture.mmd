@@ -1,0 +1,24 @@
+flowchart LR
+  subgraph Sources
+    UP[Upload PDF / DOCX / MD / TXT / HTML] --> API
+    CONN[Connector: git handbook / wiki] --> SYNC[Sync: fingerprint diff]
+  end
+  API[FastAPI + JWT<br/>tenant from the token only] -->|job| Q[(Redis + RQ)]
+  SYNC --> Q
+  Q --> W[Worker: parse > clean + hidden-text removal<br/>> injection scan > chunk > embed]
+  W --> PG[(Postgres 16 + pgvector<br/>full-text index + row-level security)]
+  subgraph Query
+    C[Streamlit / website widget / WhatsApp] --> API
+    API --> BUD{Per-org + per-site<br/>budget, rate limit}
+    BUD --> RW[Rewrite follow-ups<br/>using chat history]
+    RW --> CACHE{Semantic cache<br/>scoped to org + user, OFF by default}
+    CACHE -- miss --> R[Dense + keyword > RRF]
+    R --> RR[Local cross-encoder rerank 10 > 8]
+    RR --> CTX[Context under a token budget<br/>+ per-user memory block]
+    CTX --> LLM[LiteLLM: Claude Haiku 4.5<br/>cited answer or refusal]
+    LLM --> CHK[Output checker:<br/>real citations, no images or foreign links]
+  end
+  PG --> R
+  MEM[(memories: per user, viewable and deletable)] --> CTX
+  API -.-> LF[Langfuse: tokens, cost, latency]
+  PG --- RET[Retention purge:<br/>visitor chats 90 d, leads 365 d]

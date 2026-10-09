@@ -60,3 +60,8 @@ pythonpath = ["."]
 
 [tool.uv.sources]
 en-core-web-sm = { url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl" }
+
+[tool.uv]
+# presidio-anonymizer caps cryptography below 49, but 48.0.1 has 3 published advisories (PYSEC-2026-3552/3/4).
+# We never use presidio's encryption operators and JWTs are HS256 only, so the override is low risk.
+override-dependencies = ["cryptography>=49"]

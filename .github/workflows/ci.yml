@@ -7,6 +7,7 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
@@ -18,5 +19,31 @@ jobs:
           uv run ruff format --check .
       - name: Type check
         run: uv run mypy
-      - name: Tests (no live API calls, no secrets needed)
+      - name: Start Postgres (pgvector) and Redis with throwaway secrets
+        run: |
+          for v in POSTGRES_PASSWORD RAG_OWNER_PASSWORD RAG_APP_PASSWORD RAG_WORKER_PASSWORD; do
+            echo "$v=$(openssl rand -hex 16)" >> .env
+          done
+          echo "JWT_SECRET=$(openssl rand -hex 32)" >> .env
+          docker compose up -d --wait postgres redis
+      - name: Tests (no live API calls, no API key needed; includes the 15-question mocked eval)
         run: uv run pytest -q
+      - name: Widget JavaScript tests
+        run: node --test widget/test/parse.test.js
+
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Known vulnerabilities in the locked dependencies
+        run: |
+          uv export --locked --no-hashes --no-emit-project -o requirements.txt
+          uvx pip-audit -r requirements.txt --no-deps --disable-pip
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: The image builds
+        run: docker build -t p02-rag .

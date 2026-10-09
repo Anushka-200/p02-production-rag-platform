@@ -4,8 +4,11 @@
 setup:  ## Install dependencies
 	uv sync
 
-up:  ## Start Postgres (pgvector) and Redis
-	docker compose up -d
+up:  ## Start only Postgres (pgvector) and Redis, for development outside Docker
+	docker compose up -d postgres redis
+
+up-all:  ## Build and start everything: Postgres, Redis, migrations, API (:8001), worker, UI (:8502)
+	docker compose up -d --build --wait
 
 down:  ## Stop the services (data volume is kept)
 	docker compose down
@@ -32,8 +35,11 @@ adversarial: ## isolation attacks: prints "N attacks, 0 leaks"
 eval-fast:  ## Retrieval metrics only (free)
 	uv run python -m evals.run --label retrieval-only
 
-bench:  ## Show logged benchmark runs (added in Phase 6)
-	@echo "not implemented yet: Phase 6"
+bench:  ## List every logged measurement (details in docs/benchmarks.md)
+	@grep -E "^## B-" docs/benchmarks.md
+
+eval-ci:  ## The 15-question mocked eval that CI runs (free, needs `make up`)
+	uv run pytest tests/test_mini_eval.py -q -s | grep -E "MINI EVAL|passed|failed"
 
 demo-widget: ## serve the demo customer website on :8080 (open http://localhost:8080/?key=YOUR_SITE_KEY)
 	cd widget/demo && python3 -m http.server 8080
@@ -44,8 +50,13 @@ test-widget-js: ## the widget's JavaScript tests (Node)
 demo-tenants: ## live two-company run (needs: API with ENVIRONMENT=prod on 8001 and the worker running)
 	uv run python -m scripts.two_tenant_demo --yes
 
-demo:  ## Run the demo (added in Phase 8)
-	@echo "not implemented yet: Phase 8"
+demo: up-all  ## Start everything and create a demo admin (demo@demo.example / the password printed below)
+	@docker compose exec -T -e USER_PASSWORD=demo-password-123 api \
+		python -m scripts.create_user --org "Demo Co" --email demo@demo.example --role admin
+	@echo ""
+	@echo "UI:  http://localhost:8502   login demo@demo.example / demo-password-123"
+	@echo "API: http://localhost:8001/docs"
+	@echo "Next: follow docs/DEMO_SCRIPT.md (upload a document, ask a question, see the citations)"
 
 purge:  ## Delete expired visitor data (chats, leads, WhatsApp routing); see docs/DATA_POLICY.md
 	uv run python -m scripts.purge_expired

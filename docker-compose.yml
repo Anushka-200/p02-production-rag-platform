@@ -1,3 +1,5 @@
+# Everything: `docker compose up` (or `make up-all`) starts Postgres, Redis, the migration job, the API, the
+# ingestion worker and the UI. `make up` starts only Postgres and Redis for development outside Docker.
 # Local dev services. Ports are bound to 127.0.0.1 only and differ from P01 (5433, 5678, 8000, 8501).
 services:
   postgres:
@@ -30,5 +32,62 @@ services:
       timeout: 3s
       retries: 10
 
+  # one-shot job: applies the migrations as the table-owner role, then exits
+  migrate:
+    build: .
+    command: ["python", "-m", "app.db.migrate"]
+    environment: &app-env
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      RAG_OWNER_PASSWORD: ${RAG_OWNER_PASSWORD}
+      RAG_APP_PASSWORD: ${RAG_APP_PASSWORD}
+      RAG_WORKER_PASSWORD: ${RAG_WORKER_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      LANGFUSE_PUBLIC_KEY: ${LANGFUSE_PUBLIC_KEY:-}
+      LANGFUSE_SECRET_KEY: ${LANGFUSE_SECRET_KEY:-}
+      LANGFUSE_HOST: ${LANGFUSE_HOST:-https://cloud.langfuse.com}
+      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN:-}
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-}
+      ENVIRONMENT: ${ENVIRONMENT:-prod}   # prod switches the dev login header off
+    depends_on:
+      postgres: {condition: service_healthy}
+
+  api:
+    build: .
+    ports: ["127.0.0.1:${API_PORT:-8001}:8001"]
+    environment: *app-env
+    volumes: ["uploads:/app/data/uploads", "models:/models"]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8001/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  worker:
+    build: .
+    command: ["python", "-m", "app.worker"]
+    environment: *app-env
+    volumes: ["uploads:/app/data/uploads", "models:/models"]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+
+  ui:
+    build: .
+    command: ["streamlit", "run", "ui/Chat.py", "--server.port", "8502", "--server.address", "0.0.0.0"]
+    ports: ["127.0.0.1:${UI_PORT:-8502}:8502"]
+    environment:
+      API_URL: http://api:8001
+    depends_on:
+      api: {condition: service_healthy}
+
 volumes:
   pgdata:
+  uploads:
+  models:

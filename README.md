@@ -87,6 +87,8 @@ cp .env.example .env            # fill the passwords, JWT_SECRET (openssl rand -
 make demo                       # builds the image, starts Postgres, Redis, API :8001, worker, UI :8502, creates a demo admin
 # open http://localhost:8502 and log in as demo@demo.example / demo-password-123
 ```
+The first build downloads all dependencies (about 25 minutes on a slow connection; later builds use the cache) and the first API start downloads the
+embedding and reranker models (about 1.5 minutes). Verified from a fresh clone: login, upload, ingestion by the worker and a cited answer all work (`docker compose`, 2026-10-09).
 Development without Docker for the app: `make setup && make up && make migrate`, then
 `uv run uvicorn app.api.main:_default_app --factory --port 8001`, `uv run python -m app.worker`, `uv run streamlit run ui/Chat.py --server.port 8502`.
 

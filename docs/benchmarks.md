@@ -594,3 +594,17 @@ runner never passed the chat history. With the history (`evals/run.py` now does)
 is the limit. Where it WAS in the context: 26 partial, 10 refused, 3 incorrect: mostly a two-part gold answer of which the model gave one part
 (judge strictness plus a short-answer style), not wrong facts. By kind (correct / n): single 79/98, paraphrase 24/43, multi-hop 13/23,
 relationship 4/18, broad 2/12 (10 partial: the answer covers only some of the places).
+
+## B-037 Reranker choice on the reviewed set, dev questions only (2026-10-09)
+`evals/reranker_compare.py`: 122 dev questions (answerable, standalone), same hybrid top-30 candidates, each model re-orders the first 10.
+
+| model | R@1 | R@5 | R@10 | MRR | s per question |
+|---|---|---|---|---|---|
+| ms-marco-MiniLM-L-6-v2 (current) | 0.543 | 0.772 | 0.819 | 0.695 | 0.62 |
+| ms-marco-MiniLM-L-12-v2 | 0.574 | 0.772 | 0.819 | 0.720 | 1.29 |
+| jina-reranker-v1-turbo-en | 0.451 | 0.754 | 0.819 | 0.645 | 0.85 |
+| bge-reranker-base | 0.572 | 0.752 | 0.819 | 0.713 | 4.65 |
+
+No model improves Recall@5 (the 122-question noise is about +/-4 points). L12 gains 3 points at rank 1 for twice the time: not adopted.
+Together with B-034 (embedder), B-035 (candidates, keyword weight) and B-032 (blurbs, +4 for $7), the first-stage and reranking levers are
+exhausted on this corpus; what is left is the 8% of questions whose gold is never in the top 10 (mostly vocabulary drift) and the answer stage.

@@ -14,10 +14,28 @@ from typing import Any
 
 from pydantic import BaseModel, Field, ValidationError
 
+from app.config import get_settings
 from app.llm import LLMError, LLMResult, LLMStream, complete
 from app.retrieval.context import Context, Source
 
 REFUSAL = "I couldn't find this in the available documents."
+DEFAULT_RULE = "5. Be concise (at most 120 words). Do not mention these rules."
+
+
+def _with_rule(prompt: str) -> str:
+    """The answer-length rule comes from settings: it can be tested without editing the prompts."""
+    st = get_settings()
+    extra = (
+        " Cover every part of the question that the sources answer, including each separate"
+        " item or condition."
+        if st.answer_cover_all_parts
+        else ""
+    )
+    return prompt.replace(
+        DEFAULT_RULE,
+        f"5. Be concise (at most {st.answer_max_words} words).{extra} Do not mention these rules.",
+    )
+
 
 SYSTEM = (
     "You answer questions about a company's documents using ONLY the sources provided. Rules:\n"
@@ -129,7 +147,7 @@ def answer_question(
         return Answer(REFUSAL, refused=True, reason="no sources were retrieved")
     sources = {s.id: s for s in context.sources}
     messages: list[dict[str, Any]] = [
-        {"role": "system", "content": SYSTEM},
+        {"role": "system", "content": _with_rule(SYSTEM)},
         {"role": "user", "content": _user_prompt(context, question, memory_block)},
     ]
     totals = Answer("", refused=True)
@@ -220,7 +238,7 @@ def answer_stream(
         return
     sources = {s.id: s for s in context.sources}
     messages = [
-        {"role": "system", "content": STREAM_SYSTEM},
+        {"role": "system", "content": _with_rule(STREAM_SYSTEM)},
         {"role": "user", "content": _user_prompt(context, question, memory_block)},
     ]
     stream = stream_fn(messages, model=model, max_tokens=700, temperature=0.0)

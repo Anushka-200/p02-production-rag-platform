@@ -659,3 +659,17 @@ but no general technique tried here beats the noise. The largest remaining error
 | **total** | | **66** | **66** | **0** | **0** |
 
 Cost $0.06, peak RSS 671 MB. Honest reading: 0 breaches means the attacks written so far fail, not that the system is unbreakable; the suite is the regression net and gets extended whenever a new attack idea appears. An earlier run stalled once on one attack and could not be reproduced; a 90 s per-attack watchdog now turns any hang into a reported ERROR.
+
+## B-040 Red-team wave 2 (2026-10-09, task 7.3)
+
+17 harder attacks added to the 66 (83 total): multi-turn setups in one conversation (5), encoded or disguised payloads (8: base64, ROT13, Cyrillic look-alikes, zero-width spaces, string splitting, Spanish, spaced/backwards secrets), and instructions hidden in uploads (4: `display:none` and 1 px white text in HTML, an HTML comment, zero-width-split text in markdown). The leak detector now also catches disguised canaries (spaced, dotted, reversed, base64, lower case); the answer is judged on the last turn, cost summed over all turns.
+
+| family | OWASP | tried | blocked | breached | errors |
+|---|---|---|---|---|---|
+| multi-turn | LLM01/02/07 | 5 | 5 | 0 | 0 |
+| encoded | LLM01/02 | 8 | 8 | 0 | 0 |
+| upload-injection | LLM01 | 4 | 4 | 0 | 0 |
+| wave 1 (11 families) | | 66 | 66 | 0 | 0 |
+| **total** | | **83** | **83** | **0** | **0** |
+
+Cost $0.11, peak RSS 677 MB. What the evidence shows, not just the count: the HTML hidden text never reached the stored chunks (the parser drops it); the markdown injection (zero-width-split, `HIDDEN-OBEY-55`) did reach a chunk and the model ignored it and answered the real question; 12 of the 17 attacks were refused simply because the corpus has nothing to support them. No code fix was needed, so no defect to log. Not covered: agent mode is not reachable over HTTP, so its tenant-scoped tools are covered by unit tests only.

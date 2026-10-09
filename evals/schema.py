@@ -5,9 +5,19 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 
-class GoldRef(BaseModel):
+class Place(BaseModel):
     doc: str  # source_uri, e.g. "gitlab/total-rewards/benefits/_index.md"
     locator: str  # a heading anchor ("time-off") or "page:6" for PDFs
+
+
+class GoldRef(Place):
+    """One place the answer must come from. `alt` lists other places that answer the SAME part equally well
+    (found while reviewing: two pages really do say it); finding the gold or any alternative counts."""
+
+    alt: list[Place] = Field(default_factory=list)
+
+    def places(self) -> list[Place]:
+        return [Place(doc=self.doc, locator=self.locator), *self.alt]
 
 
 class EvalItem(BaseModel):
@@ -26,6 +36,11 @@ class EvalItem(BaseModel):
     corpus: str  # gitlab | posthog | irs-p15b | irs-p969 | opm
     tags: list[str] = Field(default_factory=list)
     flags: list[str] = Field(default_factory=list)  # automatic warnings for the reviewer
-    reviewed: bool = False  # set to true by the human reviewer (P01's eval never recorded this)
+    reviewed: bool = (
+        False  # set to true once somebody has read it against the source (see `reviewer`)
+    )
+    reviewer: str = (
+        ""  # who: "claude" (model review, 2026-10-09) or "human"; empty while unreviewed
+    )
     review_notes: str = ""
     drafted_by: str = ""

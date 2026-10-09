@@ -1,0 +1,602 @@
+{
+ "a-follow_up-001": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-follow_up-002": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-follow_up-003": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-follow_up-004": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-follow_up-005": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-follow_up-006": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-follow_up-007": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-follow_up-008": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-multi_hop-001": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "a-multi_hop-002": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "a-multi_hop-003": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "a-multi_hop-004": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "a-multi_hop-005": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "a-multi_hop-006": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "a-multi_hop-007": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "a-multi_hop-008": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "a-single-001": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-002": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-003": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-004": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-005": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-006": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-007": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-008": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-009": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-010": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-011": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-012": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-013": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-014": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-015": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-016": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-017": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-018": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-019": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-020": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-021": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-022": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-023": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-024": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-025": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-026": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-027": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-028": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-029": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-030": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "a-single-031": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "a-single-032": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-033": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "a-single-034": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-035": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-036": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-037": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-038": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-039": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-040": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-041": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-042": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-043": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-044": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "a-single-045": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-046": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-single-047": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-unanswerable-001": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-unanswerable-002": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-unanswerable-003": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-unanswerable-004": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-unanswerable-005": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-unanswerable-006": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-unanswerable-007": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-unanswerable-008": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-unanswerable-009": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-unanswerable-010": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "a-unanswerable-011": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "b-follow_up-001": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "b-follow_up-002": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "b-single-001": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "b-single-002": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "b-single-003": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "b-single-004": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "b-single-005": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "b-single-006": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "b-single-007": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "b-single-008": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "b-single-009": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "b-single-010": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "b-single-011": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "b-single-012": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "b-single-013": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "b-single-014": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "b-unanswerable-001": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "b-unanswerable-002": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "b-unanswerable-003": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "b-unanswerable-004": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "p-a-single-005": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "p-a-single-043": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "p-a-single-032": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "p-b-single-007": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "p-a-single-023": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "p-a-single-034": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "p-a-single-045": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "p-b-single-010": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "p-a-single-019": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "p-a-single-040": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "p-a-single-031": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "p-b-single-002": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "p-a-single-006": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "p-a-single-044": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "p-a-single-033": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "p-b-single-006": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "p-a-single-017": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "p-a-single-042": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "p-a-single-041": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "p-b-single-003": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "p-a-single-036": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "p-a-single-030": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "p-a-single-029": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "p-b-single-005": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "b-posthog-621f91db": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "b-posthog-5d550492": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "b-gitlab-f0c2ef6c": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "b-gitlab-5fa5a5d9": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "b-posthog-0585711a": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "b-posthog-b718bab4": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "b-posthog-ca24a6e7": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "b-posthog-0cc512dd": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "b-posthog-70da3b64": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "b-posthog-e05207d8": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "b-gitlab-079c25c7": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "b-posthog-100047a0": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "r-1ed4932d": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "r-f9296f0b": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "r-49d80fcd": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "r-ac6f2e02": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "r-1835b639": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "r-0eea993e": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "r-16c4115c": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "r-8f01604e": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "r-deb7c5d9": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "r-c1312bc6": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "r-ff3235f8": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "r-7f0f8ec2": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "r-88f9b5ab": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "r-4b1d5515": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "r-336dcdbf": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "r-aeeda4c2": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "r-b3690bd3": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "r-d2ccd2ad": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "r-f0c1431d": {
+  "missing_gold": [],
+  "bad_support": true
+ },
+ "r-f23846d6": {
+  "missing_gold": [],
+  "bad_support": true
+ }
+}

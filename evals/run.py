@@ -145,7 +145,7 @@ def gold_in_context(item: EvalItem, sources: Sequence[Any]) -> bool:
     return any(
         s.document == g.doc and (g.locator in s.anchors or (g.locator.startswith("page:") and s.pages is not None
                                   and int(g.locator[5:]) in _page_range(s.pages)))
-        for s in sources for g in item.gold
+        for s in sources for gold in item.gold for g in gold.places()
     )  # fmt: skip
 
 

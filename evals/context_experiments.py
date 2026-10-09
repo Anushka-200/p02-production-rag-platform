@@ -51,17 +51,19 @@ CONFIGS: dict[str, dict[str, Any]] = {
 
 
 def covered(gold: GoldRef, sources: list[Any]) -> bool:
+    """The gold place (or one of its accepted alternatives) is in the sources the model saw."""
     return any(
-        s.document == gold.doc
+        s.document == p.doc
         and (
-            gold.locator in s.anchors
+            p.locator in s.anchors
             or (
-                gold.locator.startswith("page:")
+                p.locator.startswith("page:")
                 and s.pages
-                and int(gold.locator[5:]) in _page_range(s.pages)
+                and int(p.locator[5:]) in _page_range(s.pages)
             )
         )
         for s in sources
+        for p in gold.places()
     )
 
 

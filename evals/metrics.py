@@ -15,7 +15,7 @@ from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
 from typing import Any, Protocol
 
-from evals.schema import EvalItem, GoldRef
+from evals.schema import EvalItem, GoldRef, Place
 
 DEFAULT_KS = (1, 5, 10, 50)
 
@@ -28,6 +28,11 @@ class Result(Protocol):
 
 
 def covers(result: Result, gold: GoldRef) -> bool:
+    """A result covers a gold place if it covers the place itself or one of its accepted alternatives."""
+    return any(_covers_one(result, p) for p in gold.places())
+
+
+def _covers_one(result: Result, gold: Place) -> bool:
     if result.source_uri != gold.doc:
         return False
     if gold.locator.startswith("page:"):

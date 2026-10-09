@@ -1,0 +1,150 @@
+{"id":"a-follow_up-001","v":"keep"}
+{"id":"a-follow_up-002","v":"keep"}
+{"id":"a-follow_up-003","v":"fix","answer":"The candidate struggled to give clear instructions to the people they manage: they changed project directions several times, at the last minute and without sufficient notice.","note":"gold answer claimed direct reports felt 'unheard and confused', which the passage does not say"}
+{"id":"a-follow_up-004","v":"keep"}
+{"id":"a-follow_up-005","v":"keep"}
+{"id":"a-follow_up-006","v":"keep"}
+{"id":"a-follow_up-007","v":"fix","answer":"Career Development Conversations.","note":"'during one-on-one meetings' is inferred from a link target, not stated in the text; trimmed"}
+{"id":"a-follow_up-008","v":"keep"}
+{"id":"a-multi_hop-001","v":"keep","note":"two-part question from one document, not a chain"}
+{"id":"a-multi_hop-002","v":"keep","note":"two-part question from one document, not a chain"}
+{"id":"a-multi_hop-003","v":"fix","question":"Based on the CFO Jessica Ross's README, how would you best present a financial analysis to her?","gold":[{"doc":"gitlab/finance/readmes/jessica-ross.md","locator":"communication-style"}],"note":"question said 'this person' without naming anyone (unanswerable as written); the About Me section is not needed for the answer"}
+{"id":"a-multi_hop-004","v":"keep","note":"two-part question from one document"}
+{"id":"a-multi_hop-005","v":"fix","question":"Who is required to follow GitLab Ireland's Right to Disconnect Policy about when to send work communications?","note":"question did not name the country; the France charter has near-identical text, so the original had two valid sources"}
+{"id":"a-multi_hop-006","v":"fix","gold":[{"doc":"gitlab/finance/jihu-support/jihu-validation-pipelines.md","locator":"what-to-do-when-the-validation-pipeline-failed"}],"note":"every fact of the answer is in the first place; 'when and where we run it' is not needed"}
+{"id":"a-multi_hop-007","v":"keep","note":"the intern-conversion rule is in 'defining a referral'; 'things to note' adds the 6-month rule"}
+{"id":"a-multi_hop-008","v":"fix","answer":"For an interim role, the Job Change letter is saved in Workday and the change is processed (compensation review, access level, job title and manager updated if required). For a net new VP-and-above role, senior leaders partner with their People Business Partner to write a justification document, and the role is reviewed and approved by e-group.","note":"removed the unsupported claim that interim roles need no e-group approval"}
+{"id":"a-single-001","v":"keep"}
+{"id":"a-single-002","v":"keep"}
+{"id":"a-single-003","v":"keep","note":"procurement/_index step 7 says part of the same but not 'begin work': partial, not an alternative"}
+{"id":"a-single-004","v":"keep","alt":{"0":[{"doc":"gitlab/leadership/building-trust.md","locator":"everyday-practices-for-remote-teams"}]},"note":"generic question; the building-trust page also lists remote relationship practices"}
+{"id":"a-single-005","v":"keep","alt":{"0":[{"doc":"gitlab/finance/jihu-support/jihu-database-change-process.md","locator":"schema-changes"}]},"note":"the Schema changes section also says unused columns are annotated with a PostgreSQL comment"}
+{"id":"a-single-006","v":"fix","question":"According to the GitLab France S.A.S. Remote Work Charter, in how many countries are GitLab's team members located?","answer":"GitLab has over 1,700 team members located in more than 65 countries around the world.","note":"the 65 countries figure is company-wide, not where 'France employees' work; the original question and answer misread the preamble. Another page says 'over 50 countries' (candidate FAQ): the sources disagree"}
+{"id":"a-single-007","v":"keep","note":"valid question; the vision section is the one place that states the aim"}
+{"id":"a-single-008","v":"keep"}
+{"id":"a-single-009","v":"keep"}
+{"id":"a-single-010","v":"keep","note":"the accounting page competitor is about reimbursements, not the direct debit: not an alternative"}
+{"id":"a-single-011","v":"keep"}
+{"id":"a-single-012","v":"keep","note":"'day-to-day' is the questioner's wording; the source says Management DRI: CFO"}
+{"id":"a-single-013","v":"keep"}
+{"id":"a-single-014","v":"keep"}
+{"id": "a-single-015", "v": "keep"}
+{"id": "a-single-016", "v": "keep"}
+{"id": "a-single-017", "v": "keep"}
+{"id": "a-single-018", "v": "keep"}
+{"id": "a-single-019", "v": "keep"}
+{"id": "a-single-020", "v": "keep"}
+{"id": "a-single-021", "v": "keep"}
+{"id": "a-single-022", "v": "keep"}
+{"id": "a-single-023", "v": "keep"}
+{"id": "a-single-024", "v": "keep", "note": "the answer calls the three notes 'the most important'; the source lists them as key framework notes"}
+{"id":"a-single-025","v":"keep"}
+{"id":"a-single-026","v":"keep"}
+{"id":"a-single-027","v":"keep"}
+{"id":"a-single-028","v":"keep"}
+{"id":"a-single-029","v":"fix","question":"What's the maximum amount I can put into my health savings account for 2025 if I have individual (self-only) coverage?","answer":"For 2025, if you have self-only HDHP coverage, you can contribute up to $4,300 (the publication lists $4,400 for 2026).","note":"'this year' was ambiguous: the passage gives both 2025 and 2026 limits"}
+{"id":"a-single-030","v":"fix","answer":"It depends on your employer's gross profit percentage: a discount on merchandise can be excluded up to the gross profit percentage times the price charged to nonemployee customers.","note":"removed a guess about retailers' margins that the source does not state. The gold page:13 is correct (the review card showed another section of that page: PDF passages are keyed by page)"}
+{"id":"a-single-031","v":"keep","note":"gold page:13 is correct; 'Deducting an excess contribution in a later year' is on that page"}
+{"id":"a-single-032","v":"keep"}
+{"id":"a-single-033","v":"keep","alt":{"0":[{"doc":"irs-p969-health-accounts.pdf","locator":"page:5"}]},"note":"the HSA section (page 5) lists dental care as permitted coverage too and is the more natural answer"}
+{"id":"a-single-034","v":"keep"}
+{"id": "a-single-035", "v": "keep", "note": "answer is hedged across three agreements but matches the page"}
+{"id": "a-single-036", "v": "keep"}
+{"id": "a-single-037", "v": "keep"}
+{"id": "a-single-038", "v": "keep"}
+{"id": "a-single-039", "v": "keep"}
+{"id": "a-single-040", "v": "keep"}
+{"id": "a-single-041", "v": "keep"}
+{"id": "a-single-042", "v": "keep"}
+{"id": "a-single-043", "v": "keep"}
+{"id": "a-single-044", "v": "keep", "note": "gold page:31 is correct (Unsafe Conditions Commuting Rule, pay not more than $160,000 during 2025); the review card showed another section of that page"}
+{"id":"a-single-045","v":"keep"}
+{"id":"a-single-046","v":"keep"}
+{"id":"a-single-047","v":"keep"}
+{"id":"a-unanswerable-001","v":"keep","note":"no deadline exists: the new-parent gift needs no action"}
+{"id":"a-unanswerable-002","v":"drop","note":"answerable: the procurement page gives per-step durations (legal review 3 to 21 days, buyer review in 1-2 business days)"}
+{"id":"a-unanswerable-003","v":"keep","note":"the policy mentions 'preferred third party agencies' but names none"}
+{"id":"a-unanswerable-004","v":"keep","note":"only company-wide counts ('over 50' or 'more than 65 countries') exist, no breakdown"}
+{"id":"a-unanswerable-005","v":"drop","note":"derivable: 6 modules, one every 2 weeks (about 12 weeks); a model that computes it would be marked wrong"}
+{"id":"a-unanswerable-006","v":"drop","note":"muddy: a 'two weeks after quarter end' step exists for the press release announcing the earnings date"}
+{"id":"a-unanswerable-007","v":"keep","note":"a true near-miss: the Japan page lists nursing care leave but not the notification process or documents asked for; other countries' carer leave pages could tempt a wrong answer"}
+{"id":"a-unanswerable-008","v":"keep","note":"no text about an employer notification deadline for Archer MSA contribution decisions (a near-miss: HSA text mentions notifying about the contribution year, with no deadline)"}
+{"id":"a-unanswerable-009","v":"drop","note":"answerable: the HSA section says the employee, employer, or both may contribute, and the limit applies to what 'you or any other person' contributes"}
+{"id":"a-unanswerable-010","v":"drop","note":"clearly answerable: the HSA table gives minimum annual deductibles of $1,650 self-only and $3,300 family"}
+{"id":"a-unanswerable-011","v":"keep","note":"no FSA-to-HSA transfer rule in the corpus; the FSA section only describes use-it-or-lose-it, grace period and carryover (a near-miss)"}
+{"id":"b-follow_up-001","v":"keep"}
+{"id":"b-follow_up-002","v":"keep"}
+{"id":"b-single-001","v":"keep"}
+{"id":"b-single-002","v":"keep","note":"generic wording; the PostHog help page is the only place that ranks discussion channels"}
+{"id":"b-single-003","v":"keep"}
+{"id":"b-single-004","v":"keep"}
+{"id": "b-single-005", "v": "keep"}
+{"id": "b-single-006", "v": "keep"}
+{"id": "b-single-007", "v": "keep"}
+{"id": "b-single-008", "v": "keep"}
+{"id": "b-single-009", "v": "keep"}
+{"id": "b-single-010", "v": "keep"}
+{"id": "b-single-011", "v": "keep"}
+{"id": "b-single-012", "v": "keep"}
+{"id": "b-single-013", "v": "keep"}
+{"id": "b-single-014", "v": "keep"}
+{"id":"b-unanswerable-001","v":"keep","note":"the page covers known spam and ordinary security tickets (tagged, assigned to security, auto-reply); it says nothing about a ticket that is neither spam nor a real report: a good near-miss"}
+{"id":"b-unanswerable-002","v":"drop","note":"answerable: 'Our onboarding program spans 8 weeks' (onboarding-program.md)"}
+{"id":"b-unanswerable-003","v":"drop","note":"answerable: the org-definitions tables have a 'Captured from' column per event (server vs other)"}
+{"id":"b-unanswerable-004","v":"keep","note":"no GPT-4 vs GPT-3.5 cost comparison in the corpus"}
+{"id":"p-a-single-005","v":"keep","alt":{"0":[{"doc":"gitlab/finance/jihu-support/jihu-database-change-process.md","locator":"schema-changes"}]},"note":"same alternative as a-single-005"}
+{"id":"p-a-single-043","v":"keep"}
+{"id":"p-a-single-032","v":"keep","note":"the paraphrase drifts a little ('medical savings plan', 'out-of-pocket minimum' for the deductible) but is still answered by the same notice"}
+{"id":"p-b-single-007","v":"keep"}
+{"id":"p-a-single-023","v":"keep"}
+{"id":"p-a-single-034","v":"keep"}
+{"id":"p-a-single-045","v":"keep"}
+{"id":"p-b-single-010","v":"keep","note":"heavy vocabulary drift ('periodic income figures', 'billing cycle'): a hard but fair paraphrase"}
+{"id":"p-a-single-019","v":"keep"}
+{"id":"p-a-single-040","v":"keep"}
+{"id":"p-a-single-031","v":"keep"}
+{"id":"p-b-single-002","v":"keep"}
+{"id":"p-a-single-006","v":"fix","question":"According to the GitLab France S.A.S. Remote Work Charter, from how many countries do GitLab's team members work?","answer":"GitLab has over 1,700 team members located in more than 65 countries around the world.","note":"same misreading as a-single-006: the 65 countries figure is company-wide"}
+{"id":"p-a-single-044","v":"keep"}
+{"id":"p-a-single-033","v":"keep","alt":{"0":[{"doc":"irs-p969-health-accounts.pdf","locator":"page:5"}]},"note":"same alternative as a-single-033"}
+{"id":"p-b-single-006","v":"keep"}
+{"id":"p-a-single-017","v":"keep"}
+{"id":"p-a-single-042","v":"keep"}
+{"id":"p-a-single-041","v":"keep"}
+{"id":"p-b-single-003","v":"keep"}
+{"id":"p-a-single-036","v":"keep"}
+{"id":"p-a-single-030","v":"fix","answer":"It depends on your employer's gross profit percentage: a discount on merchandise can be excluded up to the gross profit percentage times the price charged to nonemployee customers.","note":"same unsupported guess removed as in a-single-030"}
+{"id":"p-a-single-029","v":"fix","question":"If you're enrolled in single-person (self-only) healthcare coverage, what is the highest dollar amount you may contribute to your health savings account for 2025?","answer":"For 2025, if you have self-only HDHP coverage, you can contribute up to $4,300 (the publication lists $4,400 for 2026).","note":"'current calendar year' was ambiguous: the passage gives both 2025 and 2026 limits"}
+{"id":"p-b-single-005","v":"keep","note":"strong vocabulary drift ('hosted database management solution' for 'managed data warehouse'): the gold document is not in the top 50, a real robustness test"}
+{"id":"b-posthog-621f91db","v":"fix","question":"When a new CSM joins my team, what should the in-person onboarding week cover, and what do they need to learn about our customers?","note":"the question said 'first week' but the answer and the passages are about the in-person week (usually week 2); the first week is a different section"}
+{"id":"b-posthog-5d550492","v":"keep"}
+{"id":"b-gitlab-f0c2ef6c","v":"keep"}
+{"id":"b-gitlab-5fa5a5d9","v":"fix","question":"I work for GitLab France S.A.S.: what kinds of time off and financial support can I get if I have a baby?","note":"no country was named but the gold covers only the France entity page; other entities and the company-wide parental leave would also have been valid answers"}
+{"id":"b-posthog-0585711a","v":"keep"}
+{"id":"b-posthog-b718bab4","v":"keep"}
+{"id":"b-posthog-ca24a6e7","v":"keep"}
+{"id":"b-posthog-0cc512dd","v":"keep"}
+{"id":"b-posthog-70da3b64","v":"keep"}
+{"id":"b-posthog-e05207d8","v":"keep"}
+{"id":"b-gitlab-079c25c7","v":"keep"}
+{"id":"b-posthog-100047a0","v":"keep"}
+{"id":"r-1ed4932d","v":"fix","gold":[{"doc":"posthog/onboarding/onboarding-conversations-playbook.md","locator":"checking-in"}],"note":"the $exception_list rule is in the 'Checking in' section only; the 'On the call' place does not mention it"}
+{"id":"r-f9296f0b","v":"fix","gold":[{"doc":"posthog/cs-and-onboarding/shareable-guides/llm-cost-optimization.md","locator":"the-cost-model"}],"note":"the per-token price fields are stated in 'The cost model'; the per-entity-metrics guide is unrelated"}
+{"id":"r-49d80fcd","v":"fix","gold":[{"doc":"posthog/cs-and-onboarding/cost-optimization.md","locator":"how-to-present-recommendations"}],"note":"only the cost-optimization example holds the 78% / $4.2k figures; the new-starter implementation list is unrelated"}
+{"id":"r-ac6f2e02","v":"fix","gold":[{"doc":"posthog/onboarding/sales-handover.md","locator":"direct-handover-skipping-onboarding"}],"note":"the whole answer is in the direct-handover section"}
+{"id":"r-1835b639","v":"keep","alt":{"1":[{"doc":"posthog/onboarding/new-hire-onboarding.md","locator":"your-first-few-weeks"}]},"note":"'Meet with Ben Bradley' is in rest-of-week-1; the self-serve approach is stated in both the CS and the Onboarding new-hire pages"}
+{"id":"r-0eea993e","v":"fix","gold":[{"doc":"posthog/cs-and-onboarding/handling-customer-issues.md","locator":"investigating-issues"}],"note":"the answer is fully in 'Investigating issues'; the troubleshooting-tips page is a one-line intro"}
+{"id":"r-16c4115c","v":"drop","note":"bogus: no passage says to contact billing to connect a payment processor to the warehouse; the gold answer stitches two unrelated passages"}
+{"id":"r-8f01604e","v":"fix","question":"What should I do if a customer issue isn't getting the right level of attention from Support and Engineering?","gold":[{"doc":"posthog/cs-and-onboarding/how-we-work.md","locator":"working-with-customers-in-slack"}],"note":"the question was vague ('the support team'); the churn-reasons passage is unrelated"}
+{"id":"r-deb7c5d9","v":"keep"}
+{"id":"r-c1312bc6","v":"fix","question":"What does the in-person onboarding week cover, and what is expected of a new onboarding team member about customer happiness by the end of month 3?","note":"the original asked what the in-person sessions teach about keeping customers happy, which they do not; the answer stitched two sections together"}
+{"id":"r-ff3235f8","v":"fix","gold":[{"doc":"posthog/cs-and-onboarding/engaging-unengaged-customers.md","locator":"steady-drumbeat-of-usage-specific-tips","alt":[{"doc":"posthog/account-management/getting-people-to-talk-to-you.md","locator":"steady-drumbeat-of-usage-specific-tips"}]}],"note":"the same drumbeat section exists in two pages (alternative added); the 'spot new product interest' section is not needed"}
+{"id":"r-7f0f8ec2","v":"keep"}
+{"id":"r-88f9b5ab","v":"fix","question":"In PostHog's 8-week onboarding program, what happens in week 5 and in week 8?","answer":"In week 5 the team checks in to make sure you're all set before your PostHog bill comes up; week 8 is onboarding graduation.","gold":[{"doc":"posthog/onboarding/onboarding-program.md","locator":"timeline"}],"note":"the original answer (final review, extra resources, ongoing support) appears in no source; the real timeline is in the onboarding-program Timeline section"}
+{"id":"r-4b1d5515","v":"keep","note":"the Slack-message rule is in the cost-optimization page intro ('The tag and a Slack message are how you add that context')"}
+{"id":"r-336dcdbf","v":"keep","note":"the call stack lists Zoom, Gong and Granola; Zoom is the one for customer and sales calls"}
+{"id":"r-aeeda4c2","v":"fix","gold":[{"doc":"posthog/cs-and-onboarding/cost-optimization.md","locator":"the-cost-optimizing-tag"}],"note":"the whole answer is in the tag section; the page intro is not needed"}
+{"id":"r-b3690bd3","v":"drop","note":"conceptually wrong: it merges automatic health scores with the manually set CSM relationship rating; the page says the rating does not measure usage or metrics"}
+{"id":"r-d2ccd2ad","v":"keep"}
+{"id":"r-f0c1431d","v":"fix","gold":[{"doc":"posthog/cs-and-onboarding/shareable-guides/designing-events-for-per-entity-metrics.md","locator":"cheat-sheet-when-a-customer-hands-you-an-array","alt":[{"doc":"posthog/cs-and-onboarding/shareable-guides/designing-events-for-per-entity-metrics.md","locator":"rule-2-send-scalars-for-anything-you-ll-do-math-on-arrays-read-as-strings"}]}],"note":"the cheat sheet and Rule 2 both answer it; the guide's one-line intro is not needed. The Rule 2 anchor is the slug of its heading and is checked by the apply step"}
+{"id":"r-f23846d6","v":"fix","gold":[{"doc":"posthog/cs-and-onboarding/how-we-use-automation.md","locator":"current-automation-stack","alt":[{"doc":"posthog/cs-and-onboarding/health-tracking.md","locator":"overview"}]}],"note":"the prioritization section is unrelated; the health-tracking overview also explains Vitally health scores"}

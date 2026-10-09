@@ -119,3 +119,17 @@ def test_evaluate_averages_over_answerable_questions_and_splits_by_subset() -> N
 def test_evaluate_with_no_answerable_items_is_empty_not_a_crash() -> None:
     report = evaluate([item("u", [], kind="unanswerable", answerable=False)], lambda it: [])
     assert report.n == 0 and report.overall == {} and report.subsets == {}
+
+
+# ---- accepted alternatives (found while reviewing the eval set) -------------------------------------
+def test_an_alternative_place_counts_as_finding_the_gold() -> None:
+    gold = GoldRef(doc="a.md", locator="billing", alt=[{"doc": "b.md", "locator": "navan"}])  # type: ignore[list-item]
+    assert covers(res("a.md", ["billing"]), gold)
+    assert covers(res("b.md", ["navan"]), gold)  # the other page that answers equally well
+    assert not covers(res("b.md", ["other"]), gold)
+    assert first_ranks([res("c.md"), res("b.md", ["navan"])], [gold]) == [2]
+
+
+def test_gold_without_alternatives_behaves_as_before() -> None:
+    gold = GoldRef(doc="a.md", locator="billing")
+    assert gold.alt == [] and [p.locator for p in gold.places()] == ["billing"]

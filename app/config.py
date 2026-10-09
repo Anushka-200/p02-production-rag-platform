@@ -81,8 +81,10 @@ class Settings(BaseSettings):
     reranker_sort_by_length: bool = True  # group similar lengths in a batch: less padding
     rerank_candidates: int = 10  # taken from the top of the fused list
     rerank_top: int = 8  # kept after reranking
-    answer_max_words: int = 120  # the answer-length rule in the prompt
-    answer_cover_all_parts: bool = False  # ask the model to cover every part the sources answer
+    answer_max_words: int = 200  # the answer-length rule in the prompt (120 before B-038)
+    answer_cover_all_parts: bool = (
+        True  # ask the model to cover every part the sources answer (B-038)
+    )
     rerank_max_words: int = 220  # longer passages are cut: faster, and the start carries the topic
     context_budget_tokens: int = 3000  # how much source text may go into the answer prompt
     embedding_max_tokens: int = 512  # the model silently cuts anything longer

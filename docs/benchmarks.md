@@ -608,3 +608,33 @@ relationship 4/18, broad 2/12 (10 partial: the answer covers only some of the pl
 No model improves Recall@5 (the 122-question noise is about +/-4 points). L12 gains 3 points at rank 1 for twice the time: not adopted.
 Together with B-034 (embedder), B-035 (candidates, keyword weight) and B-032 (blurbs, +4 for $7), the first-stage and reranking levers are
 exhausted on this corpus; what is left is the 8% of questions whose gold is never in the top 10 (mostly vocabulary drift) and the answer stage.
+
+## B-038 Answer-stage and multi-place experiments on the reviewed set, dev then ONE test run (2026-10-09)
+Dev = 134 answerable + 32 unanswerable questions, test = 81 + 20 (`evals/splits.py`, 70/30 by id hash; paraphrases follow their base question).
+All runs: full pipeline, Haiku 4.5, judge Sonnet 5.5, harness fixed to pass chat history. Informal (model-reviewed gold, not human-reviewed).
+
+**Dev (used to choose):**
+
+| run | correctness | faithfulness | wrongly refused | gold in context | $ / answer | multi-hop | broad | relationship |
+|---|---|---|---|---|---|---|---|---|
+| base (120 words) | 0.731 | 0.943 | 0.127 | 0.828 | 0.0034 | 0.542 | 0.611 | 0.433 |
+| v1: up to 200 words + "cover every part" | 0.769 | 0.934 | 0.119 | 0.828 | 0.0040 | 0.667 | 0.667 | 0.500 |
+| v2: v1 + 12 sources, 4,200-token budget | 0.765 | 0.945 | 0.112 | 0.843 | 0.0040 | 0.667 | 0.667 | 0.500 |
+
+**Test (looked at once, base against v1):**
+
+| run | correctness | faithfulness | wrongly refused | refusal accuracy | gold in context | $ / answer | p50 |
+|---|---|---|---|---|---|---|---|
+| base | 0.716 | 0.954 | 0.148 | 0.900 | 0.790 | 0.0034 | 4.0 s |
+| v1 | 0.722 | 0.944 | 0.148 | 0.900 | 0.790 | 0.0038 | 4.3 s |
+
+**Result: the +3.8 dev gain became +0.6 on test (noise level), with faithfulness down 1 point and cost up 12%. Not adopted; defaults stay 120 words.**
+The settings remain (`ANSWER_MAX_WORDS`, `ANSWER_COVER_ALL_PARTS`) for a client who wants longer answers. More context (v2) added nothing over v1.
+
+**Free context experiments on dev multi-place questions** (`evals/multihop_experiments.py`, all gold places in the 8-source context; n = 12 / 9 / 15):
+baseline multi-hop 0.42, broad 0.44, relationship 0.67; wider pool (rerank 20 keep 8) 0.50 / 0.56 / 0.60; section-diverse selection same as wide;
+pseudo-relevance-feedback second search 0.50 / 0.56 / 0.60. Each moves one question in either direction: no reliable gain, nothing adopted.
+**Agent** (always-on, answer-level, dev multi-place, n=36): correctness 0.597 -> 0.625 (one question). Not adopted.
+
+**Honest conclusion on multi-hop:** the reviewed set now measures it properly (23 questions, 15 true bridge questions; correctness about 0.67 on dev, 0.77 on test)
+but no general technique tried here beats the noise. The largest remaining errors are retrieval misses from vocabulary drift and judge strictness on two-part answers.

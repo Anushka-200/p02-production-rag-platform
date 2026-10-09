@@ -1,0 +1,157 @@
+{
+ "n-a-unanswerable-002": {
+  "question": "What is the vesting schedule for RSUs granted during my annual refresh in February, and how many shares will I receive?",
+  "verdict": "unparsed",
+  "evidence": "{\"verdict\": \"partial\", \"evidence\": \"Promotion and Refresh Grants do not require a cliff, begin vesting quarterly for three-year vest.\"}\n\nThe passages give the vesting schedule for refresh RSUs: no cliff, quarterly vesting over three years, starting from the grant date. They do not say how many share"
+ },
+ "n-a-unanswerable-004": {
+  "question": "How many days do we have to revoke a departing employee's access to GitLab systems after their last day?",
+  "verdict": "partial",
+  "evidence": "\"Submitting the termination in Workday does not immediately terminate access. The offboarding issue, which is opened on the team members last day worked, initiates the deprovisioning process for terminated team members.\""
+ },
+ "n-a-unanswerable-005": {
+  "question": "How many years of Linux systems administration experience do I need to have before applying for the Support Engineer role?",
+  "verdict": "partial",
+  "evidence": "\"If you don't have the experience with all the desired areas that are mentioned in our requirements, don't worry! We would like to encourage you to apply nevertheless... As long as you feel confident in your Linux skills and you enjoy interacting with customers, there are chances it could be a good match.\""
+ },
+ "n-a-unanswerable-006": {
+  "question": "Who is the current VP Tax and what is their email address?",
+  "verdict": "unparsed",
+  "evidence": "The passages suggest that Jim Gladen may be the VP Tax, since his README discusses tax issues, the Audit Committee, and his direct reports who became heads of tax. However, none of the passages state his title explicitly, and none give his personal email. The only email is the general tax@gitlab.com"
+ },
+ "n-a-unanswerable-007": {
+  "question": "How much does Elevate Applied cost per month?",
+  "verdict": "partial",
+  "evidence": "Complimentary Hone membership for all GitLab team members"
+ },
+ "n-a-unanswerable-009": {
+  "question": "How many days does the People Analytics team have to complete access verification before approving a data request?",
+  "verdict": "partial",
+  "evidence": "\"Our process includes access verification and stakeholder approval for all data requests\" \u2014 but no passage gives a number of days for completing access verification."
+ },
+ "n-a-unanswerable-010": {
+  "question": "How many business days does the Recruiter have to notify the Hiring Manager after an internal candidate completes their eligibility checks?",
+  "verdict": "unparsed",
+  "evidence": "{\"verdict\": \"partial\", \"evidence\": \"Hiring Managers will be notified by Recruiter when an internal team member has applied and has completed the necessary eligibility checks as mentioned above\"}\n\nThe passages say the Recruiter notifies the Hiring Manager once eligibility checks are complete, but non"
+ },
+ "n-a-unanswerable-011": {
+  "question": "What is the deadline for submitting my Expression of Wishes Form to designate beneficiaries for the Group Life Insurance?",
+  "verdict": "no",
+  "evidence": "Passage [2] says \"Complete Expression of Wish Form\" and \"Send directly to employeebenefits@nfpireland.ie\", but none of the passages state a deadline for submitting it."
+ },
+ "n-a-unanswerable-013": {
+  "question": "What is the maximum percentage of time I can allocate to an internship before my manager has to approve it with HR?",
+  "verdict": "no",
+  "evidence": "The passages say 10% and 20% are common and that the decision rests with the two managers, but none sets a maximum percentage or a threshold that requires HR approval. The closest line is \"Once you've agreed upon the internship goals, both managers should inform their respective groups' People Business Partner.\""
+ },
+ "n-a-unanswerable-014": {
+  "question": "How much does a GitLab membership cost per month for individual contributors who want to request a license?",
+  "verdict": "no",
+  "evidence": "No passage states a monthly price for a GitLab membership or license. Passage 8 only says team members can request an Ultimate plan or a Duo Enterprise single-seat group, and gives no cost."
+ },
+ "n-a-unanswerable-017": {
+  "question": "How many days do I have to make up a missed live session within the month?",
+  "verdict": "unparsed",
+  "evidence": "The question asks how many days one has to make up a missed live session within the month. The passages say \"make up any missed sessions within one month of the final live session taking place\" (Elevate) and, for Elevate+, \"make up missed sessions within each month.\" No specific number of days is gi"
+ },
+ "n-a-unanswerable-018": {
+  "question": "How many business days does the Vendor Contract Request typically take to get approved before we can create the Orientation Issue for External Consultants?",
+  "verdict": "partial",
+  "evidence": "Passage 2 says \"Requests can take 5 days to 3+ weeks for processing depending on a number of factors\"; passage 1 says the Orientation Issue is created by a Vendor Manager once a Vendor Contract Request is (cut off), but no specific business-day figure for this request type is given."
+ },
+ "n-a-unanswerable-020": {
+  "question": "How many days does the vendor have to return all confidential information after the agreement is terminated?",
+  "verdict": "unparsed",
+  "evidence": "{\"verdict\":\"partial\",\"evidence\":\"Legacy Vendor Terms 6.2: \\\"Upon termination or expiration of this Agreement, Vendor"
+ },
+ "n-a-unanswerable-022": {
+  "question": "If a staff augmentation worker takes their required 3-month break and then comes back, how many times can they repeat this cycle before they're no longer eligible to work as a contractor?",
+  "verdict": "unparsed",
+  "evidence": "The question asks how many times a staff augmentation worker can repeat the cycle (24 months, 3-month break, return) before becoming ineligible. Passage [1] says that after the 3-month break the time limit resets and the worker may provide services for a new assignment. It states no cap on the numbe"
+ },
+ "n-a-unanswerable-023": {
+  "question": "How long does it typically take for a charitable organization to complete their registration in Coupa after receiving the invitation?",
+  "verdict": "partial",
+  "evidence": "\"New Supplier Onboarding: 2-3+ Days, if required - This is entirely dependent upon the suppliers response time.\" The charity-specific passage is cut off at \"if it is a new recipient that we have not paid\", so it gives no timeline for charities specifically."
+ },
+ "n-a-unanswerable-024": {
+  "question": "What time should I join the meeting to submit my questions for the agenda?",
+  "verdict": "unparsed",
+  "evidence": "The question asks for a specific time to join a meeting to submit questions for the agenda. The passages mention Procurement Office Hours every Wednesday (no time given) and say questions can be submitted in the Agenda if you can't join. Other passages suggest populating a 1-1 agenda at least 24 hou"
+ },
+ "n-a-unanswerable-025": {
+  "question": "If our vendor stops performing due to their own mistake and we've already paid them money upfront, how many business days do we have to wait before we can expect a refund?",
+  "verdict": "partial",
+  "evidence": "Vendor shall refund prepaid unused fees. (Section 7.2, Purchase Order Terms) \u2014 but no passage gives a number of business days for the refund."
+ },
+ "n-a-unanswerable-026": {
+  "question": "How many hours per week should managers spend in one-on-one conversations with team members to check in on workload and burnout?",
+  "verdict": "partial",
+  "evidence": "\"It's advisable to schedule 1-1's at least once a week.\" and \"Make it a point to reserve time in regular connections to see how team members are managing workload and boundaries.\""
+ },
+ "n-b-unanswerable-001": {
+  "question": "How many fields can I add help_text to before the API documentation stops updating automatically?",
+  "verdict": "partial",
+  "evidence": "You can add a `help_text=\"Field that does x\"` attribute to any Model or Serializer field to help users understand what a specific field is used for"
+ },
+ "n-b-unanswerable-002": {
+  "question": "When a new team member joins from a country we haven't hired from before, how long do we have to add the new flag sticker before their profile goes live?",
+  "verdict": "partial",
+  "evidence": "If the new team member lives in a country we haven't hired from before, we'll need to add a new flag sticker for their country. Ask the in the `#posthogdotcom` Slack channel to do this."
+ },
+ "n-b-unanswerable-006": {
+  "question": "How much does it cost to purchase time with the onboarding team?",
+  "verdict": "unparsed",
+  "evidence": "The question asks for the price of purchasing time with the onboarding team. Passage [4] says customers can buy an Onboarding consultation via the merch store (a \"30-min-onboarding-consultation\"), but it never states the price. The $2,000 per person figure in passages [1] and [6] is for team offsite"
+ },
+ "n-b-unanswerable-011": {
+  "question": "What percentage of PostHog's engineering persona users are from technical founders versus employees at larger companies?",
+  "verdict": "no",
+  "evidence": "Passage 1 says adoption \"should come from an _engineering_ persona most of the time\" and that this \"can include technical founders,\" but no percentages or split between technical founders and employees at larger companies are given."
+ },
+ "n-b-unanswerable-012": {
+  "question": "How many startup stories should we publish on YouTube each month?",
+  "verdict": "partial",
+  "evidence": "\"Startup stories: Regular YouTube output focused on telling the stories of cool companies that our audience is interested in.\" The passages describe startup stories as regular YouTube output but give no specific monthly number."
+ },
+ "n-b-unanswerable-014": {
+  "question": "How many people need to approve a new product idea before we can start building it full time?",
+  "verdict": "partial",
+  "evidence": "Blitzscale only needs to get involved if you want to start working on this product full time. At that point, we are choosing whether to invest a pretty serious amount of money into launching it, so we want to get that right."
+ },
+ "n-b-unanswerable-018": {
+  "question": "Who is responsible for maintaining the PostHog.com website?",
+  "verdict": "unparsed",
+  "evidence": "The passages say a team is responsible for PostHog.com, but the team's name has been stripped from the text (\"The is responsible for the PostHog.com website\", \"built and maintained in-house by the .\"). The names in the table are also missing. A reader can tell that an in-house team maintains the sit"
+ },
+ "n-b-unanswerable-019": {
+  "question": "How many days before a product release should the PMM start working on the launch checklist?",
+  "verdict": "partial",
+  "evidence": "Passages give notice periods for related teams (\"Marketing and billing teams typically ask for two weeks of notice before a major launch\"; \"at least 2-3 weeks notice of a product launch\"; influencers: \"a month ahead\"), but none states how many days before a release the PMM should begin working on the launch checklist."
+ },
+ "n-b-unanswerable-020": {
+  "question": "How many full-stack developers does our marketing team currently have?",
+  "verdict": "partial",
+  "evidence": "\"We even hire full-stack developers into our marketing team to make sure we can cover the full depth needed in a lot of our tutorials, docs, and posts.\""
+ },
+ "n-b-unanswerable-021": {
+  "question": "How many components from the src/components directory are currently being imported by the mdxImportGen.js script?",
+  "verdict": "partial",
+  "evidence": "\"it prepares a file based on all the components in our `src/components` directory\" and \"Currently, almost every component on the site is available automatically.\""
+ },
+ "n-b-unanswerable-023": {
+  "question": "Who is the current owner of the feature that tracks user session recordings at PostHog?",
+  "verdict": "no",
+  "evidence": "The Session replay passage ([3]) has no \"Owner\" line. Owner: Sara Miteva appears only on the Error tracking, Logs, and Workflows pages."
+ },
+ "n-b-unanswerable-024": {
+  "question": "How many in-app messages are we allowed to send to a single user per month?",
+  "verdict": "partial",
+  "evidence": "\"users will only see one in-app prompt per day\" and \"We currently don't have a separate system for tracking in-app messages, so Brand currently owns the channel and is responsible for ensuring that messages aren't used excessively.\""
+ },
+ "n-b-unanswerable-026": {
+  "question": "How many user interviews should each PM complete by the end of Q2 2026?",
+  "verdict": "partial",
+  "evidence": "\"Our rule of thumb is 1 interview per week per PM\" \u2014 the passages give a weekly rule of thumb but no explicit target or count for Q2 2026."
+ }
+}

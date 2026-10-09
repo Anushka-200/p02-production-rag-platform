@@ -87,9 +87,16 @@ def apply(items: list[dict], decisions: dict[str, dict]) -> tuple[list[dict], li
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--items", default=str(QA), help="the file of questions to review")
+    parser.add_argument("--decisions", default=str(DECISIONS))
+    parser.add_argument(
+        "--append",
+        action="store_true",
+        help="add the kept items to qa.jsonl instead of replacing it",
+    )
     args = parser.parse_args()
-    items = [json.loads(line) for line in QA.read_text().splitlines()]
-    decisions = {d["id"]: d for d in map(json.loads, DECISIONS.read_text().splitlines())}
+    items = [json.loads(line) for line in Path(args.items).read_text().splitlines()]
+    decisions = {d["id"]: d for d in map(json.loads, Path(args.decisions).read_text().splitlines())}
     assert {i["id"] for i in items} == set(decisions), "every item needs exactly one decision"
     kept, dropped = apply(items, decisions)
     conn = psycopg.connect(get_settings().database_url("owner"), autocommit=True)
@@ -107,8 +114,16 @@ def main() -> None:
         print("  MISSING", b)
     if bad or args.dry_run:
         raise SystemExit(1 if bad else 0)
-    QA.write_text("".join(json.dumps(i) + "\n" for i in kept))
-    DROPPED.write_text("".join(json.dumps(i) + "\n" for i in dropped))
+    if args.append:
+        have = {json.loads(line)["id"] for line in QA.read_text().splitlines()}
+        assert not have & {i["id"] for i in kept}, "ids already in the eval set"
+        with QA.open("a") as f:
+            f.writelines(json.dumps(i) + "\n" for i in kept)
+        with DROPPED.open("a") as f:
+            f.writelines(json.dumps(i) + "\n" for i in dropped)
+    else:
+        QA.write_text("".join(json.dumps(i) + "\n" for i in kept))
+        DROPPED.write_text("".join(json.dumps(i) + "\n" for i in dropped))
     print(f"wrote {QA} and {DROPPED}")
 
 

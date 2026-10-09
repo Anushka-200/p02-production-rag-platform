@@ -1,0 +1,706 @@
+{
+ "n-a-single-001": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-single-002": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-single-003": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-single-004": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-single-005": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-single-006": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-single-007": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-single-008": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-single-009": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-single-010": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-single-011": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-single-012": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-single-013": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-single-014": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-single-015": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-single-016": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-single-017": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-single-018": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-single-019": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-single-020": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-single-021": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-follow_up-001": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-follow_up-002": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-follow_up-003": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-follow_up-004": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-follow_up-005": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-follow_up-006": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-001": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-002": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-003": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-004": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-005": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-006": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-007": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-008": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-009": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-010": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-011": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-012": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-013": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-014": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-015": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-016": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-017": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-018": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-019": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-020": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-021": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-022": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-023": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-024": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-025": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-026": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-027": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-028": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-029": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-unanswerable-030": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-multi_hop-001": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-multi_hop-002": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-multi_hop-003": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-multi_hop-004": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-multi_hop-005": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-multi_hop-006": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-multi_hop-007": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-multi_hop-008": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-multi_hop-009": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-multi_hop-010": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-multi_hop-011": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-multi_hop-012": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-multi_hop-013": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-multi_hop-014": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-multi_hop-015": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-multi_hop-016": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-multi_hop-017": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-multi_hop-018": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-multi_hop-019": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-multi_hop-020": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-multi_hop-021": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-single-001": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-single-002": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-single-003": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-single-004": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-single-005": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-single-006": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-single-007": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-single-008": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-single-009": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-single-010": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-single-011": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-single-012": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-single-013": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-single-014": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-single-015": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-single-016": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-single-017": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-single-018": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-follow_up-001": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-follow_up-002": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-follow_up-003": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-follow_up-004": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-follow_up-005": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-follow_up-006": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-001": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-002": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-003": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-004": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-005": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-006": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-007": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-008": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-009": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-010": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-011": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-012": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-013": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-014": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-015": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-016": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-017": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-018": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-019": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-020": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-021": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-022": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-023": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-024": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-025": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-026": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-unanswerable-027": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-001": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-002": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-003": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-004": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-005": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-006": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-007": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-008": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-009": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-010": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-011": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-012": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-013": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-014": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-015": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-016": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-017": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-018": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-019": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-020": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-021": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-022": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-multi_hop-023": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-paraphrase-001": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-paraphrase-001": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-paraphrase-002": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-paraphrase-002": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-paraphrase-003": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-paraphrase-004": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-paraphrase-003": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-paraphrase-004": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-paraphrase-005": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-paraphrase-006": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-paraphrase-007": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-paraphrase-008": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-paraphrase-005": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-paraphrase-009": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-paraphrase-010": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-paraphrase-006": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-paraphrase-011": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-paraphrase-007": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-paraphrase-012": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-paraphrase-013": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-paraphrase-008": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-paraphrase-014": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-b-paraphrase-009": {
+  "missing_gold": [],
+  "bad_support": false
+ },
+ "n-a-paraphrase-015": {
+  "missing_gold": [],
+  "bad_support": false
+ }
+}

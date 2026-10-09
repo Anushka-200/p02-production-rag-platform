@@ -32,3 +32,18 @@ question was kept), and several "competing" passages that were about a different
 
 **What it means for earlier numbers:** all retrieval and answer numbers in `docs/benchmarks.md` up to B-035 were measured on the
 UNREVIEWED set. They are not comparable with numbers measured after this review: re-measure before comparing (see B-036).
+
+## Round 2: growing the set to 267 questions (2026-10-09)
+`evals/draft_more.py` drafted 176 more questions (single, follow-up, "bridge" multi-hop from real cross-links, near-miss unanswerable)
+and `evals/author_bridge.py` adds 10 multi-hop questions written by the reviewer. Reviewed the same way (cards in `evals/results/review2/`,
+decisions in `evals/review_decisions2.jsonl`). Result: 116 of the 176 drafted kept (60 dropped) plus 10 authored.
+
+- **The link-based multi-hop generator failed:** of 44 "bridge" questions only 5 were real multi-hop (the second page alone usually
+  answered, or the wording leaked "passage A/B"). 39 were dropped. The 10 authored questions each state only the situation from page A and need a fact
+  that is only on page B; both supporting quotes are verified verbatim.
+- **Near-miss unanswerable:** 57 drafted (same topic and keywords as a real passage, asking for a detail the text lacks); each was checked by a
+  stronger model against what the production search retrieves ("answerable after all" dropped, "partial" read by the reviewer); 44 kept.
+- **Paraphrases changed meaning in 5 of 24 cases** (a wrong expansion of an abbreviation, "critical" for "high", "mentor" for "buddy"): dropped or fixed.
+- **Hold-out:** `evals/splits.py` fixes a 70/30 dev/test split by id hash (paraphrases go with their base question). Tune on dev; look at test once.
+
+Final set: 267 questions (A 155, B 112): single 98, paraphrase 43, unanswerable 52, follow-up 21, multi-hop 23, relationship 18, broad 12.

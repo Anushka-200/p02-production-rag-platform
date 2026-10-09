@@ -1,0 +1,83 @@
+### n-b-unanswerable-007  [unanswerable, tenant B]
+**Q:** What is the minimum number of team members required before we can track the 'team member invited' event in our analytics?
+**Gold answer:** 
+- OTHER (posthog/growth/revops/org-definitions.md | Org definitions: intent, setup & engagement > Teammate invited): Org definitions: intent, setup & engagement > Teammate invited An org has invited a teammate if it has any of the following events: `team member invited`, `user invited`, `bulk invite executed`. Action: [`[RevOps def] Teammate invited`](https://us.posthog.com/project/2/data-management/actions/363710
+- OTHER (posthog/cs-and-onboarding/shareable-guides/designing-events-for-per-entity-metrics.md | entity metrics > Rule 1: Match the event grain to the unit of analysis): Designing events for per-entity metrics > Rule 1: Match the event grain to the unit of analysis If the metric is "per user," emit one event per user. The form submits once, but you loop over the invitees on submit and fire a **child event for each one**. That single move is what unlocks the per-user
+- OTHER (posthog/cs-and-onboarding/shareable-guides/designing-events-for-per-entity-metrics.md |  Use a parent + child pair when you need funnels *and* per-entity math): Designing events for per-entity metrics > Rule 5: Use a parent + child pair when you need funnels *and* per-entity math A [funnel](/docs/product-analytics/funnels) needs one clean signal per submission to key a step off of. The per-user distribution needs one event per user. Those are different grai
+
+### n-b-unanswerable-008  [unanswerable, tenant B]
+**Q:** How many words should I aim for when I'm writing a product description for developers?
+**Gold answer:** 
+- OTHER (posthog/engineering/writing-docs.md | riting docs as an engineer > When should I start writing product docs?): Writing docs as an engineer > When should I start writing product docs? Three great times to write docs: 1. When you ship a new user-facing product or feature. Write docs for big product launches before they release (during early access or beta). Smaller features and updates can wait until after the
+- OTHER (posthog/engineering/writing-docs.md | Writing docs as an engineer > What should I write docs about?): Writing docs as an engineer > What should I write docs about? Docs should help people: 1. Get started with your product or feature. Installing it, setting it up, and finding it in PostHog. 2. Understand what your product does, including an as complete as possible list of features and their details. 
+- OTHER (posthog/marketing/positioning/index.md | Positioning > The words we use): Positioning > The words we use ### Avoid these - **Don't call the apps "products."** "Products" is reserved for the functional capabilities (analytics, replay, flags). Call the surfaces "apps." - **Don't call the apps "interfaces."** Too corporate for a developer audience. - **Don't say "tools" for 
+
+### n-b-unanswerable-009  [unanswerable, tenant B]
+**Q:** How many candidates does the company typically hire through this 5-day process each month?
+**Gold answer:** 
+- OTHER (posthog/people/hiring-process/index.mdx | Hiring process > Hiring Process > Deciding to hire): Hiring process > Hiring Process > Deciding to hire [‘You're the driver’](/handbook/values#youre-the-driver) is one of our values here at PostHog. We think carefully about each new role and the complexity it introduces to the organization. We also have an extremely high bar for the people we do hire!
+- OTHER (posthog/people/hiring-process/exec-hiring.md | ng > Leadership hiring at PostHog > Hiring process > Interview process): Leadership Hiring > Leadership hiring at PostHog > Hiring process > Interview process In order to ensure speed, we aim to finish the process within 5 working days (assuming the candidate has availability). This is a rough guide that can be adapted **Day 1: Candidate meets Coua -** _30-45 minutes_ * 
+- OTHER (posthog/people/hiring-process/index.mdx | Hiring process > Hiring stage overview): Hiring process > Hiring stage overview ### 12 month cooling application period To ensure a fair and consistent experience for all candidates, we ask that applicants wait 12 months before reapplying for the same or a substantially similar role. This time allows candidates an opportunity to build on t
+
+### n-b-unanswerable-010  [unanswerable, tenant B]
+**Q:** How many days notice do we need to give customers before we deprecate an API?
+**Gold answer:** 
+- OTHER (posthog/cs-and-onboarding/renewals.md | Renewals > What to do when things aren't moving forward): Renewals > What to do when things aren't moving forward If you are struggling to move things along either because the customer isn't engaging with you or you don't know who the right contact person is, ensure you do the following at least 2 months before the date when they need to renew. If things d
+- OTHER (posthog/growth/sales/running-trials.md | Running trials > Extensions): Running trials > Extensions It's common that a customer needs more time to validate PostHog. People get sick, take vacations, priorities change. There are a number of reasons why a customer may need an extension and we're happy to be amenable to them while getting a good understanding of the path to
+- OTHER (posthog/growth/sales/contract-rules.md | Contract rules > Discounts > Startup plan discounts): Contract rules > Discounts > Startup plan discounts For customers on our [startup plan](/startups), we offer two months free credit when signing a prepaid deal. This encourages startups to use their credits to understand usage, and then commit to a longer term plan with PostHog. This offer is availa
+
+### n-b-unanswerable-011  [unanswerable, tenant B]
+**Q:** What percentage of PostHog's engineering persona users are from technical founders versus employees at larger companies?
+**Gold answer:** 
+- OTHER (posthog/who-we-build-for.md | Who we build for > Our current Persona): Who we build for > Our current Persona Persona is the job title or role of the person actually using a product in PostHog. PostHog's initial adoption inside an ICP should come from an _engineering_ persona most of the time, simply because engineers exist first in startups. This persona can include t
+- OTHER (posthog/forward-deployed-engineering/who-we-work-with.md | Who we work with > Our current persona): Who we work with > Our current persona Persona is the role of the person we work alongside in the account. Whoever asks for us is usually not that person. **Who asks for us.** Someone accountable for what the data says, and unable to fix it themselves. Often a founder, a product lead, or a TAM carry
+- OTHER (posthog/how-we-get-users.md | How we get users): How we get users Over 500,000 teams have signed up to PostHog. Most companies build their product with a particular user in mind. We build _everything_ around our ideal customer profile. So when it comes to marketing and sales, we are optimizing for developer experience. ## Why we're like this We've
+
+### n-b-unanswerable-012  [unanswerable, tenant B]
+**Q:** How many startup stories should we publish on YouTube each month?
+**Gold answer:** 
+- OTHER (posthog/marketing/video.md | Overview > What we're working on): Overview > What we're working on Going from most informative to most entertaining: - **Core brand assets:** Demo videos and short feature trailers that showcase cool things you can do in PostHog. - **Launch videos:** The goal is to have a creative format that's repeatable and can be shot at (reasona
+- OTHER (posthog/marketing/startups.md | Startup programs and partnerships > Monthly Newsletter): Startup programs and partnerships > Monthly Newsletter We send a short, founder-focused newsletter once per month to all program participants. This is handled as a Customer.io broadcast using [a prebuilt template](/handbook/marketing/email-comms).
+- OTHER (posthog/content/youtube.md | YouTube): YouTube > See also [how we do video at PostHog](/handbook/marketing/video). We experimented with [YouTube](https://www.youtube.com/@PostHog) from November 2022 to July 2023, but have paused creation and publishing for now. We may try again in the future. Although videos were driving X00s of views ea
+
+### n-b-unanswerable-013  [unanswerable, tenant B]
+**Q:** How many custom job description fields can I add in Ashby before the system stops accepting them?
+**Gold answer:** 
+- OTHER (posthog/engineering/posthog-com/jobs.mdx | Posting a new job listing > Creating a new job posting): Posting a new job listing > Creating a new job posting Pages are only created for *listed* job postings. While viewing a job in Ashby: - Click `Job Postings` in the sidebar - Click `New Draft` From here, you can create a job description and add automations. ### Job descriptions Each job posting can 
+- OTHER (posthog/engineering/posthog-com/jobs.mdx | osting > Job descriptions > Custom description for the `/careers` page): Posting a new job listing > Creating a new job posting > Job descriptions > Custom description for the `/careers` page By default, we look for section headers (`<h2>`) in the job description to show in the summary that appears at the top of the [careers](/careers) page. We're sniffing for these subh
+- OTHER (posthog/people/hiring-process/index.mdx | Hiring process > Hiring stage overview > 4. PostHog SuperDay): Hiring process > Hiring stage overview > 4. PostHog SuperDay There is a template for this email in Ashby, depending on the role - this will probably need customizing. - When scheduling in Ashby, please make sure to turn on the option to create a private Slack channel for the candidate and all releva
+
+### n-b-unanswerable-014  [unanswerable, tenant B]
+**Q:** How many people need to approve a new product idea before we can start building it full time?
+**Gold answer:** 
+- OTHER (posthog/which-products.md | Deciding which products we build > How new products get built): Deciding which products we build > How new products get built Sometimes the Blitzscale team will decide a new product needs to be built. They'll find someone internally to run it, ideally someone who's been at PostHog for at least 6 months (we tried getting new people to ship new products, but they 
+- OTHER (posthog/engineering/product-engineering.md | How to do product, as an engineer > How to > Validate ideas): How to do product, as an engineer > How to > Validate ideas Despite what the industry tells you, it's debatable how well you can validate ideas up front (see: the number of startups that think they'll succeed based on user interviews then find they can't get any users). Just shipping is often the be
+- OTHER (posthog/brand/approvals.md | Ownership & approvals): Ownership & approvals We don't want to be a place where everything has to funnel through a single person or group, but it's also important we maintain consistency as we grow. We try to make this easy with the `#design-review` channel. ## What needs designer approval Not everything needs sign-off. He
+
+### n-b-unanswerable-015  [unanswerable, tenant B]
+**Q:** What is the maximum number of design iterations we should do before shipping a one-way door decision?
+**Gold answer:** 
+- OTHER (posthog/engineering/development-process.md | g & releasing > How to decide what to build > Iterate through the work): Shipping & releasing > How to decide what to build > Iterate through the work We used to have company-wide sprint planning sessions but as we've grown there were so many teams that it started being plan-reading and not planning. PostHog works in two week iterations. Each team plans their work togeth
+- OTHER (posthog/engineering/product-engineering.md | How to do product, as an engineer > How to > Validate ideas): How to do product, as an engineer > How to > Validate ideas Despite what the industry tells you, it's debatable how well you can validate ideas up front (see: the number of startups that think they'll succeed based on user interviews then find they can't get any users). Just shipping is often the be
+- OTHER (posthog/marketing/onboarding-and-lifecycle-emails.md | boarding and lifecycle emails > Launching a new product: the checklist): Onboarding and lifecycle emails > Launching a new product: the checklist Not every step applies to every launch, but this is the path of least surprise: 1. **Confirm intent + activation exist** (Growth Engineering owns these). Without them the system is blind — do this *before* public beta. 2. **In 
+
+### n-b-unanswerable-016  [unanswerable, tenant B]
+**Q:** What is the maximum amount of time the Ops team has to triage and prepare an unowned issue before handing it off to another team?
+**Gold answer:** 
+- OTHER (posthog/company/offsites.md | Offsites > Small team offsites): Offsites > Small team offsites You should assign someone on the small team to be responsible for planning the offsite (doesn't have to be the lead), and they will be supported by the Ops & People team to ensure a successful experience. > On occasion during busy hiring peak time, we do recommend any 
+- OTHER (posthog/people/onboarding.md | Onboarding > 30/60/90 day check-ins): Onboarding > 30/60/90 day check-ins These check-ins are designed to ensure every new starter is set up for success. Every team lead will deal with these slightly differently, but it will hopefully be clear to everybody by around the 60 day mark how things are going and what needs to be worked on, if
+- OTHER (posthog/people/offboarding.md | Offboarding > For team leads): Offboarding > For team leads If a team lead has resigned, the Blitzscale team should figure out who will take on the team lead responsibilities and have that prepared to let the team know just before the resignation is announced or as part of the announcement. For involuntary leavers, we will schedu
+
+### n-b-unanswerable-017  [unanswerable, tenant B]
+**Q:** What is the maximum credit amount we can give to a single customer at one time?
+**Gold answer:** 
+- OTHER (posthog/growth/revops/credits.md | Giving credits to customers): Giving credits to customers Sometimes we might want to offer a customer one time credits to cover an upcoming invoice, for example when accommodating a trial for a new product or offering compensation for a recent incident. Here’s how to do that. - Go to Billing Admin → Credits - Click Add Credit at
+- OTHER (posthog/growth/sales/contract-rules.md | for contracts > When they don't have enough credit to cover their term): Contract rules > Credit over/under usage for contracts > When they don't have enough credit to cover their term - If they run out of credit in the first half of the term, they can purchase additional credits that expire with the current term. Each purchase is priced independently — we don't add it t
+- OTHER (posthog/growth/sales/contract-rules.md | Contract rules > Discounts > Startup plan discounts): Contract rules > Discounts > Startup plan discounts For customers on our [startup plan](/startups), we offer two months free credit when signing a prepaid deal. This encourages startups to use their credits to understand usage, and then commit to a longer term plan with PostHog. This offer is availa
+
+### n-b-unanswerable-018  [unanswerable, tenant B]
+**Q:** Who is responsible for maintaining the PostHog.com website?
+**Gold answer:** 
+- OTHER (posthog/company/security.md | Security & Privacy > GDPR > PostHog's obligations as a Data Processor): Security & Privacy > GDPR > PostHog's obligations as a Data Processor Charles Cook (VP Operations) is our assigned Data Protection Officer and is responsible for overseeing compliance. Customers can email privacy@posthog.com for any questions relating to GDPR or privacy more generally.
+- OTHER (posthog/engineering/feature-ownership.md | Feature ownership): Feature ownership Each feature at PostHog has an Engineering owner. This owner is responsible for maintaining the feature (keep the lights on), championing any efforts to improve it (e.g. by bringing up improvements in sprint planning), [planning launches](/handbook/marketing/product-announcements) 
+- OTHER (posthog/engineering/posthog-com/overview.mdx | About PostHog.com): About PostHog.com The is responsible for the PostHog.com website, but it takes a village to keep it running smoothly. If you're new here, you might be interested in reading why our website looks like a desktop operating system. | What | Who | | ---------------------- | ------------------------------

@@ -1,0 +1,176 @@
+{"id": "n-a-single-001", "v": "drop", "note": "a 'where can I find' navigation question: the stock-options page itself would equally answer it, so the gold (the total-rewards index of links) is not the only valid place"}
+{"id": "n-a-single-002", "v": "keep"}
+{"id": "n-a-single-003", "v": "keep"}
+{"id": "n-a-single-004", "v": "keep"}
+{"id": "n-a-single-005", "v": "keep"}
+{"id": "n-a-single-006", "v": "keep"}
+{"id": "n-a-single-007", "v": "keep"}
+{"id": "n-a-single-008", "v": "keep"}
+{"id": "n-a-single-009", "v": "keep"}
+{"id": "n-a-single-010", "v": "keep"}
+{"id": "n-a-single-011", "v": "keep"}
+{"id": "n-a-single-012", "v": "keep"}
+{"id":"n-a-single-013","v":"keep"}
+{"id":"n-a-single-014","v":"keep"}
+{"id":"n-a-single-015","v":"fix","question":"Under the federal employees' health insurance overview, what share of the premium does my agency pay and what share do I pay each pay period?","note":"'my employer' was ambiguous: several GitLab entity pages say the employer covers 100% of premiums; the 70/30 split is the federal (OPM) overview. Verified on page 1"}
+{"id":"n-a-single-016","v":"keep"}
+{"id":"n-a-single-017","v":"keep"}
+{"id":"n-a-single-018","v":"keep","alt":{"0":[{"doc":"gitlab/finance/procurement/coupa-faq.md","locator":"what-is-coupa"}]},"note":"the Coupa FAQ 'What is Coupa?' repeats the same description"}
+{"id":"n-a-single-019","v":"keep"}
+{"id":"n-a-single-020","v":"keep"}
+{"id":"n-a-single-021","v":"fix","question":"In GitLab's Mutual Non-Disclosure Agreement, which GitLab company is a party to it and where is its principal place of business?","note":"'this non-disclosure agreement' pointed at nothing"}
+{"id":"n-a-follow_up-001","v":"keep","note":"the answer is in the India sexual-harassment policy; a general anti-harassment page may also touch confidentiality"}
+{"id":"n-a-follow_up-002","v":"keep"}
+{"id":"n-a-follow_up-003","v":"keep"}
+{"id": "n-a-unanswerable-001", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-a-unanswerable-002", "v": "drop", "note": "answerable in part: refresh grants begin vesting quarterly over a three-year vest"}
+{"id": "n-a-unanswerable-003", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-a-unanswerable-004", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-a-unanswerable-005", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-a-unanswerable-006", "v": "drop", "note": "unclear: a README suggests who the VP Tax may be, but the passages do not state it"}
+{"id": "n-a-unanswerable-007", "v": "drop", "note": "the page says Hone membership is complimentary: the cost question is answerable (free)"}
+{"id": "n-a-unanswerable-008", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-a-unanswerable-009", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-a-unanswerable-010", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-a-unanswerable-011", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-a-unanswerable-012", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-a-unanswerable-013", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-a-unanswerable-014", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-a-unanswerable-015", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-a-unanswerable-016", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-a-unanswerable-017", "v": "drop", "note": "answerable: sessions can be made up within one month of the final live session"}
+{"id": "n-a-unanswerable-018", "v": "drop", "note": "answerable: 'requests can take 5 days to 3+ weeks'"}
+{"id": "n-a-unanswerable-019", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-a-unanswerable-020", "v": "drop", "note": "unclear evidence: a vendor-terms clause on returning confidential information may give the number of days"}
+{"id": "n-a-unanswerable-021", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-a-unanswerable-022", "v": "drop", "note": "unclear: the passage describes the 3-month break but the question about repeating the cycle is muddy"}
+{"id": "n-a-unanswerable-023", "v": "drop", "note": "partly answerable: new supplier onboarding is stated as 2-3+ days"}
+{"id": "n-a-unanswerable-024", "v": "drop", "note": "ambiguous question ('the meeting')"}
+{"id": "n-a-unanswerable-025", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-a-unanswerable-026", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-a-unanswerable-027", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-a-unanswerable-028", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-a-unanswerable-029", "v": "drop", "note": "absurd question (pronoun counts): not a realistic employee question"}
+{"id": "n-a-unanswerable-030", "v": "drop", "note": "muddy premise: 'required this year' skills"}
+{"id": "n-b-unanswerable-001", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-002", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-003", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-004", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-005", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-006", "v": "drop", "note": "the passages mention an onboarding consultation in the merch store; its price may be stated"}
+{"id": "n-b-unanswerable-007", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-008", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-009", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-010", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-011", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-012", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-013", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-014", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-015", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-016", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-017", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-018", "v": "drop", "note": "artifact: the team name is stripped from the source text"}
+{"id": "n-b-unanswerable-019", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-020", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-021", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-022", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-023", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-024", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-025", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-026", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-b-unanswerable-027", "v": "keep", "note": "near-miss verified by the answerability checker: the asked detail is not in what retrieval returns"}
+{"id": "n-a-follow_up-004", "v": "keep"}
+{"id": "n-a-follow_up-005", "v": "keep"}
+{"id": "n-a-follow_up-006", "v": "keep"}
+{"id": "n-a-multi_hop-001", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-a-multi_hop-002", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-a-multi_hop-003", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-a-multi_hop-004", "v": "fix", "note": "bridge kept: the O'Reilly mention points to the Growth & Development fund; the amount is on the fund page. Wording fixed (no 'first passage')", "question": "If I work outside Engineering and want to buy an O'Reilly license, what is the most I can be reimbursed per year?"}
+{"id": "n-a-multi_hop-005", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-a-multi_hop-006", "v": "keep", "note": "true bridge: resolving underperformance then moving roles leads to the interim-period rule on the promotions page"}
+{"id": "n-a-multi_hop-007", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-a-multi_hop-008", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-a-multi_hop-009", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-a-multi_hop-010", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-a-multi_hop-011", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-a-multi_hop-012", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-a-multi_hop-013", "v": "fix", "note": "bridge kept: the book list points to the spending policy; wording fixed (no 'passage A')", "question": "If I want to buy a book from the recommended leadership reading list, which policy tells me how to pay for it, and who owns that policy?"}
+{"id": "n-a-multi_hop-014", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-a-multi_hop-015", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-a-multi_hop-016", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-a-multi_hop-017", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-a-multi_hop-018", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-a-multi_hop-019", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-a-multi_hop-020", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-a-multi_hop-021", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-b-multi_hop-001", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-b-multi_hop-002", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-b-multi_hop-003", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-b-multi_hop-004", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-b-multi_hop-005", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-b-multi_hop-006", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-b-multi_hop-007", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-b-multi_hop-008", "v": "keep", "note": "true bridge: the YC-founders coworking leads to Hogpatch, whose operations page gives the Office Manager's hours"}
+{"id": "n-b-multi_hop-009", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-b-multi_hop-010", "v": "keep", "note": "bridge: the trial-extension procedure leads to the trials page that states the new PostHog AI cap"}
+{"id": "n-b-multi_hop-011", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-b-multi_hop-012", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-b-multi_hop-013", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-b-multi_hop-014", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-b-multi_hop-015", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-b-multi_hop-016", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-b-multi_hop-017", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-b-multi_hop-018", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-b-multi_hop-019", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-b-multi_hop-020", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-b-multi_hop-021", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-b-multi_hop-022", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-b-multi_hop-023", "v": "drop", "note": "not a true multi-hop: the second page alone answers it, or the A page is not needed, or the wording leaks the drafting prompt ('passage A/B')"}
+{"id": "n-b-single-001", "v": "keep"}
+{"id": "n-b-single-002", "v": "keep"}
+{"id": "n-b-single-003", "v": "keep", "alt": {"0": [{"doc": "posthog/people/compensation.mdx", "locator": "pay-reviews"}]}, "note": "the compensation page says pay is reviewed 2-3 times a year; the annual-planning page says 3"}
+{"id": "n-b-single-004", "v": "keep"}
+{"id": "n-b-single-005", "v": "keep"}
+{"id": "n-b-single-006", "v": "drop", "note": "the gold is a shared marketing snippet (PostHog vs LogRocket), not a normal page; any feature-flag page answers this"}
+{"id": "n-b-single-007", "v": "keep"}
+{"id": "n-b-single-008", "v": "keep"}
+{"id": "n-b-single-009", "v": "keep", "alt": {"0": [{"doc": "posthog/brand/assets.md", "locator": "hedgehog-library"}]}, "note": "the brand assets page repeats the hedgehog library section"}
+{"id": "n-b-single-010", "v": "keep", "alt": {"0": [{"doc": "posthog/engineering/development-process.md", "locator": "iterate-through-the-work"}]}, "note": "the development-process page says teams work in two-week iterations"}
+{"id": "n-b-single-011", "v": "keep"}
+{"id": "n-b-single-012", "v": "keep"}
+{"id": "n-b-single-013", "v": "keep"}
+{"id": "n-b-single-014", "v": "keep"}
+{"id": "n-b-single-015", "v": "keep"}
+{"id": "n-b-single-016", "v": "keep"}
+{"id": "n-b-single-017", "v": "keep"}
+{"id": "n-b-single-018", "v": "keep"}
+{"id": "n-b-follow_up-001", "v": "keep"}
+{"id": "n-b-follow_up-002", "v": "drop", "note": "the passage only lists the question 'who are the new users this week'; it has no answer, and the gold answer just restates it"}
+{"id": "n-b-follow_up-003", "v": "keep"}
+{"id": "n-b-follow_up-004", "v": "keep"}
+{"id": "n-b-follow_up-005", "v": "keep"}
+{"id": "n-b-follow_up-006", "v": "keep"}
+{"id": "n-a-paraphrase-001", "v": "keep"}
+{"id": "n-b-paraphrase-001", "v": "keep"}
+{"id": "n-a-paraphrase-002", "v": "keep"}
+{"id": "n-b-paraphrase-002", "v": "drop", "note": "its base question (n-b-single-006) was dropped: the gold is a shared marketing snippet"}
+{"id": "n-b-paraphrase-003", "v": "keep", "alt": {"0": [{"doc": "posthog/brand/assets.md", "locator": "hedgehog-library"}]}, "note": "the brand assets page repeats the hedgehog library section"}
+{"id": "n-b-paraphrase-004", "v": "fix", "question": "What kinds of work do forward deployed engineers handle once a customer has already bought PostHog?", "note": "the paraphrase invented a wrong expansion of FDE ('Field Deployment Experts')"}
+{"id": "n-a-paraphrase-003", "v": "keep"}
+{"id": "n-a-paraphrase-004", "v": "keep"}
+{"id": "n-a-paraphrase-005", "v": "keep"}
+{"id": "n-a-paraphrase-006", "v": "keep"}
+{"id": "n-a-paraphrase-007", "v": "drop", "note": "the paraphrase turned 'GPO' (global process owner) into 'group policy unit': it changes the meaning"}
+{"id": "n-a-paraphrase-008", "v": "keep"}
+{"id": "n-b-paraphrase-005", "v": "keep"}
+{"id": "n-a-paraphrase-009", "v": "drop", "note": "'mentor' for 'buddy' points at the separate mentoring program: ambiguous"}
+{"id": "n-a-paraphrase-010", "v": "keep"}
+{"id": "n-b-paraphrase-006", "v": "keep", "alt": {"0": [{"doc": "posthog/engineering/development-process.md", "locator": "iterate-through-the-work"}]}, "note": "same alternative as n-b-single-010"}
+{"id": "n-a-paraphrase-011", "v": "keep"}
+{"id": "n-b-paraphrase-007", "v": "keep"}
+{"id": "n-a-paraphrase-012", "v": "keep"}
+{"id": "n-a-paraphrase-013", "v": "fix", "question": "In GitLab's mutual confidentiality agreement template, which organization is the GitLab party and where is it located?", "note": "'this confidentiality accord' pointed at nothing"}
+{"id": "n-b-paraphrase-008", "v": "drop", "note": "the paraphrase asks about 'critical-risk' but the gold answer is the HIGH severity band (7.0 to 8.9): different meaning"}
+{"id": "n-a-paraphrase-014", "v": "keep"}
+{"id": "n-b-paraphrase-009", "v": "keep"}
+{"id": "n-a-paraphrase-015", "v": "drop", "note": "its base question (n-a-single-001) was dropped"}

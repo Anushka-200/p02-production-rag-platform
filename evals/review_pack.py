@@ -35,7 +35,10 @@ def passage_index() -> dict[tuple[str, str], C.Passage]:
 
 
 def card(
-    item: EvalItem, index: dict[tuple[str, str], C.Passage], others: list[dict[str, str]]
+    item: EvalItem,
+    index: dict[tuple[str, str], C.Passage],
+    others: list[dict[str, str]],
+    gold_chars: int = GOLD_CHARS,
 ) -> str:
     lines = [f"### {item.id}  [{item.kind}, tenant {item.tenant}]", f"**Q:** {item.question}"]
     if item.history:
@@ -57,7 +60,7 @@ def card(
             if not unsupported and item.support
             else f"support quotes NOT in ANY gold passage: {len(unsupported)} of {len(item.support)}"
         )
-        text = p.text if len(p.text) <= GOLD_CHARS else p.text[:GOLD_CHARS] + " [...]"
+        text = p.text if len(p.text) <= gold_chars else p.text[:gold_chars] + " [...]"
         lines.append(
             f"- GOLD {n}: {g.doc} #{g.locator} | path: {p.path} | {flag}\n  > {' '.join(text.split())}"
         )
@@ -71,6 +74,9 @@ def main() -> None:
     parser.add_argument("--per-batch", type=int, default=10)
     parser.add_argument("--file", default="evals/qa.jsonl")
     parser.add_argument("--out", default=str(OUT))
+    parser.add_argument("--gold-chars", type=int, default=GOLD_CHARS)
+    parser.add_argument("--other-chars", type=int, default=OTHER_CHARS)
+    parser.add_argument("--others", type=int, default=3)
     args = parser.parse_args()
     s = get_settings()
     items = [EvalItem.model_validate_json(line) for line in open(args.file)]
@@ -96,12 +102,12 @@ def main() -> None:
                     {
                         "doc": c.source_uri,
                         "section": c.section_path[-70:],
-                        "text": " ".join(c.text.split())[:OTHER_CHARS],
+                        "text": " ".join(c.text.split())[: args.other_chars],
                     }
                 )
-                if len(others) == (3 if item.answerable else 4):
+                if len(others) == (args.others if item.answerable else args.others + 1):
                     break
-        text = card(item, index, others)
+        text = card(item, index, others, args.gold_chars)
         cards.append(text)
         auto[item.id] = {"missing_gold": [g.locator for g in item.gold if (g.doc, g.locator) not in index],
                          "bad_support": "NOT found" in text}  # fmt: skip

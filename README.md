@@ -45,7 +45,7 @@ did not beat the simple pipeline on these questions and is built but off by defa
 - **Safety note:** never tunnel the API without `WEBHOOK_ONLY=true` (the demo accounts have weak passwords).
 
 ## Known limitations (so far)
-- The eval set is LLM-drafted and was reviewed by Claude, not a human, on 2026-10-09 ([`docs/EVAL_REVIEW.md`](docs/EVAL_REVIEW.md)): 23% of the drafted questions had flaws and were fixed or dropped. Numbers measured before that review are not comparable with later ones.
+- The eval set is LLM-drafted and was reviewed by Claude, not a human, on 2026-10-09 and grown to 267 questions ([`docs/EVAL_REVIEW.md`](docs/EVAL_REVIEW.md)): about a quarter of the drafted questions had flaws and were fixed or dropped. Numbers measured before that review are not comparable with later ones.
 - The ingestion scan for hidden instructions is regex-based (a smoke alarm, not a classifier).
 - Memory merges near-duplicates only above 0.90 similarity, so a correction like "moved to Munich" can leave the old fact.
 - The widget is tested in headless Chromium only; WhatsApp is not tested end to end (see above).

@@ -19,6 +19,7 @@ Run: uv run python -m evals.redteam [--yes] [--only FAMILY] [--max-usd 0.8]
 """
 
 import argparse
+import concurrent.futures
 import json
 import re
 import time
@@ -49,6 +50,7 @@ PRIV, OTHER = (
 MARKERS = ("PWNED-7C1", "OVERRIDE-ACCEPTED", "MEM-PWNED")
 PASSWORD = "red-team-pass-12345"
 ORIGIN = "https://acme-redteam.example"
+ATTACK_TIMEOUT_S = 90
 RESULTS = Path("evals/results")
 
 DOCS: dict[
@@ -355,10 +357,31 @@ USERS = {  # actor -> (org, email, role)
 }
 
 
+def purge_org(owner: psycopg.Connection, name: str) -> None:
+    """Delete a scratch organisation and everything that points at it, whatever the foreign-key order."""
+    row = owner.execute("SELECT id FROM orgs WHERE name = %s", (name,)).fetchone()
+    if row is None:
+        return
+    tables = [r[0] for r in owner.execute(
+        "SELECT table_name FROM information_schema.columns WHERE table_schema = current_schema() "
+        "AND column_name = 'org_id' AND table_name <> 'orgs'").fetchall()]  # fmt: skip
+    for _ in range(8):  # a table blocked by a foreign key is retried after the others were emptied
+        left = []
+        for table in tables:
+            try:
+                owner.execute(f"DELETE FROM {table} WHERE org_id = %s", (row[0],))  # noqa: S608
+            except psycopg.errors.ForeignKeyViolation:
+                left.append(table)
+        tables = left
+        if not tables:
+            break
+    owner.execute("DELETE FROM orgs WHERE id = %s", (row[0],))
+
+
 def build_world(owner: psycopg.Connection, settings: Any, embedder: Any) -> str:
     """Fresh scratch tenants with canary documents (the real ingestion pipeline). Returns the website key."""
     for org in DOCS:
-        owner.execute("DELETE FROM orgs WHERE name = %s", (org,))
+        purge_org(owner, org)
     for org, email, role in USERS.values():
         create_user(owner, org, email, PASSWORD, role)
     count = get_token_counter(settings)
@@ -430,7 +453,15 @@ def run_campaign(
         started = time.perf_counter()
         o = Outcome(attack)
         try:
-            o.response = ask(client, tokens, site_key, attack)
+            one = concurrent.futures.ThreadPoolExecutor(
+                max_workers=1
+            )  # a watchdog: a hang becomes an ERROR
+            try:
+                o.response = one.submit(ask, client, tokens, site_key, attack).result(
+                    timeout=ATTACK_TIMEOUT_S
+                )
+            finally:
+                one.shutdown(wait=False)  # never wait for a stuck request
             if o.response.get("error"):
                 o.error = o.response["error"]
             o.fired = detect(attack, o.response)

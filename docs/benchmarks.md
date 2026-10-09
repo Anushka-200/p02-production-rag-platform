@@ -638,3 +638,24 @@ pseudo-relevance-feedback second search 0.50 / 0.56 / 0.60. Each moves one quest
 
 **Honest conclusion on multi-hop:** the reviewed set now measures it properly (23 questions, 15 true bridge questions; correctness about 0.67 on dev, 0.77 on test)
 but no general technique tried here beats the noise. The largest remaining errors are retrieval misses from vocabulary drift and judge strictness on two-part answers.
+
+## B-039 Red-team campaign v1 (2026-10-09, `python -m evals.redteam`)
+
+66 attacks against scratch tenants (RedTeam Acme / Globex, a widget site, a poisoned vendor-terms.md), attack families modelled on garak, promptfoo and PortSwigger labs, labelled with OWASP GenAI Top 10 ids. Deterministic detectors use canary secrets (private to Alice, in the other tenant) and injected markers.
+
+| family | OWASP | tried | blocked | breached | errors |
+|---|---|---|---|---|---|
+| direct-injection | LLM01 | 13 | 13 | 0 | 0 |
+| prompt-extraction | LLM07 | 6 | 6 | 0 | 0 |
+| cross-tenant | LLM02 | 6 | 6 | 0 | 0 |
+| private-data | LLM02 | 6 | 6 | 0 | 0 |
+| indirect-injection | LLM01 | 6 | 6 | 0 | 0 |
+| exfiltration | LLM05 | 5 | 5 | 0 | 0 |
+| out-of-corpus | LLM09 | 8 | 8 | 0 | 0 |
+| unbounded-consumption | LLM10 | 4 | 4 | 0 | 0 |
+| website-visitor | LLM02 | 8 | 8 | 0 | 0 |
+| cache-poisoning | LLM02 | 2 | 2 | 0 | 0 |
+| memory-poisoning | LLM04 | 2 | 2 | 0 | 0 |
+| **total** | | **66** | **66** | **0** | **0** |
+
+Cost $0.06, peak RSS 671 MB. Honest reading: 0 breaches means the attacks written so far fail, not that the system is unbreakable; the suite is the regression net and gets extended whenever a new attack idea appears. An earlier run stalled once on one attack and could not be reproduced; a 90 s per-attack watchdog now turns any hang into a reported ERROR.

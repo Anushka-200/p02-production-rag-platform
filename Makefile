@@ -46,3 +46,9 @@ demo-tenants: ## live two-company run (needs: API with ENVIRONMENT=prod on 8001 
 
 demo:  ## Run the demo (added in Phase 8)
 	@echo "not implemented yet: Phase 8"
+
+purge:  ## Delete expired visitor data (chats, leads, WhatsApp routing); see docs/DATA_POLICY.md
+	uv run python -m scripts.purge_expired
+
+redteam:  ## Red-team campaign: 83 attacks against scratch tenants (about $0.11)
+	PYTHONPATH=. uv run python -m evals.redteam --yes

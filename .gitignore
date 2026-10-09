@@ -13,3 +13,4 @@ data/raw/
 .estimates_claude_view.json
 data/cache/
 evals/results/2*.json
+data/uploads/

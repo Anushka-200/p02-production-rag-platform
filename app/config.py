@@ -117,6 +117,9 @@ class Settings(BaseSettings):
     semantic_cache: bool = False
     semantic_cache_threshold: float = 0.93  # cosine similarity needed to reuse an answer
     semantic_cache_ttl_hours: float = 24.0
+    # Data retention (Phase 7, app/retention.py): how long visitor-channel personal data is kept
+    retention_visitor_days: int = 90  # chats, feedback comments, WhatsApp routing rows
+    retention_lead_days: int = 365  # contact details a visitor agreed to leave
     semantic_cache_max_per_org: int = 2000
     # Per-org daily spend cap (Phase 6, app/budget.py); 0 = unlimited; orgs may override it
     org_daily_budget_usd: float = 5.0

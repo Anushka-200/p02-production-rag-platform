@@ -233,4 +233,5 @@ Owner estimate for 2.7+2.8+2.9: O 15 / M 20 / P 25 min (PERT 20 min).
 
 | Phase 6 follow-up: arctic+reranker check (B-034), miss analysis and tuning (B-035) | 2026-10-09 | | owner request; one job at a time; red-team harness (evals/redteam.py) written, campaign paused at 25/66 (hung on pri-01: investigate when security resumes) |
 | Phase 6 follow-up 2: eval review (150 -> 267 reviewed), harness fix, reranker/answer/multi-hop experiments, hidden-test confirmation (B-036 to B-038) | 2026-10-09 | | owner request; one job at a time; about $9 of model spend; the dev gain did not replicate on test || Phase 7 block 1 (7.1 learn done; 7.2 red-team campaign: diagnose the hang at attack 26, run all 66) | 2026-10-09 | 20:10 | resumed after the Phase 6 follow-up work |
-| Phase 7 block 2 (7.3 harder attack wave: multi-turn, encoded, upload injection; 17 attacks, 0 breaches, no fix needed) | 2026-10-09 | | started at owner's request |
+| Phase 7 block 2 (7.3 harder attack wave: multi-turn, encoded, upload injection; 17 attacks, 0 breaches, no fix needed) | 2026-10-09 | 22:11 | started at owner's request |
+| Phase 7 block 3 (7.4 OWASP mapping; 7.5 data policy + retention purge + AI disclosure test; 7.6 history scan) | 2026-10-09 | | started at owner's request |

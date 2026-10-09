@@ -9,10 +9,10 @@ Model output must never decide tenant; a forgotten WHERE must not leak.
 App-level filter/namespace; Postgres RLS; database per tenant.
 
 ## Decision
-RLS with FORCE, non-bypass roles, org_id/user_id set from the verified JWT per request; WITH CHECK on writes; composite FKs. Settings are transaction-scoped (SET LOCAL) and policies fail closed when unset. Anonymous channels (widget, WhatsApp) see only visibility = 'public'. OWASP GenAI Top 10 (2026) mapping table lives here.
+RLS with FORCE, non-bypass roles, org_id/user_id set from the verified JWT per request; WITH CHECK on writes; composite FKs. Settings are transaction-scoped (SET LOCAL) and policies fail closed when unset. Anonymous channels (widget, WhatsApp) see only visibility = 'public'. The OWASP GenAI Top 10 mapping table lives here (ids follow the 2025 list that the red-team report uses).
 
 ## Consequences
-TBD: adversarial suite results, filtered-HNSW behaviour.
+Measured: 83 red-team attacks, 0 breaches (B-039, B-040); the isolation suite found 0 leaks. Filtered-HNSW behaviour is covered by iterative scans (ADR 001). Data retention is in `docs/DATA_POLICY.md`.
 
 ## Implementation notes (Phase 3, 2026-10-02; migration 0004, `app/db/tenant.py`, `app/api/auth.py`)
 - **Policies** on `documents`, `chunks`, `ingestion_jobs`: `org_id = app_org() AND (visibility = 'org' OR owner_id = app_user())`, plus `WITH CHECK` on writes. Jobs are visible to their owner only.
@@ -25,16 +25,19 @@ TBD: adversarial suite results, filtered-HNSW behaviour.
 ## Injection defences (Phase 3, tasks 3.6-3.8) and OWASP GenAI mapping
 Layers, cheapest first: (1) **hidden text is removed before indexing** (HTML comments, CSS-hidden elements, Unicode tag characters, lines made mostly of zero-width characters; titles that read like instructions are replaced), (2) the **ingestion scan** flags what a human should review and stores the result in the job (`result.scan`), without dropping the document, (3) source text is **delimited and escaped** so a forged `</source><source ...>` cannot add a block, (4) the system prompt says sources are untrusted data, (5) the **output checker** rejects images, links that are not in a source, and invented citations (one repair attempt, then refusal), (6) tenant isolation does not depend on any of this: it is enforced by the database.
 
-| OWASP GenAI risk | Control | Test |
+| OWASP GenAI risk (ids as in the red-team report) | Control | Evidence |
 |---|---|---|
-| Prompt injection (direct, indirect) | layers 1-5 above | `tests/test_scan.py`, `scripts/injection_live.py` (0 of 8 obeyed) |
-| Sensitive information disclosure | RLS, private vs shared, scope in code | `tests/test_rls.py`, `tests/test_adversarial.py` (0 leaks) |
-| Improper output handling | output checker (no images / unknown links) | `tests/test_scan.py` |
-| Vector and embedding weaknesses | RLS on chunks, filter before search, scan | `tests/test_rls.py` |
-| Data and model poisoning | scan + hidden-text removal at ingestion | `tests/test_scan.py` |
-| Excessive agency | tenant from the token only; no tools yet (agent in Phase 5 inherits it) | Phase 5 |
-| Unbounded consumption | per-tenant budgets | Phase 6 |
-| System prompt leakage / misinformation | prompt holds no secrets; answers must cite sources | Phase 7 red team |
+| LLM01 Prompt injection (direct, indirect, multi-turn, encoded, hidden in uploads) | layers 1-5 above; hidden HTML text never reaches the index | red-team: direct, indirect, multi-turn, encoded and upload families, 0 breaches (B-039, B-040); `tests/test_scan.py`; `scripts/injection_live.py` (0 of 8 obeyed) |
+| LLM02 Sensitive information disclosure | RLS, private / org / public visibility, scope in code, tenant-keyed cache, per-user memory | red-team: cross-tenant, private-data, website-visitor, cache-poisoning families, 0 leaks; `tests/test_rls.py`, `tests/test_adversarial.py`, `tests/test_semantic_cache.py` |
+| LLM03 Supply chain | `uv.lock` pins versions; data licences checked before download (`docs/data.md`); models run locally from named packages | `docs/data.md`. **Gap:** no automated dependency audit in CI (add `pip-audit` in Phase 8) |
+| LLM04 Data and model poisoning | ingestion scan + hidden-text removal; poisoned documents are delimited as untrusted data; memory refuses personal data and is per user | red-team: memory-poisoning, indirect-injection, upload-injection; `tests/test_scan.py` |
+| LLM05 Improper output handling | output checker (no images, no unknown links, only real citations); widget renders `textContent` only | red-team: exfiltration family (5/5); `tests/test_scan.py` |
+| LLM06 Excessive agency | the agent has four read-only search tools; the tenant comes from the token, never from the model; step and token caps | `tests/test_agent.py`. **Gap:** agent mode is not reachable over HTTP, so it is not in the red-team run |
+| LLM07 System prompt leakage | the prompt holds no secrets; an 8-word overlap detector in the red-team | red-team: prompt-extraction family (6/6) plus multi-turn extraction |
+| LLM08 Vector and embedding weaknesses | RLS on chunks, tenant filter inside the search, keyword statistics cached per (org, user) | `tests/test_rls.py`, `tests/test_anonymous.py` |
+| LLM09 Misinformation | answers must cite sources; refusal when unsupported; faithfulness judged on the eval set | eval: faithfulness 0.954, refusal accuracy 0.90 on the test split (B-036/B-038); red-team out-of-corpus family (8/8) |
+| LLM10 Unbounded consumption | per-org daily budget with alert, per-site budget, per-address rate limit, answer length cap, timeouts and retries | red-team: unbounded-consumption family (4/4); `tests/test_budget.py`, `tests/test_widget.py` |
+
 Residual risk: the scan is a smoke alarm (regex), not a classifier; a paraphrased visible instruction can slip past it. The model resisted all 8 attack documents here, which is evidence, not a guarantee.
 
 ## Anonymous visitors and public documents (Phase 4 block 1, 2026-10-06; migrations 0006-0007)

@@ -149,7 +149,7 @@ def test_answers_are_saved_as_they_are_made_and_a_resume_skips_the_saved_ones(
 
     calls = []
 
-    def fake_ask(conn, embedder, reranker, question, scope, settings=None):  # type: ignore[no-untyped-def]
+    def fake_ask(conn, embedder, reranker, question, scope, settings=None, history=None):  # type: ignore[no-untyped-def]
         calls.append(question)
         answer = SimpleNamespace(refused=False, text="a", reason="", cost_usd=0.004, citations=[])
         return SimpleNamespace(

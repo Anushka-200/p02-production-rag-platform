@@ -68,6 +68,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 12
+      start_period: 300s   # the first start downloads the embedding and reranker models (about 1.5 min)
 
   worker:
     build: .

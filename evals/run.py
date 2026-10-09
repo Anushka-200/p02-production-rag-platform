@@ -25,13 +25,16 @@ from app.cost_guard import add_cost_args, estimate_llm_cost, guard_from_args
 from app.embeddings import get_embedder
 from app.log import setup_logging
 from app.rag import ask
+from app.retrieval.expand import retrieve_expanded
 from app.retrieval.fusion import Fused
 from app.retrieval.rerank import Reranker, get_reranker, rerank
 from app.retrieval.retrieve import retrieve
 from app.retrieval.search import Candidate, Scope
+from app.retrieval.transform import TransformCache
 from evals.judge import Judge, JudgeError
 from evals.metrics import evaluate
 from evals.schema import EvalItem
+from evals.splits import split_of
 
 MODES = ["dense", "keyword", "hybrid", "hybrid+rerank"]
 TENANTS = {"A": "Tenant A (GitLab handbook)", "B": "Tenant B (PostHog handbook)"}
@@ -66,7 +69,7 @@ NOT_HEADLINE = {
 
 
 def split_items(items: Sequence[EvalItem]) -> tuple[list[EvalItem], list[EvalItem]]:
-    """(headline items, follow-ups). Follow-ups cannot work without chat history (Phase 5)."""
+    """(headline items, follow-ups). Follow-ups are reported apart, but ARE run with their chat history."""
     headline = [i for i in items if i.kind not in NOT_HEADLINE]
     return headline, [i for i in items if i.kind == "follow_up"]
 
@@ -172,18 +175,28 @@ def _ranker(
     """A function question -> ranked chunks for one configuration (a factory, so `mode` is bound)."""
     base = "hybrid" if mode == "hybrid+rerank" else mode
 
+    cache = TransformCache(
+        "data/cache/transforms.jsonl"
+    )  # rewrites are cached: a rerun costs nothing
+
     def results(item: EvalItem) -> list[Candidate]:
-        fused = retrieve(
-            conn, embedder, item.question, scopes[item.tenant], settings=s, mode=base
-        ).items
+        question = item.question
+        if (
+            item.history
+        ):  # a follow-up is searched the way the product does it: rewritten with the chat first
+            r = retrieve_expanded(
+                conn, embedder, item.question, scopes[item.tenant], history=item.history,
+                settings=s, mode=base, cache=cache,
+            )  # fmt: skip
+            fused, question = r.items, r.question or item.question
+        else:
+            fused = retrieve(
+                conn, embedder, item.question, scopes[item.tenant], settings=s, mode=base
+            ).items
         if mode == "hybrid+rerank":
             return reorder_with_reranker(
-                fused,
-                item.question,
-                reranker,
-                candidates=s.rerank_candidates,
-                max_words=s.rerank_max_words,
-            )
+                fused, question, reranker, candidates=s.rerank_candidates, max_words=s.rerank_max_words
+            )  # fmt: skip
         return [f.candidate for f in fused]
 
     return results
@@ -231,7 +244,10 @@ def run_answers(
         if item.id in done:
             records.append(done[item.id])
             continue
-        r = ask(conn, embedder, reranker, item.question, scopes[item.tenant], settings=s)
+        r = ask(
+            conn, embedder, reranker, item.question, scopes[item.tenant], settings=s,
+            history=item.history or None,
+        )  # fmt: skip
         guard.record(r.answer.cost_usd)
         rec = AnswerRecord(
             item.id, item.kind, item.answerable, r.answer.refused, r.answer.text, r.answer.reason, r.answer.cost_usd,
@@ -282,6 +298,8 @@ def render(report: dict[str, Any]) -> str:
     ]
     for mode, d in report["retrieval"].items():
         h = d["headline"]
+        if not h:  # a run of follow-ups only has no headline questions
+            continue
         fu = f"{d['follow_up']['recall@5']:.2f} (n={d['n_follow_up']})" if d["follow_up"] else "-"
         pa = (
             f"{d['paraphrase']['recall@5']:.2f} (n={d['n_paraphrase']})"
@@ -333,6 +351,12 @@ def main() -> None:
         "--limit", type=int, default=None, help="only the first N questions (testing)"
     )
     parser.add_argument("--modes", default=",".join(MODES))
+    parser.add_argument("--kinds", default="", help="only these question kinds, comma separated")
+    parser.add_argument(
+        "--split",
+        choices=["dev", "test"],
+        help="only the dev or the test questions (evals/splits.py)",
+    )
     parser.add_argument("--label", default="baseline")
     parser.add_argument("--log", action="store_true", help="append a row to docs/benchmarks.md")
     parser.add_argument(
@@ -342,6 +366,10 @@ def main() -> None:
     setup_logging("WARNING")
     s = get_settings()
     items = [EvalItem.model_validate_json(line) for line in open("evals/qa.jsonl")][: args.limit]
+    if args.kinds:
+        items = [i for i in items if i.kind in args.kinds.split(",")]
+    if args.split:
+        items = [i for i in items if split_of(i.id) == args.split]
     n = len(items)
     projected = 0.0
     if args.answers:

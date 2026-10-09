@@ -569,3 +569,28 @@ split into two halves by a hash of the question id so a setting only counts if i
 Result: the hypothesis "more rerank candidates fixes the near-misses" is REFUTED for R@5: 20 and 30 candidates are worse than 10 on both halves (the
 cross-encoder promotes plausible wrong chunks from the longer list), while R@1 and MRR gain slightly at 30 for 3x the rerank time. A higher
 keyword weight (0.6) is worse everywhere. The current settings (0.3, 10) stay. The reranker itself (+6 points over none) is the part with headroom.
+
+## B-036 Baseline on the REVIEWED 267-question set (2026-10-09)
+First measurement after the eval review (docs/EVAL_REVIEW.md): 267 questions, all checked against the sources by Claude (not a human).
+Full pipeline, Haiku 4.5, bge-small, hybrid + rerank 10/8, `--label reviewed-baseline`, cost $2.52 for the run.
+Numbers are NOT comparable with B-010..B-035 (different, unreviewed, smaller set).
+
+| mode (121 headline answerable questions) | R@1 | R@5 | R@10 | R@50 | MRR | nDCG@10 |
+|---|---|---|---|---|---|---|
+| dense | 0.48 | 0.75 | 0.83 | 0.91 | 0.64 | 0.67 |
+| keyword | 0.08 | 0.36 | 0.48 | 0.69 | 0.23 | 0.28 |
+| hybrid | 0.43 | 0.76 | 0.84 | 0.91 | 0.61 | 0.65 |
+| hybrid + rerank | 0.59 | 0.81 | 0.84 | 0.91 | 0.73 | 0.74 |
+
+Full pipeline, 173 headline questions (answerable + unanswerable): refusal accuracy 0.962 (50 of 52 near-miss unanswerables refused),
+wrongly refused 6.6%, gold place in the context 0.876, correctness 0.822, faithfulness 0.942, p50 2.9 s / p95 4.0 s, $0.0034 per answer.
+
+**Correction of two earlier conclusions.** (1) "Refusal accuracy 0.6 is the weakest number" (B-010): it was mostly the eval's fault; many
+questions labelled unanswerable were answerable. With verified near-miss questions refusal is 0.96. (2) "Follow-ups: R@5 0.10": the eval
+runner never passed the chat history. With the history (`evals/run.py` now does) follow-ups reach R@5 0.76 and 16 of 21 are answered correctly.
+
+**Answer-level breakdown (215 answerable, judge scores in the result JSON):** 126 correct, 36 partial, 13 incorrect, 40 wrongly refused
+(25 of those 40 were follow-ups, now fixed). Where the gold place was NOT in the context: 30 wrongly refused, 10 incorrect, 10 partial: retrieval
+is the limit. Where it WAS in the context: 26 partial, 10 refused, 3 incorrect: mostly a two-part gold answer of which the model gave one part
+(judge strictness plus a short-answer style), not wrong facts. By kind (correct / n): single 79/98, paraphrase 24/43, multi-hop 13/23,
+relationship 4/18, broad 2/12 (10 partial: the answer covers only some of the places).

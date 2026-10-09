@@ -528,3 +528,44 @@ its longer input window. For the PDF/DOCX questions no model beat 0.79, so there
 the gap may shrink (the reranker lifts R@5 by 7 points, B-026) and should be re-measured before switching. Switching costs: migration to
 vector(768), a full re-embed (about 25 minutes per tenant), a new HNSW index, a re-run of `make eval`. Not switched yet: owner decision.
 Peak memory per run: 1.9-3.0 GB (the 768-dim models are heavier), run one at a time.
+
+## B-034 Does the better embedding model survive the reranker? (2026-10-09, follow-up to B-033)
+`evals/embed_rerank.py`. Same Tenant A chunks and cached vectors, dense top-K then the production cross-encoder, 87 questions. Free.
+
+| model | candidates K | R@1 | R@5 | R@10 | MRR | rerank s / question |
+|---|---|---|---|---|---|---|
+| bge-small (current) | dense only | 0.42 | 0.75 | 0.89 | 0.62 | - |
+| bge-small | 10 (production) | 0.48 | 0.81 | 0.89 | 0.66 | 0.65 |
+| bge-small | 20 | 0.50 | 0.83 | 0.90 | 0.67 | 1.29 |
+| arctic-embed-m | dense only | 0.54 | 0.81 | 0.88 | 0.72 | - |
+| arctic-embed-m | 10 | 0.49 | 0.81 | 0.88 | 0.66 | 0.66 |
+| arctic-embed-m | 20 | 0.50 | 0.82 | 0.90 | 0.67 | 1.33 |
+
+The reranker closes the gap completely: with it, both models reach R@5 0.81 and MRR 0.66. Arctic alone has the best top-1 (R@1 0.54), and the
+reranker lowers it to 0.49 to 0.50, so the cross-encoder is not better than a good embedding at the very top. Decision: keep bge-small
+(no migration, no re-embed, half the vector size); ADR 006 updated. A stronger reranker is the lever left, not a stronger embedder.
+
+## B-035 Why Recall@5 is not 1: miss analysis and two general settings (2026-10-09)
+`evals/miss_analysis.py` (per-question evidence in `evals/results/misses.json`): production retrieval on 125 answerable non-follow-up questions;
+48 miss at least one gold place in the top 5 (single 9, paraphrase 8, multi-hop 5, broad 10, relationship 16: the last three need SEVERAL
+gold places in the top 5, a harsh bar). Gold ranks for those 48: found at ranks 6-50 in 30, never in the top 50 in 24. Reading the 17 single and
+paraphrase misses, four causes: (1) the right DOCUMENT is found but the wrong SECTION wins (7); (2) paraphrase vocabulary drift, e.g. "hosted database
+management solution" vs "managed data warehouse", where the gold document is not even in the top 50 (3); (3) generic questions with no
+distinguishing words in a multi-tenant corpus (2); (4) genuinely ambiguous gold, another document also answers (3, e.g. Navan billing, confidentiality).
+Because many gold chunks sat at fused rank 11-40, where the reranker never looks, `evals/tune_retrieval.py` tested the two general settings,
+split into two halves by a hash of the question id so a setting only counts if it helps both (72 and 53 questions):
+
+| keyword weight | rerank candidates | R@5 half A | R@5 half B | R@5 all | R@1 all | MRR all | added rerank s |
+|---|---|---|---|---|---|---|---|
+| 0.3 | none | 0.578 | 0.693 | 0.627 | 0.303 | 0.521 | 0 |
+| **0.3 (current)** | **10** | **0.661** | **0.725** | **0.688** | 0.392 | 0.588 | 0.62 |
+| 0.3 | 20 | 0.609 | 0.701 | 0.648 | 0.396 | 0.587 | 1.24 |
+| 0.3 | 30 | 0.634 | 0.701 | 0.662 | 0.406 | 0.604 | 1.86 |
+| 0.6 | none | 0.530 | 0.669 | 0.589 | 0.275 | 0.485 | 0 |
+| 0.6 | 10 | 0.654 | 0.668 | 0.660 | 0.378 | 0.563 | 0.62 |
+| 0.6 | 20 | 0.609 | 0.701 | 0.648 | 0.396 | 0.586 | 1.24 |
+| 0.6 | 30 | 0.627 | 0.701 | 0.658 | 0.402 | 0.598 | 1.86 |
+
+Result: the hypothesis "more rerank candidates fixes the near-misses" is REFUTED for R@5: 20 and 30 candidates are worse than 10 on both halves (the
+cross-encoder promotes plausible wrong chunks from the longer list), while R@1 and MRR gain slightly at 30 for 3x the rerank time. A higher
+keyword weight (0.6) is worse everywhere. The current settings (0.3, 10) stay. The reranker itself (+6 points over none) is the part with headroom.

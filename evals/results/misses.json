@@ -1,0 +1,3740 @@
+[
+ {
+  "id": "a-multi_hop-002",
+  "kind": "multi_hop",
+  "tenant": "A",
+  "question": "What are the different leadership approaches someone might use at work, and what specific purpose does one of these approaches serve at GitLab?",
+  "gold": [
+   {
+    "doc": "gitlab/leadership/coaching.md",
+    "locator": "different-hats-for-different-conversations"
+   },
+   {
+    "doc": "gitlab/leadership/coaching.md",
+    "locator": "coaching-at-gitlab"
+   }
+  ],
+  "gold_answer": "Leaders wear different hats including manager, teacher, mentor, and coach. The coaching approach is used at GitLab to provide opportunities for self-reflection, communication and feedback, equip team members with needed skills, and create space to practice strategies for high performance.",
+  "ranks": {
+   "dense": [
+    null,
+    12
+   ],
+   "keyword": [
+    null,
+    null
+   ],
+   "hybrid": [
+    null,
+    13
+   ],
+   "hybrid+rerank": [
+    null,
+    13
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "gitlab/people-group/organizational-change-management.md",
+    "section": "Organizational Change Management > GitLab's 8-Phase Change Management Framework > Key Framework Notes",
+    "text": "Organizational Change Management > GitLab's 8-Phase Change Management Framework > Key Framework Notes  **Leadership Engagement**: Visible leadership is key to s"
+   },
+   {
+    "doc": "gitlab/people-group/organizational-change-management.md",
+    "section": "Organizational Change Management > Purpose",
+    "text": "Organizational Change Management > Purpose  GitLab is in a period of evolution. During times like these, having a consistent approach to change management becom"
+   },
+   {
+    "doc": "gitlab/leadership/_index.md",
+    "section": "Leadership > Managers of One > Examples of actions from managers of one at GitLab",
+    "text": "Leadership > Managers of One > Examples of actions from managers of one at GitLab  1. When asked to attend a synchronous brainstorming call, a team member inste"
+   },
+   {
+    "doc": "gitlab/people-group/learning-and-development/elevate-programs/elevateplus/_index.md",
+    "section": "Elevate+",
+    "text": "Elevate+  Elevate+: a live virtual leadership development program for leaders of leaders at GitLab, focused on strengthening leadership identity, mastering GitL"
+   },
+   {
+    "doc": "gitlab/leadership/_index.md",
+    "section": "Leadership > Managers of One",
+    "text": "Leadership > Managers of One  In an all-remote organization, we want each team member to be a [manager of one](https://signalvnoise.com/posts/1430-hire-managers"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "gitlab/leadership/coaching.md",
+    "section": "Coaching > Coaching at GitLab",
+    "anchors": [
+     "coaching-at-gitlab",
+     "why-you-might-need-or-want-a-coach"
+    ],
+    "text": "Coaching > Coaching at GitLab  At GitLab, we use coaching to:  1. Provide opportunity for self reflection, communication and feedback 1. Equip team members with"
+   }
+  ]
+ },
+ {
+  "id": "a-multi_hop-003",
+  "kind": "multi_hop",
+  "tenant": "A",
+  "question": "Based on this person's work style and communication preferences, how would you best present a financial analysis to them?",
+  "gold": [
+   {
+    "doc": "gitlab/finance/readmes/jessica-ross.md",
+    "locator": "about-me"
+   },
+   {
+    "doc": "gitlab/finance/readmes/jessica-ross.md",
+    "locator": "communication-style"
+   }
+  ],
+  "gold_answer": "You should use visual formats like charts and frameworks to show the journey of your analysis, lead with the bottom-line recommendation first, and use async communication like email unless the topic is complex or sensitive enough to warrant a live discussion.",
+  "ranks": {
+   "dense": [
+    null,
+    2
+   ],
+   "keyword": [
+    null,
+    9
+   ],
+   "hybrid": [
+    null,
+    1
+   ],
+   "hybrid+rerank": [
+    null,
+    3
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "gitlab/finance/growth-and-development/_index.md",
+    "section": "Finance Growth and Development",
+    "text": "Finance Growth and Development  **Work Style Assessment**  We will use [Simpli5](https://www.simpli5.com/) assessments to help us develop a standardized set of "
+   },
+   {
+    "doc": "gitlab/leadership/1-1/_index.md",
+    "section": "1-1 > Conducting a 1-1",
+    "text": "1-1 > Conducting a 1-1  Book them and ensure you always are on time. Similarly, canceling a 1-1 should be a last resort. The exception to this is talent acquisi"
+   },
+   {
+    "doc": "gitlab/finance/readmes/jessica-ross.md",
+    "section": "Jessica Ross - CFO - READ ME > Communication Style",
+    "text": "Jessica Ross - CFO - READ ME > Communication Style  **Visual and story-driven**  I process information best when it is visual and grounded in a clear narrative."
+   },
+   {
+    "doc": "gitlab/people-group/promotion-document-style-guide.md",
+    "section": "Promotion Document Style Guide > Principles for Presenting a Strong Promotion Case",
+    "text": "Promotion Document Style Guide > Principles for Presenting a Strong Promotion Case  1. Business Justification should describe how the person's role will change "
+   },
+   {
+    "doc": "gitlab/finance/_index.md",
+    "section": "Finance > Invoice template and where to send",
+    "text": "Finance > Invoice template and where to send  ### Finance Business Partner Alignment  | Function | Name | | -------- | ---- | | Customer Support | [R&D Finance]"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "gitlab/finance/readmes/jessica-ross.md",
+    "section": "Jessica Ross - CFO - READ ME > Communication Style",
+    "anchors": [
+     "communication-style"
+    ],
+    "text": "Jessica Ross - CFO - READ ME > Communication Style  **Visual and story-driven**  I process information best when it is visual and grounded in a clear narrative."
+   }
+  ]
+ },
+ {
+  "id": "a-multi_hop-005",
+  "kind": "multi_hop",
+  "tenant": "A",
+  "question": "Who is required to follow the company's guidelines about when to send work communications?",
+  "gold": [
+   {
+    "doc": "gitlab/people-policies/ireland-ltd/right-to-disconnect-policy.md",
+    "locator": "2-applicability"
+   },
+   {
+    "doc": "gitlab/people-policies/ireland-ltd/right-to-disconnect-policy.md",
+    "locator": "7-expectations"
+   }
+  ],
+  "gold_answer": "All team members regardless of position, tenure, and work location are required to follow this policy, which includes expectations about being mindful of communications sent outside regular working hours.",
+  "ranks": {
+   "dense": [
+    null,
+    2
+   ],
+   "keyword": [
+    null,
+    null
+   ],
+   "hybrid": [
+    null,
+    6
+   ],
+   "hybrid+rerank": [
+    null,
+    1
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "gitlab/people-policies/ireland-ltd/right-to-disconnect-policy.md",
+    "section": "GitLab Ireland Ltd Right to Disconnect Policy > 7. Expectations",
+    "text": "GitLab Ireland Ltd Right to Disconnect Policy > 7. Expectations  It is not the Company's intention to strictly dictate when and how we communicate with or respo"
+   },
+   {
+    "doc": "gitlab/communication/_index.md",
+    "section": "GitLab Communication > Effective & Responsible Communication Guidelines > Communicate directly",
+    "text": "GitLab Communication > Effective & Responsible Communication Guidelines > Communicate directly  When working on a problem or issue, communicate directly with th"
+   },
+   {
+    "doc": "gitlab/people-group/employment-branding/people-communications.md",
+    "section": "People communications & team member engagement > Runbook for contentious internal announcements",
+    "text": "People communications & team member engagement > Runbook for contentious internal announcements  1. Any AMAs or other designated plans for discussion or follow "
+   },
+   {
+    "doc": "gitlab/people-policies/france-sas/right-to-disconnect-charter.md",
+    "section": "GitLab France S.A.S. Right to Disconnect Charter > English: GITLAB FRANCE S.A.S. RIGHT TO DISCONNECT CHARTER > 6. Recommended behaviours favouring the exercise of the right to disconnect",
+    "text": "GitLab France S.A.S. Right to Disconnect Charter > English: GITLAB FRANCE S.A.S. RIGHT TO DISCONNECT CHARTER > 6. Recommended behaviours favouring the exercise "
+   },
+   {
+    "doc": "gitlab/people-group/relocation.md",
+    "section": "Relocation > Relocation / Address Change > Importance of Communicating Location",
+    "text": "Relocation > Relocation / Address Change > Importance of Communicating Location  Additionally, certain roles require team members to be present in the location "
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "gitlab/people-policies/ireland-ltd/right-to-disconnect-policy.md",
+    "section": "GitLab Ireland Ltd Right to Disconnect Policy > 7. Expectations",
+    "anchors": [
+     "7-expectations"
+    ],
+    "text": "GitLab Ireland Ltd Right to Disconnect Policy > 7. Expectations  It is not the Company's intention to strictly dictate when and how we communicate with or respo"
+   }
+  ]
+ },
+ {
+  "id": "a-multi_hop-006",
+  "kind": "multi_hop",
+  "tenant": "A",
+  "question": "What should you do if you discover that a validation pipeline has failed and there are no existing issues or merge requests documenting the problem?",
+  "gold": [
+   {
+    "doc": "gitlab/finance/jihu-support/jihu-validation-pipelines.md",
+    "locator": "what-to-do-when-the-validation-pipeline-failed"
+   },
+   {
+    "doc": "gitlab/finance/jihu-support/jihu-validation-pipelines.md",
+    "locator": "when-and-where-we-run-it"
+   }
+  ],
+  "gold_answer": "You should create an issue and notify JiHu about the potential breakage by contacting @qianzhangxa, add the ~\"JiHu impacted\" label to the merge request for tracking, and optionally investigate the failure to help JiHu understand why it happened and how to fix it.",
+  "ranks": {
+   "dense": [
+    1,
+    16
+   ],
+   "keyword": [
+    1,
+    4
+   ],
+   "hybrid": [
+    1,
+    8
+   ],
+   "hybrid+rerank": [
+    1,
+    6
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "gitlab/finance/jihu-support/jihu-validation-pipelines.md",
+    "section": "JiHu validation pipelines > What to do when the validation pipeline failed",
+    "text": "JiHu validation pipelines > What to do when the validation pipeline failed  In the case when the validation pipeline failed, follow this workflow:  - Check if t"
+   },
+   {
+    "doc": "gitlab/finance/jihu-support/jihu-validation-pipelines.md",
+    "section": "JiHu validation pipelines > What to do when the validation pipeline failed",
+    "text": "JiHu validation pipelines > What to do when the validation pipeline failed  If any related items can be found, feel free to drop a reference in the issue or mer"
+   },
+   {
+    "doc": "gitlab/finance/jihu-support/jihu-validation-pipelines.md",
+    "section": "JiHu validation pipelines > JiHu validation pipelines",
+    "text": "JiHu validation pipelines > JiHu validation pipelines  In order to make sure our regular development does not break JiHu's pipelines, we run JiHu validation pip"
+   },
+   {
+    "doc": "gitlab/finance/jihu-support/_index.md",
+    "section": "JiHu Support > GitLab contacts",
+    "text": "JiHu Support > GitLab contacts  ### Broken JiHu main branch resolution process  There are times where [`main-jh` branch](https://jihulab.com/gitlab-cn/gitlab) i"
+   },
+   {
+    "doc": "gitlab/communication/_index.md",
+    "section": "GitLab Communication > Internal communication > Start with a Merge Request",
+    "text": "GitLab Communication > Internal communication > Start with a Merge Request  1. If submitting a change for a feature, **update the description with the final con"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "gitlab/finance/jihu-support/jihu-validation-pipelines.md",
+    "section": "JiHu validation pipelines > What to do when the validation pipeline failed",
+    "anchors": [
+     "what-to-do-when-the-validation-pipeline-failed"
+    ],
+    "text": "JiHu validation pipelines > What to do when the validation pipeline failed  In the case when the validation pipeline failed, follow this workflow:  - Check if t"
+   },
+   {
+    "doc": "gitlab/finance/jihu-support/jihu-validation-pipelines.md",
+    "section": "JiHu validation pipelines > What to do when the validation pipeline failed",
+    "anchors": [
+     "what-to-do-when-the-validation-pipeline-failed"
+    ],
+    "text": "JiHu validation pipelines > What to do when the validation pipeline failed  If any related items can be found, feel free to drop a reference in the issue or mer"
+   }
+  ]
+ },
+ {
+  "id": "a-multi_hop-008",
+  "kind": "multi_hop",
+  "tenant": "A",
+  "question": "What are the different approval and documentation requirements when someone moves into a temporary leadership position versus when a company creates a new senior executive role?",
+  "gold": [
+   {
+    "doc": "gitlab/people-group/promotions-transfers.md",
+    "locator": "updating-interim-movements-in-workday"
+   },
+   {
+    "doc": "gitlab/people-group/promotions-transfers.md",
+    "locator": "hiring-for-vp-roles"
+   }
+  ],
+  "gold_answer": "When moving to an interim role, the job change letter is saved and processed in Workday with updates to access levels and job title as needed, with no special e-group approval required. However, when creating a new VP and above position, a justification document must be created and reviewed by e-gro",
+  "ranks": {
+   "dense": [
+    null,
+    4
+   ],
+   "keyword": [
+    null,
+    null
+   ],
+   "hybrid": [
+    null,
+    5
+   ],
+   "hybrid+rerank": [
+    null,
+    1
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "gitlab/people-group/promotions-transfers.md",
+    "section": "Promotions and Transfers > Hiring for VP+ Roles",
+    "text": "Promotions and Transfers > Hiring for VP+ Roles  In order to ensure a consistent level of review for both internal promotions and new leadership roles, any net "
+   },
+   {
+    "doc": "gitlab/people-group/relocation.md",
+    "section": "Relocation > How To Apply for a Long-Term Relocation > Approvals Phase > Relocations To New Country or Different Location Factor",
+    "text": "Relocation > How To Apply for a Long-Term Relocation > Approvals Phase > Relocations To New Country or Different Location Factor  Considerations in addition to "
+   },
+   {
+    "doc": "gitlab/finance/financial-planning-and-analysis/_index.md",
+    "section": "Financial Planning & Analysis > Headcount Forecast and Hiring Plan > Role Approval and Release Process > Planned Positions",
+    "text": "Financial Planning & Analysis > Headcount Forecast and Hiring Plan > Role Approval and Release Process > Planned Positions  Planned Positions include all Net Ne"
+   },
+   {
+    "doc": "gitlab/people-group/relocation.md",
+    "section": "Relocation > Relocation / Address Change > Importance of Communicating Location",
+    "text": "Relocation > Relocation / Address Change > Importance of Communicating Location  Additionally, certain roles require team members to be present in the location "
+   },
+   {
+    "doc": "gitlab/people-group/contracts-probation-periods.md",
+    "section": "Contracts, Background Screenings, Probation Periods & PIAA > PIAA (Proprietary Information and Assignment Agreement) > Approval for Outside Activities > Steps as a current team member",
+    "text": "Contracts, Background Screenings, Probation Periods & PIAA > PIAA (Proprietary Information and Assignment Agreement) > Approval for Outside Activities > Steps a"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "gitlab/people-group/promotions-transfers.md",
+    "section": "Promotions and Transfers > Hiring for VP+ Roles",
+    "anchors": [
+     "hiring-for-vp-roles"
+    ],
+    "text": "Promotions and Transfers > Hiring for VP+ Roles  In order to ensure a consistent level of review for both internal promotions and new leadership roles, any net "
+   }
+  ]
+ },
+ {
+  "id": "a-single-007",
+  "kind": "single",
+  "tenant": "A",
+  "question": "What does the People Group aim to create for employees at GitLab?",
+  "gold": [
+   {
+    "doc": "gitlab/people-group/_index.md",
+    "locator": "people-group-vision"
+   }
+  ],
+  "gold_answer": "The People Group aims to create a high performance and results-driven culture where diverse and inclusive team members can have meaningful careers. They support an environment that helps people do their best work, advance their careers, and contribute to the company's business goals.",
+  "ranks": {
+   "dense": [
+    19
+   ],
+   "keyword": [
+    null
+   ],
+   "hybrid": [
+    22
+   ],
+   "hybrid+rerank": [
+    22
+   ]
+  },
+  "gold_doc_in_top50": [
+   true
+  ],
+  "top5": [
+   {
+    "doc": "gitlab/people-group/_index.md",
+    "section": "People Group > Connect with us",
+    "text": "People Group > Connect with us  The People Group is here to support GitLab's [mission](/handbook/company/mission/) by bringing top talent into GitLab, and then "
+   },
+   {
+    "doc": "gitlab/people-group/_index.md",
+    "section": "People Group > Connect with us",
+    "text": "People Group > Connect with us  You can also check out pages related to People Group in the section below. If you can not find what you are looking for please d"
+   },
+   {
+    "doc": "gitlab/hiring/candidate-faq/_index.md",
+    "section": "Candidate Handbook Page > What's it like to work at GitLab?",
+    "text": "Candidate Handbook Page > What's it like to work at GitLab?  Our [mission](/handbook/company/mission/) makes it clear that we believe in a world where everyone "
+   },
+   {
+    "doc": "gitlab/people-group/employment-branding/_index.md",
+    "section": "Talent brand > Achieving our talent brand vision > GitLab is a place where",
+    "text": "Talent brand > Achieving our talent brand vision > GitLab is a place where  1. **Everyone can contribute**     - We've got big ambitions to make GitLab the [top"
+   },
+   {
+    "doc": "gitlab/people-group/employment-branding/_index.md",
+    "section": "Talent brand > Introduction",
+    "text": "Talent brand > Introduction  At GitLab, our mission is simple: to enable everyone to contribute to and co-create the software that powers our world. Our platfor"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "gitlab/people-group/_index.md",
+    "section": "People Group > People Group Vision",
+    "anchors": [
+     "people-group-vision"
+    ],
+    "text": "People Group > People Group Vision  The People Group works together to establish a high performance and results driven culture where a diverse and inclusive tea"
+   }
+  ]
+ },
+ {
+  "id": "a-single-008",
+  "kind": "single",
+  "tenant": "A",
+  "question": "What's the first step an executive should take if they want to have a listening session with employees from an underrepresented group?",
+  "gold": [
+   {
+    "doc": "gitlab/communication/ask-me-anything.md",
+    "locator": "e-group-initiated"
+   }
+  ],
+  "gold_answer": "They or their executive business assistant should contact the relevant employee resource group. If there's no relevant group, they can post in their Slack channel to find interested employees.",
+  "ranks": {
+   "dense": [
+    34
+   ],
+   "keyword": [
+    null
+   ],
+   "hybrid": [
+    36
+   ],
+   "hybrid+rerank": [
+    36
+   ]
+  },
+  "gold_doc_in_top50": [
+   true
+  ],
+  "top5": [
+   {
+    "doc": "gitlab/communication/ask-me-anything.md",
+    "section": "Ask Me Anything > Reverse AMA > Process for initiating a Reverse AMA",
+    "text": "Ask Me Anything > Reverse AMA > Process for initiating a Reverse AMA  #### Team Member Initiated  - A team member of a particular underrepresented group will cr"
+   },
+   {
+    "doc": "gitlab/finance/growth-and-development/finbt-mentorship.md",
+    "section": "Under Construction - FinBT Mentorship Program > Benefits and Expectations > Expectations",
+    "text": "Under Construction - FinBT Mentorship Program > Benefits and Expectations > Expectations  | Expectation | Description | | ----- | --------------- | | **Mentees "
+   },
+   {
+    "doc": "gitlab/leadership/1-1/_index.md",
+    "section": "1-1 > Career Development Discussion at the 1-1 > Preparing for the discussion > Maintain the right frame of mind",
+    "text": "1-1 > Career Development Discussion at the 1-1 > Preparing for the discussion > Maintain the right frame of mind  Coming to the meeting with an open mind and th"
+   },
+   {
+    "doc": "gitlab/leadership/1-1/_index.md",
+    "section": "1-1 > Conducting a 1-1",
+    "text": "1-1 > Conducting a 1-1  The manager should strive to do 20% of the talking while the direct report does 80%. 1. If you have few items on the agenda from the rep"
+   },
+   {
+    "doc": "gitlab/people-group/learning-and-development/elevate-programs/elevateplus/_index.md",
+    "section": "Elevate+",
+    "text": "Elevate+  Managing Up to the C-Suite: This executive-level discussion focuses on the critical leadership competency of managing up; an essential driver of organ"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "gitlab/communication/ask-me-anything.md",
+    "section": "Ask Me Anything > Reverse AMA > Process for initiating a Reverse AMA > E-Group Initiated",
+    "anchors": [
+     "e-group-initiated"
+    ],
+    "text": "Ask Me Anything > Reverse AMA > Process for initiating a Reverse AMA > E-Group Initiated  - If an E-Group team member would like a Reverse AMA, they or their EB"
+   }
+  ]
+ },
+ {
+  "id": "a-single-010",
+  "kind": "single",
+  "tenant": "A",
+  "question": "When does Navan charge GitLab's bank account each month?",
+  "gold": [
+   {
+    "doc": "gitlab/finance/accounts-payable/corp-credit-cards.md",
+    "locator": "7-2-payment"
+   }
+  ],
+  "gold_answer": "Navan debits GitLab's bank account on the 25th of each month.",
+  "ranks": {
+   "dense": [
+    11
+   ],
+   "keyword": [
+    null
+   ],
+   "hybrid": [
+    15
+   ],
+   "hybrid+rerank": [
+    15
+   ]
+  },
+  "gold_doc_in_top50": [
+   true
+  ],
+  "top5": [
+   {
+    "doc": "gitlab/finance/accounting/_index.md",
+    "section": "Accounting and Reporting > Expenses > Team Member Reimbursements - Navan > Paying Navan Reports",
+    "text": "Accounting and Reporting > Expenses > Team Member Reimbursements - Navan > Paying Navan Reports  1. Team members in a US expense policy will be automatically re"
+   },
+   {
+    "doc": "gitlab/finance/expenses.md",
+    "section": "Global Travel and Expense Policy > Approved Office Supplies List > Legal entities",
+    "text": "Global Travel and Expense Policy > Approved Office Supplies List > Legal entities  - Team Members must submit their expenses through Navan. - Expenses for GitLa"
+   },
+   {
+    "doc": "gitlab/finance/expenses.md",
+    "section": "Global Travel and Expense Policy > 4. PROCEDURES",
+    "text": "Global Travel and Expense Policy > 4. PROCEDURES  **Payment method**  - GitLab's default payment method in Navan is a central company card. - Payment varies bas"
+   },
+   {
+    "doc": "gitlab/finance/expenses.md",
+    "section": "Global Travel and Expense Policy > 4. PROCEDURES > Hotels",
+    "text": "Global Travel and Expense Policy > 4. PROCEDURES > Hotels  - When you book Hotels through Navan Travel, hotel room charges and the applicable taxes will be paid"
+   },
+   {
+    "doc": "gitlab/finance/expenses.md",
+    "section": "Global Travel and Expense Policy > 7. OTHER > Expense Reimbursement for Terminated Team Members",
+    "text": "Global Travel and Expense Policy > 7. OTHER > Expense Reimbursement for Terminated Team Members  If a team member whom you manage has left GitLab and comes to y"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "gitlab/finance/accounts-payable/corp-credit-cards.md",
+    "section": "Navan Purchasing Card > 7. PROCEDURES",
+    "anchors": [
+     "7-procedures",
+     "7-1-card-holder-responsibility",
+     "7-2-payment"
+    ],
+    "text": "Navan Purchasing Card > 7. PROCEDURES  - Navan Purchasing Cards are limited to team members in certain positions that require a card for the purchase of low val"
+   }
+  ]
+ },
+ {
+  "id": "a-single-013",
+  "kind": "single",
+  "tenant": "A",
+  "question": "I'm a director at the company and want to develop my leadership skills. Which Elevate program should I look into?",
+  "gold": [
+   {
+    "doc": "gitlab/people-group/learning-and-development/elevate-programs/_index.md",
+    "locator": "elevate-programs"
+   }
+  ],
+  "gold_answer": "You should look into Elevate+, which is designed for Directors and Senior Directors.",
+  "ranks": {
+   "dense": [
+    5
+   ],
+   "keyword": [
+    5
+   ],
+   "hybrid": [
+    2
+   ],
+   "hybrid+rerank": [
+    8
+   ]
+  },
+  "gold_doc_in_top50": [
+   true
+  ],
+  "top5": [
+   {
+    "doc": "gitlab/people-group/learning-and-development/elevate-programs/elevate/_index.md",
+    "section": "Elevate",
+    "text": "Elevate  Elevate is a live virtual leadership development program for GitLab managers, focused on understanding leadership competencies, building emotional inte"
+   },
+   {
+    "doc": "gitlab/leadership/_index.md",
+    "section": "Leadership > Training > Leadership Development Opportunities",
+    "text": "Leadership > Training > Leadership Development Opportunities  1. Managers can participate in our [Elevate program](/handbook/people-group/learning-and-developme"
+   },
+   {
+    "doc": "gitlab/people-group/learning-and-development/elevate-programs/elevate-prep/_index.md",
+    "section": "ElevatePrep > What is ElevatePrep",
+    "text": "ElevatePrep > What is ElevatePrep  ElevatePrep is a **highly** interactive, all-remote (live virtual learning) program where participants develop leadership ski"
+   },
+   {
+    "doc": "gitlab/people-group/learning-and-development/elevate-programs/elevate-applied/_index.md",
+    "section": "Elevate Applied",
+    "text": "Elevate Applied  **Elevate Applied: Continuous Leadership Development Beyond Certification**  Elevate Applied is a comprehensive post-certification program desi"
+   },
+   {
+    "doc": "gitlab/people-group/learning-and-development/elevate-programs/elevate/_index.md",
+    "section": "Elevate > Supporting your team in Elevate",
+    "text": "Elevate > Supporting your team in Elevate  Engaging managers of people leaders in Elevate helps us to:  1. Engage managers and their direct reports in conversat"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "gitlab/people-group/learning-and-development/elevate-programs/_index.md",
+    "section": "Elevate Programs",
+    "anchors": [
+     "elevate-programs",
+     "elevate-feedback-loop"
+    ],
+    "text": "Elevate Programs  Use the links below to navigate to each Elevate program. Here is a useful guide to ensure you're choosing the right program:  | Program Name |"
+   }
+  ]
+ },
+ {
+  "id": "a-single-038",
+  "kind": "single",
+  "tenant": "A",
+  "question": "What types of company information am I not allowed to share with people outside GitLab?",
+  "gold": [
+   {
+    "doc": "gitlab/people-policies/_index.md",
+    "locator": "confidentiality"
+   }
+  ],
+  "gold_answer": "You cannot share confidential information such as technical details about services, business plans, financial data, employee information, customer lists, or other non-public information. Disclosing this information could harm GitLab, its suppliers, customers, or business partners.",
+  "ranks": {
+   "dense": [
+    16
+   ],
+   "keyword": [
+    null
+   ],
+   "hybrid": [
+    19
+   ],
+   "hybrid+rerank": [
+    19
+   ]
+  },
+  "gold_doc_in_top50": [
+   true
+  ],
+  "top5": [
+   {
+    "doc": "gitlab/people-group/contracts-probation-periods.md",
+    "section": "Contracts, Background Screenings, Probation Periods & PIAA > PIAA (Proprietary Information and Assignment Agreement) > Outside Employment (Paid or Unpaid), Projects, and Potentially-Conflicting Activities",
+    "text": "Contracts, Background Screenings, Probation Periods & PIAA > PIAA (Proprietary Information and Assignment Agreement) > Outside Employment (Paid or Unpaid), Proj"
+   },
+   {
+    "doc": "gitlab/communication/confidentiality-levels.md",
+    "section": "Confidentiality levels > Not public > Limited access",
+    "text": "Confidentiality levels > Not public > Limited access  The items below are not shared with all team members. Limited access is a more severe restriction than [in"
+   },
+   {
+    "doc": "gitlab/values/_index.md",
+    "section": "GitLab Values > \ud83d\udc41\ufe0f Transparency {#transparency} > Not public",
+    "text": "GitLab Values > \ud83d\udc41\ufe0f Transparency {#transparency} > Not public  We make information public by default because [transparency is one of our values](#transparency). "
+   },
+   {
+    "doc": "gitlab/finance/procurement/vendor-guidelines/po-terms.md",
+    "section": "PURCHASE ORDER TERMS AND CONDITIONS > 5. CONFIDENTIALITY & IP OWNERSHIP",
+    "text": "PURCHASE ORDER TERMS AND CONDITIONS > 5. CONFIDENTIALITY & IP OWNERSHIP  5.1 All information received under this Order is confidential. Vendor shall not disclos"
+   },
+   {
+    "doc": "gitlab/people-group/acceptable-use-policy.md",
+    "section": "GitLab Internal Acceptable Use Policy > Procedure > Unacceptable Use > Unacceptable Email and Communications Activities",
+    "text": "GitLab Internal Acceptable Use Policy > Procedure > Unacceptable Use > Unacceptable Email and Communications Activities  Forwarding of confidential business ema"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "gitlab/people-policies/_index.md",
+    "section": "People Policies > Workplace Conduct > Confidentiality",
+    "anchors": [
+     "confidentiality"
+    ],
+    "text": "People Policies > Workplace Conduct > Confidentiality  As stated in the **Confidentiality and Corporate Assets and Corporate Opportunities** section of the [Cod"
+   }
+  ]
+ },
+ {
+  "id": "a-single-042",
+  "kind": "single",
+  "tenant": "A",
+  "question": "Can my employer provide me with a company vehicle for work trips without me having to pay taxes on that benefit?",
+  "gold": [
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "locator": "page:23"
+   }
+  ],
+  "gold_answer": "Yes, if you use a company car for business purposes, this is considered a working condition benefit and is not taxable to you. The exclusion applies to property and services provided so you can perform your job, to the extent the cost would be deductible if you had paid for it yourself.",
+  "ranks": {
+   "dense": [
+    3
+   ],
+   "keyword": [
+    50
+   ],
+   "hybrid": [
+    6
+   ],
+   "hybrid+rerank": [
+    10
+   ]
+  },
+  "gold_doc_in_top50": [
+   true
+  ],
+  "top5": [
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "section": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules > Working Condition Benefits",
+    "text": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules > Working Condition Benefits  Employee.  For this exclusion,"
+   },
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "section": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 3. Fringe Benefit Valuation Rules > Commuting Rule",
+    "text": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 3. Fringe Benefit Valuation Rules > Commuting Rule  each workday to carry at least three emplo"
+   },
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "section": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 3. Fringe Benefit Valuation Rules > General Valuation Rule",
+    "text": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 3. Fringe Benefit Valuation Rules > General Valuation Rule  Employer-provided vehicles. In gen"
+   },
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "section": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 3. Fringe Benefit Valuation Rules > Cents-per-Mile Rule",
+    "text": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 3. Fringe Benefit Valuation Rules > Cents-per-Mile Rule  \u2022 At least 50% of the vehicle\u2019s total"
+   },
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "section": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules > Working Condition Benefits",
+    "text": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules > Working Condition Benefits  If you are self-employed, you "
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "section": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules > Transportation (Commuting) Benefits",
+    "anchors": [
+     "p23-transportation-commuting-benefits"
+    ],
+    "text": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules > Transportation (Commuting) Benefits  your employee\u2019s incom"
+   },
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "section": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules > Transportation (Commuting) Benefits",
+    "anchors": [
+     "p23-transportation-commuting-benefits"
+    ],
+    "text": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules > Transportation (Commuting) Benefits  payment or reimbursem"
+   }
+  ]
+ },
+ {
+  "id": "b-single-002",
+  "kind": "single",
+  "tenant": "B",
+  "question": "What's the preferred way to handle team discussions at our company?",
+  "gold": [
+   {
+    "doc": "posthog/help.md",
+    "locator": "do-things-as-publicly-as-possible-by-default"
+   }
+  ],
+  "gold_answer": "Public repositories are the best place for discussions, followed by private repositories, then public Slack channels, and finally private Slack channels or direct messages. This approach helps everyone on the team have better context and work more independently.",
+  "ranks": {
+   "dense": [
+    28
+   ],
+   "keyword": [
+    null
+   ],
+   "hybrid": [
+    29
+   ],
+   "hybrid+rerank": [
+    29
+   ]
+  },
+  "gold_doc_in_top50": [
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/growth/sales/getting-people-to-talk-to-you.md",
+    "section": "Getting people to talk to you > How to get people to talk to you",
+    "text": "Getting people to talk to you > How to get people to talk to you  - Find your customer's GitHub \u2013 company open source repos or individual engineers' personal pr"
+   },
+   {
+    "doc": "posthog/engineering/developer-experience.md",
+    "section": "Developer Experience > How to work with this team",
+    "text": "Developer Experience > How to work with this team  **Report what's slowing you down** \u2014 flaky tests, slow builds, local dev friction, tooling that doesn't work "
+   },
+   {
+    "doc": "posthog/company/culture.md",
+    "section": "Culture > We're structured for speed and autonomy",
+    "text": "Culture > We're structured for speed and autonomy  Hiring high-performing and self-sufficient team members means we don't need the typical corporate processes t"
+   },
+   {
+    "doc": "posthog/company/team-changes.md",
+    "section": "Team changes",
+    "text": "Team changes  There are three key principles here:  1. Anyone can propose a change by [creating an issue](https://github.com/PostHog/company-internal/issues/new"
+   },
+   {
+    "doc": "posthog/growth/sales/how-we-work.md",
+    "section": "How we work > Working with engineering teams",
+    "text": "How we work > Working with engineering teams  Finally, if you are bringing engineers onto a call, brief them first - what is the call about, who will be there. "
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "posthog/help.md",
+    "section": "How you can help > Do things as publicly as possible by default",
+    "anchors": [
+     "do-things-as-publicly-as-possible-by-default"
+    ],
+    "text": "How you can help > Do things as publicly as possible by default  For discussions, public repos are the best place. Then private ones, then Slack public channels"
+   }
+  ]
+ },
+ {
+  "id": "b-single-005",
+  "kind": "single",
+  "tenant": "B",
+  "question": "Where can I find sales materials that explain how to pitch our managed data warehouse product to customers?",
+  "gold": [
+   {
+    "doc": "posthog/growth/sales/why-buy-posthog.md",
+    "locator": "per-product-sales-enablement"
+   }
+  ],
+  "gold_answer": "The Developer Marketing team has created sales enablement materials for the managed data warehouse (Trino) product as a Google Doc that covers product information and common objection handling.",
+  "ranks": {
+   "dense": [
+    null
+   ],
+   "keyword": [
+    9
+   ],
+   "hybrid": [
+    59
+   ],
+   "hybrid+rerank": [
+    59
+   ]
+  },
+  "gold_doc_in_top50": [
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/marketing/positioning/data-warehouse.md",
+    "section": "Context warehouse > Selling to enterprise",
+    "text": "Context warehouse > Selling to enterprise  Enterprise data conversations at PostHog follow the same rules as everything else: pricing is published, terms are cl"
+   },
+   {
+    "doc": "posthog/marketing/positioning/data-warehouse.md",
+    "section": "Context warehouse > Messaging",
+    "text": "Context warehouse > Messaging  ### Message 1: The warehouse is the context layer for your agents  **Problem:** Agents can see product signals \u2013 errors, funnel d"
+   },
+   {
+    "doc": "posthog/growth/cross-selling/how-we-upsell-and-cross-sell.md",
+    "section": "How we upsell and cross-sell > How to run a cross-sell process",
+    "text": "How we upsell and cross-sell > How to run a cross-sell process  For example, you can say \u2018other customers that look like you are doing X, this is what we\u2019re see"
+   },
+   {
+    "doc": "posthog/marketing/positioning/endpoints.md",
+    "section": "Endpoints > Selling to enterprise",
+    "text": "Endpoints > Selling to enterprise  Enterprise Endpoints conversations follow the same rules as the rest of PostHog: pricing is published, terms are clear, and w"
+   },
+   {
+    "doc": "posthog/growth/sales/outbound-sales.md",
+    "section": "Outbound sales > How TAEs talk to outbounded prospects",
+    "text": "Outbound sales > How TAEs talk to outbounded prospects  ### 5. With explicit permission, give a brief PostHog pitch  Open with what you heard and ask for permis"
+   }
+  ],
+  "gold_chunks": []
+ },
+ {
+  "id": "b-single-009",
+  "kind": "single",
+  "tenant": "B",
+  "question": "What are some ways that PostHog tries to build a strong reputation with customers?",
+  "gold": [
+   {
+    "doc": "posthog/brand/overview.md",
+    "locator": "brand-matters-to-us-greatly"
+   }
+  ],
+  "gold_answer": "PostHog builds its reputation through multiple touchpoints including how it structures pricing, the tone used in communications, and the experience customers have during sales interactions. The company believes this approach to brand building creates a significant competitive advantage.",
+  "ranks": {
+   "dense": [
+    null
+   ],
+   "keyword": [
+    null
+   ],
+   "hybrid": [
+    null
+   ],
+   "hybrid+rerank": [
+    null
+   ]
+  },
+  "gold_doc_in_top50": [
+   false
+  ],
+  "top5": [
+   {
+    "doc": "posthog/account-management/getting-people-to-talk-to-you.md",
+    "section": "Getting people to talk to you > Additional Resources > Additional creative ways to engage customers",
+    "text": "Getting people to talk to you > Additional Resources > Additional creative ways to engage customers  - If they submit a support request outside of Slack, jump i"
+   },
+   {
+    "doc": "posthog/how-we-make-money.md",
+    "section": "How we make money > Match the cheapest for each individual product",
+    "text": "How we make money > Match the cheapest for each individual product  We can make it up by selling other products to the customer over time. This way, it's always"
+   },
+   {
+    "doc": "posthog/marketing/index.md",
+    "section": "Overview > Marketing vision > Things we want to be brilliant at",
+    "text": "Overview > Marketing vision > Things we want to be brilliant at  - **Word of mouth mindset:** We want to build a hugely successful company driven primarily by w"
+   },
+   {
+    "doc": "posthog/product/visiting-customers.md",
+    "section": "In-Person Customer Visits > Setting up meetings",
+    "text": "In-Person Customer Visits > Setting up meetings  1. **Create an open flexible script.**    Develop a small, flexible set of questions related to your product ar"
+   },
+   {
+    "doc": "posthog/people/hiring-process/sales-cs-hiring.md",
+    "section": "Sales and Customer Success Hiring > Sales and Customer Success hiring at PostHog",
+    "text": "Sales and Customer Success Hiring > Sales and Customer Success hiring at PostHog  Our Sales and Customer Success teams look after customers paying $20k a year o"
+   }
+  ],
+  "gold_chunks": []
+ },
+ {
+  "id": "p-a-single-043",
+  "kind": "paraphrase",
+  "tenant": "A",
+  "question": "Do supplementary compensations that my company provides to me generally face employment-related levies such as those for Social Security and Medicare?",
+  "gold": [
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "locator": "page:5"
+   }
+  ],
+  "gold_answer": "No, in most cases excluded fringe benefits aren't subject to federal income tax withholding, Social Security tax, Medicare tax, FUTA, or RRTA taxes.",
+  "ranks": {
+   "dense": [
+    8
+   ],
+   "keyword": [
+    null
+   ],
+   "hybrid": [
+    13
+   ],
+   "hybrid+rerank": [
+    13
+   ]
+  },
+  "gold_doc_in_top50": [
+   true
+  ],
+  "top5": [
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "section": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 4. Rules for Withholding, Depositing, and Reporting",
+    "text": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 4. Rules for Withholding, Depositing, and Reporting  you deposited on the employee\u2019s behalf an"
+   },
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "section": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules > No-Additional-Cost Services",
+    "text": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules > No-Additional-Cost Services  Reciprocal agreements.  A no-"
+   },
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "section": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules",
+    "text": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules  | Treatment Under Employment Taxes |  |  |  | |---|---|---|"
+   },
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "section": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules > Accident and Health Benefits",
+    "text": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules > Accident and Health Benefits  S corporation shareholders. "
+   },
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "section": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules > Employee Stock Options",
+    "text": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules > Employee Stock Options  There are three kinds of stock opt"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "section": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules",
+    "anchors": [
+     "p5-2-fringe-benefit-exclusion-rules"
+    ],
+    "text": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules  This section discusses the exclusion rules that apply to fr"
+   },
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "section": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 1. Fringe Benefit Overview > Cafeteria Plans",
+    "anchors": [
+     "p5-cafeteria-plans"
+    ],
+    "text": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 1. Fringe Benefit Overview > Cafeteria Plans  Exception for S corporation shareholders.  Don\u2019t"
+   }
+  ]
+ },
+ {
+  "id": "p-b-single-007",
+  "kind": "paraphrase",
+  "tenant": "B",
+  "question": "Upon assuming responsibility for a client portfolio from a colleague, is it preferable to retain the existing rapport assessment or establish a fresh evaluation?",
+  "gold": [
+   {
+    "doc": "posthog/cs-and-onboarding/health-tracking.md",
+    "locator": "how-to-use-it"
+   }
+  ],
+  "gold_answer": "You should create your own rating and start at 2 instead of keeping the previous manager's rating. This ensures the rating reflects your current relationship with the account, not just the history of how it was managed before.",
+  "ranks": {
+   "dense": [
+    null
+   ],
+   "keyword": [
+    null
+   ],
+   "hybrid": [
+    null
+   ],
+   "hybrid+rerank": [
+    null
+   ]
+  },
+  "gold_doc_in_top50": [
+   false
+  ],
+  "top5": [
+   {
+    "doc": "posthog/growth/sales/new-sales.md",
+    "section": "New business sales > Sales process > 2. You qualify > Bigger Opportunities at Bigger Companies",
+    "text": "New business sales > Sales process > 2. You qualify > Bigger Opportunities at Bigger Companies  When you're working a deal north of $100k at a larger company, t"
+   },
+   {
+    "doc": "posthog/people/talent.md",
+    "section": "Talent > Removing distractions from the rest of the team",
+    "text": "Talent > Removing distractions from the rest of the team  As a talent partner, part of the role is to ensure we are removing distractions from the rest of the b"
+   },
+   {
+    "doc": "posthog/forward-deployed-engineering/who-we-work-with.md",
+    "section": "Who we work with > Our current ICP",
+    "text": "Who we work with > Our current ICP  | &nbsp; | Teams with a hands-on PostHog problem | |---|---| | **Description** | Accounts where something in the implementat"
+   },
+   {
+    "doc": "posthog/forward-deployed-engineering/working-with-customers.md",
+    "section": "Working with customers",
+    "text": "Working with customers  Forward deployed engineers (FDEs) own the technical outcome of an engagement; the commercial relationship stays with [sales and CS](/han"
+   },
+   {
+    "doc": "posthog/product/prioritizing-work-for-mature-products.md",
+    "section": "Prioritizing work for mature products",
+    "text": "Prioritizing work for mature products  If you _just know_ that something is the right thing to build, then build it. - Use metrics to help point you in the dire"
+   }
+  ],
+  "gold_chunks": []
+ },
+ {
+  "id": "p-a-single-023",
+  "kind": "paraphrase",
+  "tenant": "A",
+  "question": "In what ways do an organization's fundamental principles connect to the ability to have conversations regarding professional development trajectory with one's supervisor?",
+  "gold": [
+   {
+    "doc": "gitlab/people-group/learning-and-development/career-development/_index.md",
+    "locator": "credit-and-career-conversations"
+   }
+  ],
+  "gold_answer": "The company's values guide career conversations by emphasizing that growth is led by individuals with manager support, happens during regular work, is influenced by personal experiences, adapts as motivations change, and is built on trust between employees and managers.",
+  "ranks": {
+   "dense": [
+    4
+   ],
+   "keyword": [
+    null
+   ],
+   "hybrid": [
+    4
+   ],
+   "hybrid+rerank": [
+    8
+   ]
+  },
+  "gold_doc_in_top50": [
+   true
+  ],
+  "top5": [
+   {
+    "doc": "gitlab/people-group/learning-and-development/career-development/_index.md",
+    "section": "Career Development and Mobility > Having Career Conversations > Having Career Development Conversations with your Team > Recommendations for Managers to support the learning of team members",
+    "text": "Career Development and Mobility > Having Career Conversations > Having Career Development Conversations with your Team > Recommendations for Managers to support"
+   },
+   {
+    "doc": "gitlab/leadership/1-1/_index.md",
+    "section": "1-1 > Career Development Discussion at the 1-1 > Preparing for the discussion > Maintain the right frame of mind",
+    "text": "1-1 > Career Development Discussion at the 1-1 > Preparing for the discussion > Maintain the right frame of mind  Coming to the meeting with an open mind and th"
+   },
+   {
+    "doc": "gitlab/leadership/1-1/_index.md",
+    "section": "1-1 > Career Development Discussion at the 1-1 > Preparing for a team member's performance and development conversation > Career conversations do not have to be intimidating",
+    "text": "1-1 > Career Development Discussion at the 1-1 > Preparing for a team member's performance and development conversation > Career conversations do not have to be"
+   },
+   {
+    "doc": "gitlab/leadership/1-1/_index.md",
+    "section": "1-1 > Career Development Discussion at the 1-1",
+    "text": "1-1 > Career Development Discussion at the 1-1  ### Why career development for team members is key to being a great leader  Providing team members with a clear "
+   },
+   {
+    "doc": "gitlab/leadership/crucial-conversations.md",
+    "section": "Crucial Conversations > Strategies for Successful Crucial Conversations > 9 Influencing Strategies",
+    "text": "Crucial Conversations > Strategies for Successful Crucial Conversations > 9 Influencing Strategies  - Develop: Keep your ear to the ground to understand what is"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "gitlab/people-group/learning-and-development/career-development/_index.md",
+    "section": "Career Development and Mobility > Having Career Conversations",
+    "anchors": [
+     "credit-and-career-conversations",
+     "having-career-development-conversations-with-your-team",
+     "manager-responsibilities"
+    ],
+    "text": "Career Development and Mobility > Having Career Conversations  ### CREDIT and Career Conversations  | Value | Career Conversations Application | | ----- | -----"
+   }
+  ]
+ },
+ {
+  "id": "p-b-single-010",
+  "kind": "paraphrase",
+  "tenant": "B",
+  "question": "What causes our trust in the periodic income figures to grow stronger as time progresses through the billing cycle?",
+  "gold": [
+   {
+    "doc": "posthog/engineering/revenue-and-forecasting.md",
+    "locator": "when-is-it-a-forecast-vs-a-real-complete-number"
+   }
+  ],
+  "gold_answer": "As the month progresses and customer invoice periods end, we close more invoices, which gives us better visibility into what the actual revenue will be for that month.",
+  "ranks": {
+   "dense": [
+    14
+   ],
+   "keyword": [
+    null
+   ],
+   "hybrid": [
+    14
+   ],
+   "hybrid+rerank": [
+    14
+   ]
+  },
+  "gold_doc_in_top50": [
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/growth/sales/grow-an-account.md",
+    "section": "Playbook for growing accounts > Use-case expansion playbook > Fix the foundation first",
+    "text": "Playbook for growing accounts > Use-case expansion playbook > Fix the foundation first  This feels counterintuitive. You're a TAM with a [growth quota](/handboo"
+   },
+   {
+    "doc": "posthog/growth/sales/grow-an-account.md",
+    "section": "Playbook for growing accounts > Use-case expansion playbook > The expansion cycle",
+    "text": "Playbook for growing accounts > Use-case expansion playbook > The expansion cycle  The cycle can be summarized as:  1. **Identify the use case** that brought th"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/health-tracking.md",
+    "section": "Customer health tracking > Account indicators",
+    "text": "Customer health tracking > Account indicators  #### Risk indicators > Startup credit will run out this billing cycle  Applied if they are currently in the Start"
+   },
+   {
+    "doc": "posthog/people/spending-money.md",
+    "section": "Spending money > High-value & ongoing vendor contracts",
+    "text": "Spending money > High-value & ongoing vendor contracts  **If a contract is running into overages or about to induce extra spend, flag it early.** Act as soon as"
+   },
+   {
+    "doc": "posthog/finance.md",
+    "section": "Not running out of money > The metrics we track and how to read our financials > Quarterly SaaS metrics",
+    "text": "Not running out of money > The metrics we track and how to read our financials > Quarterly SaaS metrics  **ARR per employee** \u2014 annual recurring revenue \u00f7 headc"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "posthog/engineering/revenue-and-forecasting.md",
+    "section": "Revenue and forecasting > FAQ",
+    "anchors": [
+     "how-is-revenue-attributed-to-a-certain-month",
+     "when-is-it-a-forecast-vs-a-real-complete-number"
+    ],
+    "text": "Revenue and forecasting > FAQ  ### How is revenue attributed to a certain month?  Revenue is attributed to a given month based on the end-date of the invoice pe"
+   }
+  ]
+ },
+ {
+  "id": "p-b-single-002",
+  "kind": "paraphrase",
+  "tenant": "B",
+  "question": "How should our organization typically manage group conversations among staff members?",
+  "gold": [
+   {
+    "doc": "posthog/help.md",
+    "locator": "do-things-as-publicly-as-possible-by-default"
+   }
+  ],
+  "gold_answer": "Public repositories are the best place for discussions, followed by private repositories, then public Slack channels, and finally private Slack channels or direct messages. This approach helps everyone on the team have better context and work more independently.",
+  "ranks": {
+   "dense": [
+    25
+   ],
+   "keyword": [
+    null
+   ],
+   "hybrid": [
+    26
+   ],
+   "hybrid+rerank": [
+    26
+   ]
+  },
+  "gold_doc_in_top50": [
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/company/culture.md",
+    "section": "Culture > We're structured for speed and autonomy",
+    "text": "Culture > We're structured for speed and autonomy  Hiring high-performing and self-sufficient team members means we don't need the typical corporate processes t"
+   },
+   {
+    "doc": "posthog/company/communication.md",
+    "section": "Communication > Golden rules",
+    "text": "Communication > Golden rules  1. Use **asynchronous communication** when possible: pull requests (preferred) or issues. Announcements happen on the appropriate "
+   },
+   {
+    "doc": "posthog/getting-started/meetings.md",
+    "section": "Meetings",
+    "text": "Meetings  We are [anti-meeting by default](/blog/meetings).  However, while we default to [written and asynchronous communication](/handbook/company/communicati"
+   },
+   {
+    "doc": "posthog/company/communication.md",
+    "section": "Communication > Introduction",
+    "text": "Communication > Introduction  With team members across many countries, it's important for us to practice clear communication in ways that help us stay connected"
+   },
+   {
+    "doc": "posthog/product/visiting-customers.md",
+    "section": "In-Person Customer Visits > Conducting meetings",
+    "text": "In-Person Customer Visits > Conducting meetings  8. **Be flexible.**    Some meetings will last 30 minutes, others 2 hours. Lunch-time slots often work well, yo"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "posthog/help.md",
+    "section": "How you can help > Do things as publicly as possible by default",
+    "anchors": [
+     "do-things-as-publicly-as-possible-by-default"
+    ],
+    "text": "How you can help > Do things as publicly as possible by default  For discussions, public repos are the best place. Then private ones, then Slack public channels"
+   }
+  ]
+ },
+ {
+  "id": "p-a-single-042",
+  "kind": "paraphrase",
+  "tenant": "A",
+  "question": "Is it possible for my organization to furnish me with a business automobile for professional journeys while avoiding tax obligations on this compensation?",
+  "gold": [
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "locator": "page:23"
+   }
+  ],
+  "gold_answer": "Yes, if you use a company car for business purposes, this is considered a working condition benefit and is not taxable to you. The exclusion applies to property and services provided so you can perform your job, to the extent the cost would be deductible if you had paid for it yourself.",
+  "ranks": {
+   "dense": [
+    4
+   ],
+   "keyword": [
+    null
+   ],
+   "hybrid": [
+    10
+   ],
+   "hybrid+rerank": [
+    9
+   ]
+  },
+  "gold_doc_in_top50": [
+   true
+  ],
+  "top5": [
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "section": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules > Lodging on Your Business Premises",
+    "text": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules > Lodging on Your Business Premises  You can exclude the val"
+   },
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "section": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 3. Fringe Benefit Valuation Rules > Lease Value Rule",
+    "text": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 3. Fringe Benefit Valuation Rules > Lease Value Rule  Under this rule, you determine the value"
+   },
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "section": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 3. Fringe Benefit Valuation Rules > Commuting Rule",
+    "text": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 3. Fringe Benefit Valuation Rules > Commuting Rule  each workday to carry at least three emplo"
+   },
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "section": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules > Working Condition Benefits",
+    "text": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules > Working Condition Benefits  Employee.  For this exclusion,"
+   },
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "section": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 3. Fringe Benefit Valuation Rules > Lease Value Rule",
+    "text": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 3. Fringe Benefit Valuation Rules > Lease Value Rule  or leased. That amount includes all purc"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "section": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules > Transportation (Commuting) Benefits",
+    "anchors": [
+     "p23-transportation-commuting-benefits"
+    ],
+    "text": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules > Transportation (Commuting) Benefits  your employee\u2019s incom"
+   },
+   {
+    "doc": "irs-p15b-fringe-benefits.pdf",
+    "section": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules > Transportation (Commuting) Benefits",
+    "anchors": [
+     "p23-transportation-commuting-benefits"
+    ],
+    "text": "2026 Publication 15-B > Employer\u2019s Tax Guide to Fringe Benefits > 2. Fringe Benefit Exclusion Rules > Transportation (Commuting) Benefits  payment or reimbursem"
+   }
+  ]
+ },
+ {
+  "id": "p-b-single-003",
+  "kind": "paraphrase",
+  "tenant": "B",
+  "question": "How should one respond upon discovering a malfunction on the site rather than attempting to resolve it independently?",
+  "gold": [
+   {
+    "doc": "posthog/engineering/posthog-com/issue-or-pr.md",
+    "locator": "everything-else-open-an-issue"
+   }
+  ],
+  "gold_answer": "You should report the bug to the team and let them handle the fix, since the solution isn't always what it might seem at first glance and sometimes there may not actually be a problem to fix.",
+  "ranks": {
+   "dense": [
+    19
+   ],
+   "keyword": [
+    null
+   ],
+   "hybrid": [
+    19
+   ],
+   "hybrid+rerank": [
+    19
+   ]
+  },
+  "gold_doc_in_top50": [
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/engineering/operations/incidents.md",
+    "section": "Handling an incident > What happens after an incident?",
+    "text": "Handling an incident > What happens after an incident?  Once the incident is resolved, the incident lead should **step away**. Take a walk, go to the gym, have "
+   },
+   {
+    "doc": "posthog/engineering/operations/on-call-rotation.md",
+    "section": "On-call and escalation > Responding to alerts when on-call",
+    "text": "On-call and escalation > Responding to alerts when on-call  Sometimes alerts are purposefully overly-sensitive and might already be fixing themselves by the tim"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/engaging-unengaged-customers.md",
+    "section": "Engaging unengaged customers > Investigating further with MCP > Use MCP to find frustration signals for specific outreach",
+    "text": "Engaging unengaged customers > Investigating further with MCP > Use MCP to find frustration signals for specific outreach  **Query failures:** Vitally can help "
+   },
+   {
+    "doc": "posthog/engineering/operations/incidents.md",
+    "section": "Handling an incident > Raising an incident",
+    "text": "Handling an incident > Raising an incident  Once an incident is raised an automatic workflow begins that will help you summarize the issue and escalate it appro"
+   },
+   {
+    "doc": "posthog/engineering/operations/incidents.md",
+    "section": "Handling an incident > What happens during an incident? > Getting help from a comms lead > When a customer is causing an incident",
+    "text": "Handling an incident > What happens during an incident? > Getting help from a comms lead > When a customer is causing an incident  In the case that we need to u"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "posthog/engineering/posthog-com/issue-or-pr.md",
+    "section": "Should I open an issue or a PR? > Everything else: open an issue",
+    "anchors": [
+     "everything-else-open-an-issue"
+    ],
+    "text": "Should I open an issue or a PR? > Everything else: open an issue  - Any size change that affects the Home or Pricing pages - these are our two most important pa"
+   }
+  ]
+ },
+ {
+  "id": "p-b-single-005",
+  "kind": "paraphrase",
+  "tenant": "B",
+  "question": "What locations or resources contain promotional documents that describe the process of presenting our hosted database management solution to clients?",
+  "gold": [
+   {
+    "doc": "posthog/growth/sales/why-buy-posthog.md",
+    "locator": "per-product-sales-enablement"
+   }
+  ],
+  "gold_answer": "The Developer Marketing team has created sales enablement materials for the managed data warehouse (Trino) product as a Google Doc that covers product information and common objection handling.",
+  "ranks": {
+   "dense": [
+    null
+   ],
+   "keyword": [
+    null
+   ],
+   "hybrid": [
+    null
+   ],
+   "hybrid+rerank": [
+    null
+   ]
+  },
+  "gold_doc_in_top50": [
+   false
+  ],
+  "top5": [
+   {
+    "doc": "posthog/engineering/posthog-com/presentations.mdx",
+    "section": "Custom presentations > How it works",
+    "text": "Custom presentations > How it works  Presentations are accessed via the URL pattern:  ``` /for/{persona} /for/{company-domain}/{role-or-id} ```  **Examples:**  "
+   },
+   {
+    "doc": "posthog/marketing/events.md",
+    "section": "Marketing Events > Community events > Getting support",
+    "text": "Marketing Events > Community events > Getting support  **Co-promotion:** Most of the time the help requested is in the form of promotion. As a general rule, we "
+   },
+   {
+    "doc": "posthog/growth/use-case-selling/data-infrastructure.md",
+    "section": "Data Infrastructure > Internal resources",
+    "text": "Data Infrastructure > Internal resources  - **Data Warehouse docs:** [Data Warehouse](/docs/data-warehouse) \u00b7 [Sources](/docs/cdp/sources) \u00b7 [SQL](/docs/data-wa"
+   },
+   {
+    "doc": "posthog/engineering/posthog-com/presentations.mdx",
+    "section": "Custom presentations > How it works > Presentation structure",
+    "text": "Custom presentations > How it works > Presentation structure              \"image\": \"/images/products/product-analytics/screenshot-billing.png\"         },       "
+   },
+   {
+    "doc": "posthog/growth/sales/sales-operations.md",
+    "section": "Sales operations > Self-serve Process",
+    "text": "Sales operations > Self-serve Process  For customers that sign up themselves, and begin using the product, we provide a number of self-serve resources, includin"
+   }
+  ],
+  "gold_chunks": []
+ },
+ {
+  "id": "b-posthog-621f91db",
+  "kind": "broad",
+  "tenant": "B",
+  "question": "What should I focus on during the first week when a new CSM joins my team, and what are the key things they need to learn about our customers?",
+  "gold": [
+   {
+    "doc": "posthog/cs-and-onboarding/new-hire-onboarding-team-leads.md",
+    "locator": "in-person-week-usually-week-2"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/new-hire-onboarding-team-leads.md",
+    "locator": "context-day-1"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/new-hire-onboarding-team-leads.md",
+    "locator": "understanding-a-customer-s-usage-day-2"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/new-hire-onboarding-team-leads.md",
+    "locator": "prioritizing-across-the-book-deciding-next-steps-days-3-4"
+   }
+  ],
+  "gold_answer": "During the in-person week (usually week 2), cover CSM overview and how the team works on day 1, then move into understanding what customers are using PostHog for and the health of those relationships on day 2. By days 3-4, teach them how to prioritize their book of accounts and decide on next steps ",
+  "ranks": {
+   "dense": [
+    11,
+    4,
+    12,
+    3
+   ],
+   "keyword": [
+    36,
+    17,
+    34,
+    37
+   ],
+   "hybrid": [
+    8,
+    3,
+    9,
+    5
+   ],
+   "hybrid+rerank": [
+    7,
+    9,
+    10,
+    3
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/cs-and-onboarding/new-hire-onboarding-team-leads.md",
+    "section": "Onboarding a new CSM (team leads)",
+    "text": "Onboarding a new CSM (team leads)  So you've got a new CSM joining your team! This page is for team leads - the joiner-facing plan is [new starter onboarding](/"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/new-hire-onboarding-team-leads.md",
+    "section": "Onboarding a new CSM (team leads) > First week",
+    "text": "Onboarding a new CSM (team leads) > First week  **Welcome 1:1:**  - Walk through their [onboarding plan](/handbook/cs-and-onboarding/new-hire-onboarding) - week"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/new-hire-onboarding-team-leads.md",
+    "section": "Onboarding a new CSM (team leads) > In-person week (usually week 2) > Topics to cover",
+    "text": "Onboarding a new CSM (team leads) > In-person week (usually week 2) > Topics to cover  #### Prioritizing across the book + deciding next steps (days 3-4)  - **P"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/new-hire-onboarding-team-leads.md",
+    "section": "Onboarding a new CSM (team leads) > First month",
+    "text": "Onboarding a new CSM (team leads) > First month  From here it's much less structured - what to cover and when is your call. Use the 1:1s to go through anything "
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/new-hire-onboarding-team-leads.md",
+    "section": "Onboarding a new CSM (team leads) > First week",
+    "text": "Onboarding a new CSM (team leads) > First week      - GTM / Customer Success:       - [GTM overview](https://posthog.com/handbook/growth/sales/overview)       -"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "posthog/cs-and-onboarding/new-hire-onboarding-team-leads.md",
+    "section": "Onboarding a new CSM (team leads) > In-person week (usually week 2) > Topics to cover",
+    "anchors": [
+     "prioritizing-across-the-book-deciding-next-steps-days-3-4",
+     "throughout-the-week",
+     "optional"
+    ],
+    "text": "Onboarding a new CSM (team leads) > In-person week (usually week 2) > Topics to cover  #### Prioritizing across the book + deciding next steps (days 3-4)  - **P"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/new-hire-onboarding-team-leads.md",
+    "section": "Onboarding a new CSM (team leads) > In-person week (usually week 2)",
+    "anchors": [
+     "in-person-week-usually-week-2"
+    ],
+    "text": "Onboarding a new CSM (team leads) > In-person week (usually week 2)  [In-person onboarding](/handbook/people/onboarding#in-person-onboarding) covers the company"
+   }
+  ]
+ },
+ {
+  "id": "b-gitlab-f0c2ef6c",
+  "kind": "broad",
+  "tenant": "A",
+  "question": "What should we think about before planning an in-person team meeting to make sure it's worthwhile and goes smoothly?",
+  "gold": [
+   {
+    "doc": "gitlab/leadership/in-person.md",
+    "locator": "set-a-goal"
+   },
+   {
+    "doc": "gitlab/leadership/in-person.md",
+    "locator": "plan-transparently"
+   },
+   {
+    "doc": "gitlab/leadership/in-person.md",
+    "locator": "develop-a-shared-reality"
+   },
+   {
+    "doc": "gitlab/leadership/in-person.md",
+    "locator": "integrate-sustainability"
+   }
+  ],
+  "gold_answer": "You should start by having a clear business case for why you need an in-person meeting and what you want to accomplish. Then plan transparently by getting input from your team early, set shared expectations through team meetings, and consider environmental impact when making your plans.",
+  "ranks": {
+   "dense": [
+    20,
+    2,
+    2,
+    null
+   ],
+   "keyword": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "hybrid": [
+    21,
+    2,
+    2,
+    null
+   ],
+   "hybrid+rerank": [
+    21,
+    1,
+    1,
+    null
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "gitlab/leadership/in-person.md",
+    "section": "GitLab Onsites - Getting your team together in person > Prepare",
+    "text": "GitLab Onsites - Getting your team together in person > Prepare  ### Plan transparently  Be transparent in your planning to maximize both attendance and engagem"
+   },
+   {
+    "doc": "gitlab/communication/_index.md",
+    "section": "GitLab Communication > Meetings > Video calls > You are the manager of your attention",
+    "text": "GitLab Communication > Meetings > Video calls > You are the manager of your attention  <a id=\"paying-attention-in-meetings\">  You are the manager of your attent"
+   },
+   {
+    "doc": "gitlab/leadership/in-person.md",
+    "section": "GitLab Onsites - Getting your team together in person > Activity Planning > Team Building",
+    "text": "GitLab Onsites - Getting your team together in person > Activity Planning > Team Building  Make the most of onsites with intentional time to get to know one ano"
+   },
+   {
+    "doc": "gitlab/leadership/1-1/_index.md",
+    "section": "1-1 > Career Development Discussion at the 1-1 > Preparing for the discussion > Maintain the right frame of mind",
+    "text": "1-1 > Career Development Discussion at the 1-1 > Preparing for the discussion > Maintain the right frame of mind  Coming to the meeting with an open mind and th"
+   },
+   {
+    "doc": "gitlab/communication/_index.md",
+    "section": "GitLab Communication > Meetings > Smart note taking in meetings",
+    "text": "GitLab Communication > Meetings > Smart note taking in meetings  Note taking helps us to work asynchronously. Team members can add thoughts to an agenda in adva"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "gitlab/leadership/in-person.md",
+    "section": "GitLab Onsites - Getting your team together in person > Prepare",
+    "anchors": [
+     "plan-transparently",
+     "develop-a-shared-reality"
+    ],
+    "text": "GitLab Onsites - Getting your team together in person > Prepare  ### Plan transparently  Be transparent in your planning to maximize both attendance and engagem"
+   },
+   {
+    "doc": "gitlab/leadership/in-person.md",
+    "section": "GitLab Onsites - Getting your team together in person > Prepare",
+    "anchors": [
+     "prepare",
+     "set-a-goal"
+    ],
+    "text": "GitLab Onsites - Getting your team together in person > Prepare  Consider the following as you start planning your onsite:  ### Set a goal  An onsite requires a"
+   }
+  ]
+ },
+ {
+  "id": "b-gitlab-5fa5a5d9",
+  "kind": "broad",
+  "tenant": "A",
+  "question": "What kinds of time off and financial support can I get if I have a baby?",
+  "gold": [
+   {
+    "doc": "gitlab/total-rewards/benefits/general-and-entity-benefits/france-sas.md",
+    "locator": "holiday-bonus"
+   },
+   {
+    "doc": "gitlab/total-rewards/benefits/general-and-entity-benefits/france-sas.md",
+    "locator": "maternity-leave"
+   },
+   {
+    "doc": "gitlab/total-rewards/benefits/general-and-entity-benefits/france-sas.md",
+    "locator": "paternity-leave"
+   },
+   {
+    "doc": "gitlab/total-rewards/benefits/general-and-entity-benefits/france-sas.md",
+    "locator": "additional-birth-leave-cong-suppl-mentaire-de-naissance"
+   },
+   {
+    "doc": "gitlab/total-rewards/benefits/general-and-entity-benefits/france-sas.md",
+    "locator": "paid-time-off-vacation"
+   }
+  ],
+  "gold_answer": "GitLab offers maternity and paternity leave for new parents, with maternity leave available to pregnant team members and paternity leave for all team members after birth. You may also qualify for additional birth leave starting July 1, 2026 for children born after January 1, 2026. Additionally, you ",
+  "ranks": {
+   "dense": [
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "keyword": [
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "hybrid": [
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "hybrid+rerank": [
+    null,
+    null,
+    null,
+    null,
+    null
+   ]
+  },
+  "gold_doc_in_top50": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "top5": [
+   {
+    "doc": "gitlab/total-rewards/benefits/general-and-entity-benefits/_index.md",
+    "section": "General & Entity Specific Benefits & Information > Company Wide Benefits - Available to All Team Members > Family Benefits > Parental Leave",
+    "text": "General & Entity Specific Benefits & Information > Company Wide Benefits - Available to All Team Members > Family Benefits > Parental Leave  Comprehensive paren"
+   },
+   {
+    "doc": "gitlab/total-rewards/benefits/general-and-entity-benefits/remote-com.md",
+    "section": "Remote.com > **Italy \ud83c\uddee\ud83c\uddf9**",
+    "text": "Remote.com > **Italy \ud83c\uddee\ud83c\uddf9**  Below is the information related to Italy's statutory leave policies. Please note that team members hired in Italy are hired via Remo"
+   },
+   {
+    "doc": "gitlab/people-policies/leave-of-absence/us.md",
+    "section": "United States Leave of Absence Policies > Which leave is right for me? > New York Paid Family Leave (NYPFL)",
+    "text": "United States Leave of Absence Policies > Which leave is right for me? > New York Paid Family Leave (NYPFL)  **Paid Family Leave Overview**  New York Paid Famil"
+   },
+   {
+    "doc": "gitlab/people-group/time-off-and-absence/leave-types.md",
+    "section": "Leave Types > GitLab Parental Leave > Supplement with Paid Time Off",
+    "text": "Leave Types > GitLab Parental Leave > Supplement with Paid Time Off  If you need additional time after your Parental Leave:  - You may utilize [GitLab's Flexibl"
+   },
+   {
+    "doc": "gitlab/total-rewards/benefits/general-and-entity-benefits/remote-com.md",
+    "section": "Remote.com > **Luxembourg \ud83c\uddf1\ud83c\uddfa**",
+    "text": "Remote.com > **Luxembourg \ud83c\uddf1\ud83c\uddfa**  The parent must be registered with social security at the time of the birth or adoption of the child for at least 12 continuous "
+   }
+  ],
+  "gold_chunks": []
+ },
+ {
+  "id": "b-posthog-0585711a",
+  "kind": "broad",
+  "tenant": "B",
+  "question": "What should I know about giving and receiving feedback during our team offsites?",
+  "gold": [
+   {
+    "doc": "posthog/people/feedback.md",
+    "locator": "ground-rules"
+   },
+   {
+    "doc": "posthog/people/feedback.md",
+    "locator": "how-to-give-good-feedback"
+   },
+   {
+    "doc": "posthog/people/feedback.md",
+    "locator": "how-to-receive-feedback-well"
+   },
+   {
+    "doc": "posthog/people/feedback.md",
+    "locator": "readme-sessions"
+   }
+  ],
+  "gold_answer": "During team offsites, prepare your feedback notes in advance and participate fully in 360-degree feedback sessions. When giving feedback, focus on what went wrong rather than personal criticism. When receiving feedback, be gracious and reciprocate the effort so people feel encouraged to share with y",
+  "ranks": {
+   "dense": [
+    1,
+    5,
+    6,
+    21
+   ],
+   "keyword": [
+    null,
+    null,
+    null,
+    34
+   ],
+   "hybrid": [
+    8,
+    13,
+    14,
+    10
+   ],
+   "hybrid+rerank": [
+    4,
+    13,
+    14,
+    2
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/people/feedback.md",
+    "section": "Feedback > Full team feedback sessions",
+    "text": "Feedback > Full team feedback sessions  We run full team 360-degree feedback session as part of every offsite. Some teams will do them during their own small te"
+   },
+   {
+    "doc": "posthog/people/feedback.md",
+    "section": "Feedback > README sessions",
+    "text": "Feedback > README sessions  At small team offsites we may also run README sessions in addition to 360 feedback sessions. Typically we find it useful to run thes"
+   },
+   {
+    "doc": "posthog/company/offsites.md",
+    "section": "Offsites > Small team offsites",
+    "text": "Offsites > Small team offsites  - Make it very clear who is participating in each session. Sessions / activities require full participation from attendees, espe"
+   },
+   {
+    "doc": "posthog/people/feedback.md",
+    "section": "Feedback > Full team feedback sessions > Ground rules",
+    "text": "Feedback > Full team feedback sessions > Ground rules  - Everybody participates! You should have a think and write up your notes in advance \u2013 don't try and wing"
+   },
+   {
+    "doc": "posthog/people/feedback.md",
+    "section": "Feedback > Feedback at PostHog",
+    "text": "Feedback > Feedback at PostHog  Sharing and receiving feedback openly is _really_ important to us at PostHog. Part of creating a highly autonomous culture where"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "posthog/people/feedback.md",
+    "section": "Feedback > README sessions",
+    "anchors": [
+     "readme-sessions"
+    ],
+    "text": "Feedback > README sessions  At small team offsites we may also run README sessions in addition to 360 feedback sessions. Typically we find it useful to run thes"
+   },
+   {
+    "doc": "posthog/people/feedback.md",
+    "section": "Feedback > Full team feedback sessions > Ground rules",
+    "anchors": [
+     "ground-rules"
+    ],
+    "text": "Feedback > Full team feedback sessions > Ground rules  - Everybody participates! You should have a think and write up your notes in advance \u2013 don't try and wing"
+   }
+  ]
+ },
+ {
+  "id": "b-posthog-b718bab4",
+  "kind": "broad",
+  "tenant": "B",
+  "question": "What's the full process we follow when we have a major incident, and what happens if we need to share it publicly?",
+  "gold": [
+   {
+    "doc": "posthog/engineering/operations/post-mortems.md",
+    "locator": "post-mortem-process"
+   },
+   {
+    "doc": "posthog/engineering/operations/post-mortems.md",
+    "locator": "for-major-incidents"
+   },
+   {
+    "doc": "posthog/engineering/operations/post-mortems.md",
+    "locator": "public-post-mortems"
+   },
+   {
+    "doc": "posthog/engineering/operations/post-mortems.md",
+    "locator": "process"
+   }
+  ],
+  "gold_answer": "For major incidents, we hold a team call to discuss what happened and learn together, then fill out a post-mortem template on the incident page. If the incident requires a public post-mortem, we publish it on our public post-mortems page after an internal review to ensure accuracy and transparency, ",
+  "ranks": {
+   "dense": [
+    5,
+    5,
+    14,
+    17
+   ],
+   "keyword": [
+    null,
+    null,
+    37,
+    35
+   ],
+   "hybrid": [
+    22,
+    22,
+    16,
+    23
+   ],
+   "hybrid+rerank": [
+    22,
+    22,
+    16,
+    23
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/support/support-incident-response.md",
+    "section": "Support team incident response > Keeping the team updated",
+    "text": "Support team incident response > Keeping the team updated  As the person watching the incident, keep the rest of the support team informed in #team-support. Sha"
+   },
+   {
+    "doc": "posthog/engineering/operations/incidents.md",
+    "section": "Handling an incident > What happens during an incident? > Getting help from a comms lead > When a customer is causing an incident",
+    "text": "Handling an incident > What happens during an incident? > Getting help from a comms lead > When a customer is causing an incident  In the case that we need to t"
+   },
+   {
+    "doc": "posthog/engineering/operations/incidents.md",
+    "section": "Handling an incident > What happens during an incident? > Getting help from a comms lead > When a customer is causing an incident",
+    "text": "Handling an incident > What happens during an incident? > Getting help from a comms lead > When a customer is causing an incident  In the case that we need to u"
+   },
+   {
+    "doc": "posthog/support/support-incident-response.md",
+    "section": "Support team incident response",
+    "text": "Support team incident response  When things break, we need to make sure users know what's happening and feel supported through it. This page covers how the supp"
+   },
+   {
+    "doc": "posthog/engineering/operations/incidents.md",
+    "section": "Handling an incident > What happens during an incident? > Getting help from a comms lead",
+    "text": "Handling an incident > What happens during an incident? > Getting help from a comms lead  Significant incidents such as the app being partially or fully non-ope"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "posthog/engineering/operations/post-mortems.md",
+    "section": "Post-mortems > Public post-mortems",
+    "anchors": [
+     "public-post-mortems"
+    ],
+    "text": "Post-mortems > Public post-mortems  Some incidents require a public post-mortem. We publish these on our [public post-mortems page](/handbook/company/post-morte"
+   },
+   {
+    "doc": "posthog/engineering/operations/post-mortems.md",
+    "section": "Post-mortems > Post-mortem process",
+    "anchors": [
+     "post-mortem-process",
+     "for-major-incidents",
+     "for-minor-incidents"
+    ],
+    "text": "Post-mortems > Post-mortem process  Incidents can be stressful and time consuming but it's equally important that we take the time to learn from them and improv"
+   }
+  ]
+ },
+ {
+  "id": "b-posthog-ca24a6e7",
+  "kind": "broad",
+  "tenant": "B",
+  "question": "How does the onboarding team decide which customers to reach out to, and what tools do they use to track and organize these outreach efforts?",
+  "gold": [
+   {
+    "doc": "posthog/onboarding/onboarding-tracking.md",
+    "locator": "onboarding-process-and-tracking"
+   },
+   {
+    "doc": "posthog/onboarding/onboarding-tracking.md",
+    "locator": "vitaly-views"
+   },
+   {
+    "doc": "posthog/onboarding/onboarding-tracking.md",
+    "locator": "account-analysis-for-outreach-and-meetings"
+   },
+   {
+    "doc": "posthog/onboarding/onboarding-tracking.md",
+    "locator": "automations"
+   },
+   {
+    "doc": "posthog/onboarding/onboarding-tracking.md",
+    "locator": "segments"
+   }
+  ],
+  "gold_answer": "The team focuses on pay-as-you-go accounts forecasted to spend over $500 and uses a daily view sorted by renewal dates to reach out to customers proactively. They analyze account health and engagement through Metabase and organize their work using Vitally playbooks and the 'Onboarding Lead' segment,",
+  "ranks": {
+   "dense": [
+    7,
+    null,
+    30,
+    null,
+    null
+   ],
+   "keyword": [
+    null,
+    null,
+    25,
+    null,
+    null
+   ],
+   "hybrid": [
+    8,
+    null,
+    10,
+    null,
+    null
+   ],
+   "hybrid+rerank": [
+    1,
+    null,
+    3,
+    null,
+    null
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/onboarding/onboarding-tracking.md",
+    "section": "Onboarding process and tracking",
+    "text": "Onboarding process and tracking  The onboarding team operates a high volume, high velocity sales pipeline with all pay-as-you-go (or YC) accounts that are forec"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/new-hire-onboarding.md",
+    "section": "New starter onboarding > Weeks 3\u20134 \u2013 start working with your customers",
+    "text": "New starter onboarding > Weeks 3\u20134 \u2013 start working with your customers  This is when you start working with your customers. Reach out, take the first calls, pic"
+   },
+   {
+    "doc": "posthog/onboarding/onboarding-tracking.md",
+    "section": "Onboarding process and tracking > Internal process > Account analysis for outreach and meetings",
+    "text": "Onboarding process and tracking > Internal process > Account analysis for outreach and meetings  -   Take a look at the [Metabase primer](https://posthog.com/ha"
+   },
+   {
+    "doc": "posthog/onboarding/onboarding-tracking.md",
+    "section": "Onboarding process and tracking > Internal process > Onboarding program - logic and sequence",
+    "text": "Onboarding process and tracking > Internal process > Onboarding program - logic and sequence  There are two paths for customers to progress through the onboardi"
+   },
+   {
+    "doc": "posthog/onboarding/onboarding-team.md",
+    "section": "Onboarding team > How we work",
+    "text": "Onboarding team > How we work  First and foremost, we\u2019re account-agnostic, which makes us different from other GTM teams. This means that we don\u2019t have our book"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "posthog/onboarding/onboarding-tracking.md",
+    "section": "Onboarding process and tracking",
+    "anchors": [
+     "onboarding-process-and-tracking",
+     "principles"
+    ],
+    "text": "Onboarding process and tracking  The onboarding team operates a high volume, high velocity sales pipeline with all pay-as-you-go (or YC) accounts that are forec"
+   },
+   {
+    "doc": "posthog/onboarding/onboarding-tracking.md",
+    "section": "Onboarding process and tracking > Internal process > Account analysis for outreach and meetings",
+    "anchors": [
+     "account-analysis-for-outreach-and-meetings"
+    ],
+    "text": "Onboarding process and tracking > Internal process > Account analysis for outreach and meetings  -   Take a look at the [Metabase primer](https://posthog.com/ha"
+   }
+  ]
+ },
+ {
+  "id": "b-posthog-70da3b64",
+  "kind": "broad",
+  "tenant": "B",
+  "question": "How does our community forum work and what can members do to get involved and earn rewards?",
+  "gold": [
+   {
+    "doc": "posthog/community/index.mdx",
+    "locator": "community-forums"
+   },
+   {
+    "doc": "posthog/community/index.mdx",
+    "locator": "asking-a-question"
+   },
+   {
+    "doc": "posthog/community/index.mdx",
+    "locator": "answering-questions"
+   },
+   {
+    "doc": "posthog/community/index.mdx",
+    "locator": "points-achievements"
+   }
+  ],
+  "gold_answer": "Our community forums at posthog.com/questions let anyone ask troubleshooting and support questions after creating a PostHog.com account. Community members and our team can answer these questions, and there are guidelines for how we expect people to help and use AI. Members earn points and achievemen",
+  "ranks": {
+   "dense": [
+    5,
+    5,
+    9,
+    7
+   ],
+   "keyword": [
+    4,
+    4,
+    8,
+    10
+   ],
+   "hybrid": [
+    2,
+    2,
+    6,
+    5
+   ],
+   "hybrid+rerank": [
+    6,
+    6,
+    4,
+    2
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/community/points.mdx",
+    "section": "Points & rewards",
+    "text": "Points & rewards  PostHog community members can earn points by completing achievements and answering questions, and redeem them for stickers, merch credits, and"
+   },
+   {
+    "doc": "posthog/community/index.mdx",
+    "section": "PostHog community > Points & achievements",
+    "text": "PostHog community > Points & achievements  Community members can earn achievements for activities like asking questions, helping others, voting on the roadmap, "
+   },
+   {
+    "doc": "posthog/community/profiles.mdx",
+    "section": "Community profiles > Achievements",
+    "text": "Community profiles > Achievements  PostHog community members can earn achievements for various activities. Each achievement awards points that can be redeemed f"
+   },
+   {
+    "doc": "posthog/community/index.mdx",
+    "section": "PostHog community > Community forums > Answering questions",
+    "text": "PostHog community > Community forums > Answering questions  Anyone can answer, and [answering community questions](/handbook/community/questions) covers how. It"
+   },
+   {
+    "doc": "posthog/community/moderator-tools.mdx",
+    "section": "Community moderator tools",
+    "text": "Community moderator tools  Community moderator is a role we give to a small number of trusted community members. It is not the same as the staff moderator role "
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "posthog/community/index.mdx",
+    "section": "PostHog community > Points & achievements",
+    "anchors": [
+     "points-achievements"
+    ],
+    "text": "PostHog community > Points & achievements  Community members can earn achievements for activities like asking questions, helping others, voting on the roadmap, "
+   },
+   {
+    "doc": "posthog/community/index.mdx",
+    "section": "PostHog community > Community forums > Answering questions",
+    "anchors": [
+     "answering-questions"
+    ],
+    "text": "PostHog community > Community forums > Answering questions  Anyone can answer, and [answering community questions](/handbook/community/questions) covers how. It"
+   }
+  ]
+ },
+ {
+  "id": "b-posthog-e05207d8",
+  "kind": "broad",
+  "tenant": "B",
+  "question": "How do we keep our customer data synchronized across Zendesk, HubSpot, and Stripe?",
+  "gold": [
+   {
+    "doc": "posthog/growth/sales/automations.md",
+    "locator": "ensuring-that-vitally-accounts-have-corresponding-zendesk-organization-and-hubspot-companies-associated-with-them"
+   },
+   {
+    "doc": "posthog/growth/sales/automations.md",
+    "locator": "tagging-zendesk-organizations-based-on-segment-and-subscription-information"
+   },
+   {
+    "doc": "posthog/growth/sales/automations.md",
+    "locator": "setting-the-correct-organization-in-zendesk-for-new-tickets"
+   },
+   {
+    "doc": "posthog/growth/sales/automations.md",
+    "locator": "create-or-update-stripe-customer"
+   }
+  ],
+  "gold_answer": "We use Vitally Playbooks to trigger automations that ensure Accounts have corresponding Zendesk Organizations and HubSpot Companies linked to them based on Stripe customer data. Vitally also tags these organizations in Zendesk based on subscription and segment information, and we have automations to",
+  "ranks": {
+   "dense": [
+    3,
+    6,
+    24,
+    5
+   ],
+   "keyword": [
+    1,
+    4,
+    6,
+    null
+   ],
+   "hybrid": [
+    1,
+    2,
+    8,
+    10
+   ],
+   "hybrid+rerank": [
+    3,
+    7,
+    10,
+    9
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/growth/sales/automations.md",
+    "section": "Automations",
+    "text": "Automations  As [Vitally](https://posthog.vitally-eu.io/) connects all of our Product, Stripe, Zendesk and HubSpot data together it's the best place to trigger "
+   },
+   {
+    "doc": "posthog/marketing/how-we-position-and-sell/workflows.md",
+    "section": "Workflows > Messaging > Message 1: Your data and your automated workflows live in the same place",
+    "text": "Workflows > Messaging > Message 1: Your data and your automated workflows live in the same place  **Problem:** Most teams keep product data in one tool and run "
+   },
+   {
+    "doc": "posthog/growth/sales/automations.md",
+    "section": "Automations > Vitally -> Zendesk/HubSpot Automation > Ensuring that Vitally Accounts have corresponding Zendesk Organization and HubSpot Companies associated with them",
+    "text": "Automations > Vitally -> Zendesk/HubSpot Automation > Ensuring that Vitally Accounts have corresponding Zendesk Organization and HubSpot Companies associated wi"
+   },
+   {
+    "doc": "posthog/growth/sales/automations.md",
+    "section": "Automations > Sub-Zaps",
+    "text": "Automations > Sub-Zaps  These are used in a few different places to ensure we do things in a consistent manner.  It also ensures repetitive tasks are easy to up"
+   },
+   {
+    "doc": "posthog/growth/use-case-selling/data-infrastructure.md",
+    "section": "Data Infrastructure > Getting a customer started > Onboarding checklist",
+    "text": "Data Infrastructure > Getting a customer started > Onboarding checklist  - [ ] Connect primary external data source to [Data Warehouse](/docs/data-warehouse) (u"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "posthog/growth/sales/automations.md",
+    "section": "Automations > Vitally -> Zendesk/HubSpot Automation > Ensuring that Vitally Accounts have corresponding Zendesk Organization and HubSpot Companies associated with them",
+    "anchors": [
+     "ensuring-that-vitally-accounts-have-corresponding-zendesk-organization-and-hubspot-companies-associated-with-them"
+    ],
+    "text": "Automations > Vitally -> Zendesk/HubSpot Automation > Ensuring that Vitally Accounts have corresponding Zendesk Organization and HubSpot Companies associated wi"
+   },
+   {
+    "doc": "posthog/growth/sales/automations.md",
+    "section": "Automations > Vitally -> Zendesk/HubSpot Automation > Tagging Zendesk Organizations based on Segment and Subscription information",
+    "anchors": [
+     "tagging-zendesk-organizations-based-on-segment-and-subscription-information"
+    ],
+    "text": "Automations > Vitally -> Zendesk/HubSpot Automation > Tagging Zendesk Organizations based on Segment and Subscription information  The Zap then updates the spec"
+   }
+  ]
+ },
+ {
+  "id": "b-gitlab-079c25c7",
+  "kind": "broad",
+  "tenant": "A",
+  "question": "How should I track and document my career growth, and what tools or methods does the company recommend for this?",
+  "gold": [
+   {
+    "doc": "gitlab/people-group/learning-and-development/career-development/_index.md",
+    "locator": "individual-growth-plan"
+   },
+   {
+    "doc": "gitlab/people-group/learning-and-development/career-development/_index.md",
+    "locator": "start-your-igp"
+   },
+   {
+    "doc": "gitlab/people-group/learning-and-development/career-development/_index.md",
+    "locator": "accomplishment-tracker"
+   },
+   {
+    "doc": "gitlab/people-group/learning-and-development/career-development/_index.md",
+    "locator": "use-gitlab-epics-to-track-your-career-development"
+   }
+  ],
+  "gold_answer": "You can use the Individual Growth Plan (IGP) in Workday to plan your career growth by referencing job frameworks and your job family. Additionally, you should maintain an accomplishment tracker to collect your achievements and feedback, and consider using GitLab Epics to transparently track your wor",
+  "ranks": {
+   "dense": [
+    8,
+    4,
+    1,
+    2
+   ],
+   "keyword": [
+    null,
+    null,
+    14,
+    3
+   ],
+   "hybrid": [
+    9,
+    5,
+    2,
+    1
+   ],
+   "hybrid+rerank": [
+    1,
+    3,
+    5,
+    6
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "gitlab/people-group/learning-and-development/career-development/_index.md",
+    "section": "Career Development and Mobility > Document your Career Development > Individual Growth Plan",
+    "text": "Career Development and Mobility > Document your Career Development > Individual Growth Plan  The Individual Growth Plan (IGP) is a tool to help you, the DRI of "
+   },
+   {
+    "doc": "gitlab/people-group/learning-and-development/career-development/igp-guide.md",
+    "section": "Your Individual Growth Plan (IGP) Journey > Bringing Your Plan to Life: Track, Reflect, and Adapt",
+    "text": "Your Individual Growth Plan (IGP) Journey > Bringing Your Plan to Life: Track, Reflect, and Adapt  Your IGP is a living document designed to evolve with you. Wo"
+   },
+   {
+    "doc": "gitlab/people-group/learning-and-development/career-development/_index.md",
+    "section": "Career Development and Mobility > Document your Career Development > Individual Growth Plan > Start your IGP",
+    "text": "Career Development and Mobility > Document your Career Development > Individual Growth Plan > Start your IGP  Block these times on your calendar. 1. Update prog"
+   },
+   {
+    "doc": "gitlab/people-group/learning-and-development/career-development/_index.md",
+    "section": "Career Development and Mobility > Having Career Conversations > Having Career Development Conversations with your Team > Recommendations for Managers to support the learning of team members",
+    "text": "Career Development and Mobility > Having Career Conversations > Having Career Development Conversations with your Team > Recommendations for Managers to support"
+   },
+   {
+    "doc": "gitlab/people-group/learning-and-development/career-development/_index.md",
+    "section": "Career Development and Mobility > Document your Career Development > Tracking your Progress",
+    "text": "Career Development and Mobility > Document your Career Development > Tracking your Progress  #### Accomplishment Tracker  Some call it a \"brag sheet\". Some call"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "gitlab/people-group/learning-and-development/career-development/_index.md",
+    "section": "Career Development and Mobility > Document your Career Development > Individual Growth Plan",
+    "anchors": [
+     "individual-growth-plan"
+    ],
+    "text": "Career Development and Mobility > Document your Career Development > Individual Growth Plan  The Individual Growth Plan (IGP) is a tool to help you, the DRI of "
+   },
+   {
+    "doc": "gitlab/people-group/learning-and-development/career-development/_index.md",
+    "section": "Career Development and Mobility > Document your Career Development > Individual Growth Plan > Start your IGP",
+    "anchors": [
+     "start-your-igp"
+    ],
+    "text": "Career Development and Mobility > Document your Career Development > Individual Growth Plan > Start your IGP  Block these times on your calendar. 1. Update prog"
+   }
+  ]
+ },
+ {
+  "id": "b-posthog-100047a0",
+  "kind": "broad",
+  "tenant": "B",
+  "question": "What kind of work does our forward deployed team do, and how do we decide when to bring them in on a customer engagement?",
+  "gold": [
+   {
+    "doc": "posthog/forward-deployed-engineering/overview.md",
+    "locator": "forward-deployed-engineering-overview"
+   },
+   {
+    "doc": "posthog/forward-deployed-engineering/overview.md",
+    "locator": "what-an-fde-does"
+   },
+   {
+    "doc": "posthog/forward-deployed-engineering/overview.md",
+    "locator": "when-fde-gets-involved"
+   }
+  ],
+  "gold_answer": "The forward deployed engineering team works with our biggest customers on short-term projects to deliver measurable outcomes, handling various types of work that we track from previous engagements. We get involved when there's a high-value prospect or customer with a technical blocker to adoption or",
+  "ranks": {
+   "dense": [
+    6,
+    5,
+    null
+   ],
+   "keyword": [
+    null,
+    null,
+    null
+   ],
+   "hybrid": [
+    7,
+    6,
+    null
+   ],
+   "hybrid+rerank": [
+    4,
+    6,
+    null
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/forward-deployed-engineering/how-we-work.md",
+    "section": "How forward deployed engineers work > Principles",
+    "text": "How forward deployed engineers work > Principles  These are the defaults we bring to every engagement to deliver delightful customer outcomes.  - **The unit of "
+   },
+   {
+    "doc": "posthog/forward-deployed-engineering/working-with-customers.md",
+    "section": "Working with customers",
+    "text": "Working with customers  Forward deployed engineers (FDEs) own the technical outcome of an engagement; the commercial relationship stays with [sales and CS](/han"
+   },
+   {
+    "doc": "posthog/forward-deployed-engineering/how-we-work.md",
+    "section": "How forward deployed engineers work > The engagement lifecycle",
+    "text": "How forward deployed engineers work > The engagement lifecycle  Every engagement moves through four phases:  1. **Intake.** A colleague or customer raises a nee"
+   },
+   {
+    "doc": "posthog/forward-deployed-engineering/overview.md",
+    "section": "Forward deployed engineering overview",
+    "text": "Forward deployed engineering overview  Forward Deployed Engineering (FDE) is PostHog's team of engineers who work with our biggest customers on short-term proje"
+   },
+   {
+    "doc": "posthog/forward-deployed-engineering/how-we-work.md",
+    "section": "How forward deployed engineers work > Working as a team",
+    "text": "How forward deployed engineers work > Working as a team  We're still new as a team and figuring things out as we go. To ensure everybody is pulling in the right"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "posthog/forward-deployed-engineering/overview.md",
+    "section": "Forward deployed engineering overview",
+    "anchors": [
+     "forward-deployed-engineering-overview"
+    ],
+    "text": "Forward deployed engineering overview  Forward Deployed Engineering (FDE) is PostHog's team of engineers who work with our biggest customers on short-term proje"
+   },
+   {
+    "doc": "posthog/forward-deployed-engineering/overview.md",
+    "section": "Forward deployed engineering overview > What an FDE does",
+    "anchors": [
+     "what-an-fde-does"
+    ],
+    "text": "Forward deployed engineering overview > What an FDE does  We don't maintain a fixed list of services; however we do track all our previous engagements so as not"
+   }
+  ]
+ },
+ {
+  "id": "r-1ed4932d",
+  "kind": "relationship",
+  "tenant": "B",
+  "question": "When we're doing onboarding calls and want to help customers understand their top exceptions, what data field should we look at to get the actual exception types?",
+  "gold": [
+   {
+    "doc": "posthog/onboarding/onboarding-conversations-playbook.md",
+    "locator": "on-the-call"
+   },
+   {
+    "doc": "posthog/onboarding/onboarding-conversations-playbook.md",
+    "locator": "checking-in"
+   }
+  ],
+  "gold_answer": "You should use the `$exception_list` field rather than `$exception_type`, since the scalar is null about 80% of the time. Extract the first exception type using JSONExtractString on the array element from the exception list.",
+  "ranks": {
+   "dense": [
+    null,
+    22
+   ],
+   "keyword": [
+    null,
+    14
+   ],
+   "hybrid": [
+    null,
+    9
+   ],
+   "hybrid+rerank": [
+    null,
+    5
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/onboarding/onboarding-data.md",
+    "section": "Onboarding Data > Data architecture overview",
+    "text": "Onboarding Data > Data architecture overview  Data used by Onboarding Specialists comes from three main sources:  **Billing Postgres** [_admin panel view_](http"
+   },
+   {
+    "doc": "posthog/growth/use-case-selling/observability.md",
+    "section": "Observability > What is the job to be done?",
+    "text": "Observability > What is the job to be done?  \"Help me know when things break, understand why, and fix them fast.\"  - Catch exceptions and regressions before use"
+   },
+   {
+    "doc": "posthog/marketing/how-we-position-and-sell/error-tracking.md",
+    "section": "Error tracking > Messaging > Message 3: Triage errors by who they hit",
+    "text": "Error tracking > Messaging > Message 3: Triage errors by who they hit  **Problem:** Every error tracking tool surfaces errors by volume \u2013 the loudest exception "
+   },
+   {
+    "doc": "posthog/growth/cross-selling/error-tracking-cross-sell.md",
+    "section": "Error tracking cross sell > Demonstrate the value",
+    "text": "Error tracking cross sell > Demonstrate the value  Once you've identified customers who'd benefit from Error Tracking, show them value in ways relevant to them."
+   },
+   {
+    "doc": "posthog/onboarding/onboarding-conversations-playbook.md",
+    "section": "Onboarding conversations playbook > Outreach > Checking in",
+    "text": "Onboarding conversations playbook > Outreach > Checking in  - `LIMIT 10` on any top-N. Apply bot and test filters to non-events tables only where those fields e"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "posthog/onboarding/onboarding-conversations-playbook.md",
+    "section": "Onboarding conversations playbook > Outreach > Checking in",
+    "anchors": [
+     "checking-in"
+    ],
+    "text": "Onboarding conversations playbook > Outreach > Checking in  - `LIMIT 10` on any top-N. Apply bot and test filters to non-events tables only where those fields e"
+   },
+   {
+    "doc": "posthog/onboarding/onboarding-conversations-playbook.md",
+    "section": "Onboarding conversations playbook > Outreach > Checking in",
+    "anchors": [
+     "checking-in"
+    ],
+    "text": "Onboarding conversations playbook > Outreach > Checking in  Everything the customer created \u2192 `system.*`. - Always consider billing ([posthog.com/pricing](/pric"
+   }
+  ]
+ },
+ {
+  "id": "r-f9296f0b",
+  "kind": "relationship",
+  "tenant": "B",
+  "question": "What should someone in a customer-facing role tell their clients about setting custom per-token pricing to optimize LLM costs?",
+  "gold": [
+   {
+    "doc": "posthog/cs-and-onboarding/shareable-guides/designing-events-for-per-entity-metrics.md",
+    "locator": "designing-events-for-per-entity-metrics"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/shareable-guides/llm-cost-optimization.md",
+    "locator": "the-cost-model"
+   }
+  ],
+  "gold_answer": "Customer-facing roles help customers instrument their systems effectively. Customers can set custom per-token pricing using `$ai_input_token_price` and `$ai_output_token_price` to improve cost calculation accuracy, which is one of the main drivers of LLM spend optimization.",
+  "ranks": {
+   "dense": [
+    null,
+    14
+   ],
+   "keyword": [
+    null,
+    1
+   ],
+   "hybrid": [
+    null,
+    3
+   ],
+   "hybrid+rerank": [
+    null,
+    2
+   ]
+  },
+  "gold_doc_in_top50": [
+   false,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/cs-and-onboarding/shareable-guides/llm-cost-optimization.md",
+    "section": "LLM cost optimization",
+    "text": "LLM cost optimization  A field guide for customer-facing roles helping customers reduce LLM spend with [AI Observability](/docs/ai-observability/start-here).  #"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/shareable-guides/llm-cost-optimization.md",
+    "section": "LLM cost optimization > The cost model",
+    "text": "LLM cost optimization > The cost model  There are three main drivers of LLM spend.  1. **Model selection** \u2013 using a frontier model on a trivial task is like ta"
+   },
+   {
+    "doc": "posthog/marketing/positioning/llm-analytics.md",
+    "section": "AI Observability > Messaging",
+    "text": "AI Observability > Messaging  ### Message 1: LLM traces as product signals  **Problem:** An LLM trace tells you a model call failed. It doesn't tell you whether"
+   },
+   {
+    "doc": "posthog/engineering/ai/implementation.md",
+    "section": "Implementing AI features > Pricing and product positioning > How we think about pricing",
+    "text": "Implementing AI features > Pricing and product positioning > How we think about pricing  With our AI pricing, we want to follow the [PostHog pricing principles]"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/cost-optimization.md",
+    "section": "Cost optimization > Two ways a cost optimization starts",
+    "text": "Cost optimization > Two ways a cost optimization starts  **The customer asks.** They tell you they want to spend less on PostHog. [Risk mitigation and churn pre"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "posthog/cs-and-onboarding/shareable-guides/llm-cost-optimization.md",
+    "section": "LLM cost optimization > The cost model",
+    "anchors": [
+     "the-cost-model"
+    ],
+    "text": "LLM cost optimization > The cost model  There are three main drivers of LLM spend.  1. **Model selection** \u2013 using a frontier model on a trivial task is like ta"
+   }
+  ]
+ },
+ {
+  "id": "r-49d80fcd",
+  "kind": "relationship",
+  "tenant": "B",
+  "question": "What percentage of our PostHog event volume is coming from our marketing site, and how much could we save by turning it off?",
+  "gold": [
+   {
+    "doc": "posthog/cs-and-onboarding/new-hire-onboarding.md",
+    "locator": "implementation"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/cost-optimization.md",
+    "locator": "how-to-present-recommendations"
+   }
+  ],
+  "gold_answer": "Autocapture is generating 78% of the total volume, mostly from marketing pages. Turning off autocapture on the marketing site could save approximately $4.2k per month, which is 30% of the total bill.",
+  "ranks": {
+   "dense": [
+    null,
+    null
+   ],
+   "keyword": [
+    null,
+    null
+   ],
+   "hybrid": [
+    null,
+    null
+   ],
+   "hybrid+rerank": [
+    null,
+    null
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   false
+  ],
+  "top5": [
+   {
+    "doc": "posthog/marketing/events.md",
+    "section": "Marketing Events > Community events > Getting support",
+    "text": "Marketing Events > Community events > Getting support  **Financial support:** We are happy to support the growing ecosystem of PostHog users and product enginee"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/health-tracking.md",
+    "section": "Customer health tracking > Health scoring",
+    "text": "Customer health tracking > Health scoring  #### Customer engagement > Company engagement  This looks at a customer's engagement with PostHog as a company. Most "
+   },
+   {
+    "doc": "posthog/growth/use-case-selling/growth-and-marketing.md",
+    "section": "Growth & Marketing > Signals in Vitally & PostHog > Health score implications",
+    "text": "Growth & Marketing > Signals in Vitally & PostHog > Health score implications  - **Event volume:** Growing web analytics and pageview volume means marketing is "
+   },
+   {
+    "doc": "posthog/growth/use-case-selling/growth-and-marketing.md",
+    "section": "Growth & Marketing > Objection handling",
+    "text": "Growth & Marketing > Objection handling  | Objection | Response | |---|---| | \"We already use GA4 and it's free.\" | GA4 is great for basic web traffic. But can "
+   },
+   {
+    "doc": "posthog/growth/use-case-selling/customer-experience.md",
+    "section": "Customer Experience > Signals in Vitally & PostHog > Health score implications",
+    "text": "Customer Experience > Signals in Vitally & PostHog > Health score implications  - **Event volume:** Should stay relatively similar (this use case doesn't fundam"
+   }
+  ],
+  "gold_chunks": []
+ },
+ {
+  "id": "r-1835b639",
+  "kind": "relationship",
+  "tenant": "B",
+  "question": "What should I focus on during my first week as a new employee, and what's the general approach the company takes to getting people up to speed?",
+  "gold": [
+   {
+    "doc": "posthog/onboarding/new-hire-onboarding.md",
+    "locator": "rest-of-week-1"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/new-hire-onboarding.md",
+    "locator": "new-starter-onboarding"
+   }
+  ],
+  "gold_answer": "During your first week, you should read the Sales, CS & Onboarding section, explore Slack, and meet with Ben Bradley. The company uses a self-serve onboarding approach focused on breadth over depth, getting you running quickly with real work rather than sitting through formal training.",
+  "ranks": {
+   "dense": [
+    22,
+    37
+   ],
+   "keyword": [
+    null,
+    null
+   ],
+   "hybrid": [
+    22,
+    37
+   ],
+   "hybrid+rerank": [
+    22,
+    37
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/people/onboarding.md",
+    "section": "Onboarding > In-person onboarding > Your first week",
+    "text": "Onboarding > In-person onboarding > Your first week  Your first week can definitely be a bit overwhelming at any new company, so here's what you can (roughly) e"
+   },
+   {
+    "doc": "posthog/growth/sales/new-hire-onboarding.md",
+    "section": "New starter onboarding > Your first few weeks",
+    "text": "New starter onboarding > Your first few weeks  Welcome to the PostHog Sales team!  We only hire about 1 in 400 applicants, so you've done well to make it here! "
+   },
+   {
+    "doc": "posthog/onboarding/new-hire-onboarding.md",
+    "section": "New hire onboarding > Weeks 3-4",
+    "text": "New hire onboarding > Weeks 3-4  This is when you start working with your customers. Reach out, take the first calls, pick up the questions that come in, and st"
+   },
+   {
+    "doc": "posthog/forward-deployed-engineering/new-hire-onboarding.md",
+    "section": "New starter onboarding > Weeks 3 and 4 \u2013 take on more customer work",
+    "text": "New starter onboarding > Weeks 3 and 4 \u2013 take on more customer work  > We will normally do in-person onboarding in week 3 \u2013 this will mainly be focused around a"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/new-hire-onboarding.md",
+    "section": "New starter onboarding > Weeks 3\u20134 \u2013 start working with your customers",
+    "text": "New starter onboarding > Weeks 3\u20134 \u2013 start working with your customers  This is when you start working with your customers. Reach out, take the first calls, pic"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "posthog/onboarding/new-hire-onboarding.md",
+    "section": "New hire onboarding > Rest of week 1",
+    "anchors": [
+     "rest-of-week-1"
+    ],
+    "text": "New hire onboarding > Rest of week 1  This week is about getting set up and learning how we talk about PostHog. You'll feel extremely unproductive, and that's f"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/new-hire-onboarding.md",
+    "section": "New starter onboarding",
+    "anchors": [
+     "new-starter-onboarding",
+     "general-advice"
+    ],
+    "text": "New starter onboarding  Welcome to the PostHog Customer Success team! We only hire about 1 in 400 applicants, so you've done well to make it here!  Onboarding h"
+   }
+  ]
+ },
+ {
+  "id": "r-0eea993e",
+  "kind": "relationship",
+  "tenant": "B",
+  "question": "What resources should our support team use when investigating customer issues?",
+  "gold": [
+   {
+    "doc": "posthog/cs-and-onboarding/handling-customer-issues.md",
+    "locator": "investigating-issues"
+   },
+   {
+    "doc": "posthog/support/troubleshooting-tips.md",
+    "locator": "troubleshooting-tips"
+   }
+  ],
+  "gold_answer": "The support team should use the docs, search Slack and GitHub for similar issues, and refer to troubleshooting tips. They should also ask customers for specifics like links, screenshots, or error messages, and keep the customer informed about progress while investigating.",
+  "ranks": {
+   "dense": [
+    1,
+    null
+   ],
+   "keyword": [
+    1,
+    null
+   ],
+   "hybrid": [
+    1,
+    null
+   ],
+   "hybrid+rerank": [
+    1,
+    null
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   false
+  ],
+  "top5": [
+   {
+    "doc": "posthog/cs-and-onboarding/handling-customer-issues.md",
+    "section": "Handling customer issues > Investigating issues",
+    "text": "Handling customer issues > Investigating issues  Ask for specifics: links to the insight, feature flag, or dashboard; a screenshot or the exact error message.  "
+   },
+   {
+    "doc": "posthog/support/customer-support.md",
+    "section": "Customer support > Common issues & questions",
+    "text": "Customer support > Common issues & questions  ### Dealing with billing issues  Issues related to billing are handled exclusively by our billing engineers. Billi"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/using-ai-to-analyze-customer-issues.md",
+    "section": "Using AI to analyze customer issues > Internal: separate the analysis from the output",
+    "text": "Using AI to analyze customer issues > Internal: separate the analysis from the output  When investigating a customer issue, treat AI output as directional guida"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/using-ai-to-analyze-customer-issues.md",
+    "section": "Using AI to analyze customer issues",
+    "text": "Using AI to analyze customer issues  A field guide for customer-facing roles using AI to investigate and explain customer issues, without letting machine-genera"
+   },
+   {
+    "doc": "posthog/support/customer-support.md",
+    "section": "Customer support > Common issues & questions > Users asking for their data to be deleted",
+    "text": "Customer support > Common issues & questions > Users asking for their data to be deleted  #### Reaching the sales / CS / onboarding teams  If you need to reach "
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "posthog/cs-and-onboarding/handling-customer-issues.md",
+    "section": "Handling customer issues > Investigating issues",
+    "anchors": [
+     "investigating-issues"
+    ],
+    "text": "Handling customer issues > Investigating issues  Ask for specifics: links to the insight, feature flag, or dashboard; a screenshot or the exact error message.  "
+   }
+  ]
+ },
+ {
+  "id": "r-16c4115c",
+  "kind": "relationship",
+  "tenant": "B",
+  "question": "When we need to connect our payment processor to our data warehouse for revenue analysis, who should we contact to set that up?",
+  "gold": [
+   {
+    "doc": "posthog/support/customer-support.md",
+    "locator": "how-should-i-handle-organization-ownership-transfers"
+   },
+   {
+    "doc": "posthog/onboarding/onboarding-conversations-playbook.md",
+    "locator": "checking-in"
+   }
+  ],
+  "gold_answer": "You should contact the billing team via billing@posthog.com for payment processor connections. Additionally, you can connect your payment processor as a warehouse source and join it to events in SQL for revenue analysis.",
+  "ranks": {
+   "dense": [
+    null,
+    null
+   ],
+   "keyword": [
+    null,
+    null
+   ],
+   "hybrid": [
+    null,
+    null
+   ],
+   "hybrid+rerank": [
+    null,
+    null
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   false
+  ],
+  "top5": [
+   {
+    "doc": "posthog/growth/sales/data-foundations.md",
+    "section": "Data foundations > How users grow into the data stack",
+    "text": "Data foundations > How users grow into the data stack  Users only need data tools once they start generating a reasonable volume of data. They will adopt PostHo"
+   },
+   {
+    "doc": "posthog/growth/use-case-selling/data-infrastructure.md",
+    "section": "Data Infrastructure > Getting a customer started > Onboarding checklist",
+    "text": "Data Infrastructure > Getting a customer started > Onboarding checklist  - [ ] Connect primary external data source to [Data Warehouse](/docs/data-warehouse) (u"
+   },
+   {
+    "doc": "posthog/growth/use-case-selling/data-infrastructure.md",
+    "section": "Data Infrastructure > Getting a customer started > What does an evaluation look like?",
+    "text": "Data Infrastructure > Getting a customer started > What does an evaluation look like?  - **Scope:** Connect one external data source (usually Stripe or their pr"
+   },
+   {
+    "doc": "posthog/growth/use-case-selling/data-infrastructure.md",
+    "section": "Data Infrastructure > Command of the Message",
+    "text": "Data Infrastructure > Command of the Message  ### Discovery questions  - Where does your product data live today? How do you combine it with business data (reve"
+   },
+   {
+    "doc": "posthog/marketing/positioning/data-warehouse.md",
+    "section": "Context warehouse > Objections",
+    "text": "Context warehouse > Objections  ### \"We already have Snowflake \u2013 why change?\"  **Follow-up:** What do you use for product analytics, feature flags, and experime"
+   }
+  ],
+  "gold_chunks": []
+ },
+ {
+  "id": "r-8f01604e",
+  "kind": "relationship",
+  "tenant": "B",
+  "question": "How does the support team handle customer issues that need attention?",
+  "gold": [
+   {
+    "doc": "posthog/cs-and-onboarding/churn-reasons.md",
+    "locator": "customer-can-t-extract-value"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/how-we-work.md",
+    "locator": "working-with-customers-in-slack"
+   }
+  ],
+  "gold_answer": "The support team works with Engineering on customer issues. You should follow up with Support and Engineering if you feel an issue isn't getting the right level of attention, and you can create tickets in PostHog Support using the :ticket: emoji or @SupportHog in Slack channels.",
+  "ranks": {
+   "dense": [
+    null,
+    null
+   ],
+   "keyword": [
+    null,
+    20
+   ],
+   "hybrid": [
+    null,
+    70
+   ],
+   "hybrid+rerank": [
+    null,
+    70
+   ]
+  },
+  "gold_doc_in_top50": [
+   false,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/support/customer-support.md",
+    "section": "Customer support > Common issues & questions",
+    "text": "Customer support > Common issues & questions  ### Dealing with billing issues  Issues related to billing are handled exclusively by our billing engineers. Billi"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/handling-customer-issues.md",
+    "section": "Handling customer issues > Investigating issues",
+    "text": "Handling customer issues > Investigating issues  Ask for specifics: links to the insight, feature flag, or dashboard; a screenshot or the exact error message.  "
+   },
+   {
+    "doc": "posthog/support/support-incident-response.md",
+    "section": "Support team incident response > Working with the Comms Lead",
+    "text": "Support team incident response > Working with the Comms Lead  For an incident that requires external comms, Marketing will appoint a [Comms Lead](https://postho"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/customer-success.md",
+    "section": "Customer success > The levers we have",
+    "text": "Customer success > The levers we have  [Handling customer issues](/handbook/cs-and-onboarding/handling-customer-issues) covers how we work through these. - **Fi"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/handling-customer-issues.md",
+    "section": "Handling customer issues",
+    "text": "Handling customer issues  As the dedicated PostHog human for your customers, you're the first stop for issues. You have the most context on them, so you're best"
+   }
+  ],
+  "gold_chunks": []
+ },
+ {
+  "id": "r-deb7c5d9",
+  "kind": "relationship",
+  "tenant": "B",
+  "question": "What should someone new to the onboarding team know about how we handle prepaid credit plans when they're coming up for renewal?",
+  "gold": [
+   {
+    "doc": "posthog/onboarding/onboarding-team.md",
+    "locator": "how-to-deepen-your-knowledge"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/renewals.md",
+    "locator": "renewal-principles"
+   }
+  ],
+  "gold_answer": "When renewing prepaid credit plans, accurately project how many credits the customer will need over the next 12 months rather than using renewal as an upsell opportunity. The onboarding team can find the specific mechanics for handling these renewals in the Sales docs, particularly the Contract Rule",
+  "ranks": {
+   "dense": [
+    null,
+    1
+   ],
+   "keyword": [
+    null,
+    8
+   ],
+   "hybrid": [
+    null,
+    1
+   ],
+   "hybrid+rerank": [
+    null,
+    3
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/growth/sales/new-hire-onboarding.md",
+    "section": "New starter onboarding > Technical Account Manager ramp > How do I know if I'm on track?",
+    "text": "New starter onboarding > Technical Account Manager ramp > How do I know if I'm on track?  By the end of month 1:  - Be leading customer calls and demos on your "
+   },
+   {
+    "doc": "posthog/growth/sales/new-hire-onboarding.md",
+    "section": "New starter onboarding > Technical Account Executive ramp",
+    "text": "New starter onboarding > Technical Account Executive ramp  ### Weeks 3-4  - Focus on taking more and more ownership on calls so that team members are just there"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/renewals.md",
+    "section": "Renewals > Renewal principles",
+    "text": "Renewals > Renewal principles  Prepaid credit plans (usually expiring 12 months after the contract was signed) work for both sides. Customers get a discount, an"
+   },
+   {
+    "doc": "posthog/growth/sales/contract-rules.md",
+    "section": "Contract rules > Discounts > How our discounts work > 3. Ability to forecast - mutual commitment to timing (additive)",
+    "text": "Contract rules > Discounts > How our discounts work > 3. Ability to forecast - mutual commitment to timing (additive)  **For renewals:** +5% additional discount"
+   },
+   {
+    "doc": "posthog/growth/sales/contract-rules.md",
+    "section": "Contract rules > Credit over/under usage for contracts",
+    "text": "Contract rules > Credit over/under usage for contracts  ### When they will end the contract term with credit remaining  If a customer ends a term with unused cr"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "posthog/cs-and-onboarding/renewals.md",
+    "section": "Renewals > Renewal principles",
+    "anchors": [
+     "renewal-principles"
+    ],
+    "text": "Renewals > Renewal principles  Prepaid credit plans (usually expiring 12 months after the contract was signed) work for both sides. Customers get a discount, an"
+   }
+  ]
+ },
+ {
+  "id": "r-c1312bc6",
+  "kind": "relationship",
+  "tenant": "B",
+  "question": "During the in-person onboarding sessions, what are we taught about keeping customers happy?",
+  "gold": [
+   {
+    "doc": "posthog/onboarding/new-hire-onboarding.md",
+    "locator": "in-person-onboarding"
+   },
+   {
+    "doc": "posthog/onboarding/new-hire-onboarding.md",
+    "locator": "how-do-i-know-if-i-m-on-track"
+   }
+  ],
+  "gold_answer": "The in-person onboarding covers various topics like demo practice, PostHog training, and internal processes, but by the end of month 3, you're expected to ensure customers are happy after interacting with you and meaningfully contribute to their success.",
+  "ranks": {
+   "dense": [
+    42,
+    14
+   ],
+   "keyword": [
+    null,
+    null
+   ],
+   "hybrid": [
+    42,
+    14
+   ],
+   "hybrid+rerank": [
+    42,
+    14
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/cs-and-onboarding/new-hire-onboarding.md",
+    "section": "New starter onboarding > Week 2 \u2013 in-person onboarding, your customers",
+    "text": "New starter onboarding > Week 2 \u2013 in-person onboarding, your customers  In-person onboarding typically happens this week (3-4 days led by your team lead). You'l"
+   },
+   {
+    "doc": "posthog/people/onboarding.md",
+    "section": "Onboarding > In-person onboarding > Engineering",
+    "text": "Onboarding > In-person onboarding > Engineering  Do at least one brainstorming session on a topic important for the team, writing down actionable conclusions. U"
+   },
+   {
+    "doc": "posthog/onboarding/onboarding-conversations-playbook.md",
+    "section": "Onboarding conversations playbook",
+    "text": "Onboarding conversations playbook  Our customers are busy, self-serve by default, and allergic to anything that feels like a time sink. We deliver the most valu"
+   },
+   {
+    "doc": "posthog/people/onboarding.md",
+    "section": "Onboarding > In-person onboarding",
+    "text": "Onboarding > In-person onboarding  It is important that you make the most out of the sync time with the new joiner on your team. You should not spend the whole "
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/new-hire-onboarding.md",
+    "section": "New starter onboarding > Weeks 3\u20134 \u2013 start working with your customers",
+    "text": "New starter onboarding > Weeks 3\u20134 \u2013 start working with your customers  This is when you start working with your customers. Reach out, take the first calls, pic"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "posthog/onboarding/new-hire-onboarding.md",
+    "section": "New hire onboarding > How do I know if I'm on track?",
+    "anchors": [
+     "how-do-i-know-if-i-m-on-track"
+    ],
+    "text": "New hire onboarding > How do I know if I'm on track?  **By the end of month 1:**  - You continue learning from the received feedback.  - You have a good grasp o"
+   },
+   {
+    "doc": "posthog/onboarding/new-hire-onboarding.md",
+    "section": "New hire onboarding > In-person onboarding",
+    "anchors": [
+     "in-person-onboarding"
+    ],
+    "text": "New hire onboarding > In-person onboarding  Ideally, this will happen in Week 2-3, with the company of a few colleagues (depending on where we do it and who's a"
+   }
+  ]
+ },
+ {
+  "id": "r-ff3235f8",
+  "kind": "relationship",
+  "tenant": "B",
+  "question": "What's the recommended frequency for sending value-focused messages to customers who don't respond much, and what types of tips should I include?",
+  "gold": [
+   {
+    "doc": "posthog/cs-and-onboarding/engaging-unengaged-customers.md",
+    "locator": "steady-drumbeat-of-usage-specific-tips"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/engaging-unengaged-customers.md",
+    "locator": "spot-new-product-interest-and-reach-out-proactively"
+   }
+  ],
+  "gold_answer": "Send tips every 1-2 weeks, rotating through different value types like cost optimization, data quality observations, alerts, workflow templates, competitive product heads-ups, and beta features. Session replays often show that quiet customers act on these tips without responding, so keep sending val",
+  "ranks": {
+   "dense": [
+    1,
+    null
+   ],
+   "keyword": [
+    null,
+    null
+   ],
+   "hybrid": [
+    1,
+    null
+   ],
+   "hybrid+rerank": [
+    1,
+    null
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/cs-and-onboarding/engaging-unengaged-customers.md",
+    "section": "Engaging unengaged customers > Outreach tactics > Steady drumbeat of usage-specific tips",
+    "text": "Engaging unengaged customers > Outreach tactics > Steady drumbeat of usage-specific tips  For customers who rarely reply, keep sending value anyway. Session rep"
+   },
+   {
+    "doc": "posthog/account-management/getting-people-to-talk-to-you.md",
+    "section": "Getting people to talk to you > Pick your reason > Steady drumbeat of usage-specific tips",
+    "text": "Getting people to talk to you > Pick your reason > Steady drumbeat of usage-specific tips  For customers who rarely reply, keep sending value anyway. Session re"
+   },
+   {
+    "doc": "posthog/onboarding/onboarding-conversations-playbook.md",
+    "section": "Onboarding conversations playbook",
+    "text": "Onboarding conversations playbook  Our customers are busy, self-serve by default, and allergic to anything that feels like a time sink. We deliver the most valu"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/engaging-unengaged-customers.md",
+    "section": "Engaging unengaged customers > Meta-tactics",
+    "text": "Engaging unengaged customers > Meta-tactics  Cross-cutting patterns that apply to any outreach above, regardless of which trigger you use.  ### Lead with their "
+   },
+   {
+    "doc": "posthog/account-management/getting-people-to-talk-to-you.md",
+    "section": "Getting people to talk to you > Additional Resources > Outreach rules of thumb",
+    "text": "Getting people to talk to you > Additional Resources > Outreach rules of thumb  - **Try stuff.** Got a quiet account? Test something unusual on it \u2014 there's ver"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "posthog/cs-and-onboarding/engaging-unengaged-customers.md",
+    "section": "Engaging unengaged customers > Outreach tactics > Steady drumbeat of usage-specific tips",
+    "anchors": [
+     "steady-drumbeat-of-usage-specific-tips"
+    ],
+    "text": "Engaging unengaged customers > Outreach tactics > Steady drumbeat of usage-specific tips  For customers who rarely reply, keep sending value anyway. Session rep"
+   }
+  ]
+ },
+ {
+  "id": "r-4b1d5515",
+  "kind": "relationship",
+  "tenant": "B",
+  "question": "When I run a health check on an inherited account and find issues, do I need to send a Slack message about it?",
+  "gold": [
+   {
+    "doc": "posthog/cs-and-onboarding/cost-optimization.md",
+    "locator": "how-to-spot-them"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/cost-optimization.md",
+    "locator": "cost-optimization"
+   }
+  ],
+  "gold_answer": "Yes, when you identify cost optimization issues through a health check, you should add context via a Slack message so others can understand the difference between a customer you helped and one you aren't fully engaged with.",
+  "ranks": {
+   "dense": [
+    null,
+    null
+   ],
+   "keyword": [
+    7,
+    5
+   ],
+   "hybrid": [
+    55,
+    54
+   ],
+   "hybrid+rerank": [
+    55,
+    54
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/cs-and-onboarding/getting-started-with-customers.md",
+    "section": "Getting started with customers > 2. Reach out",
+    "text": "Getting started with customers > 2. Reach out  ### Value nugget ideas  Pull from Vitally and Metabase to find something specific to mention:  - Event count spik"
+   },
+   {
+    "doc": "posthog/marketing/slack-messaging.md",
+    "section": "Slack messaging > Check with Sales before sending",
+    "text": "Slack messaging > Check with Sales before sending  Broadcasts reach live customer and partner channels, and Sales or the TAMs may know of sensitive accounts tha"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/getting-started-with-customers.md",
+    "section": "Getting started with customers > 2. Reach out",
+    "text": "Getting started with customers > 2. Reach out  How you reach out depends on whether you're inheriting an existing contact or starting cold.  ### Handover from S"
+   },
+   {
+    "doc": "posthog/company/communication.md",
+    "section": "Communication > Golden rules",
+    "text": "Communication > Golden rules  1. Use **asynchronous communication** when possible: pull requests (preferred) or issues. Announcements happen on the appropriate "
+   },
+   {
+    "doc": "posthog/marketing/slack-messaging.md",
+    "section": "Slack messaging > Check with Sales before sending > Excluding channels before you send",
+    "text": "Slack messaging > Check with Sales before sending > Excluding channels before you send  Beyond accounts that sales or CS flags, scan the audience yourself for c"
+   }
+  ],
+  "gold_chunks": []
+ },
+ {
+  "id": "r-336dcdbf",
+  "kind": "relationship",
+  "tenant": "B",
+  "question": "What video conferencing tool should I set up during my first week as a new employee?",
+  "gold": [
+   {
+    "doc": "posthog/cs-and-onboarding/new-hire-onboarding.md",
+    "locator": "week-1-how-we-talk-about-posthog"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/how-we-work.md",
+    "locator": "tools-we-use"
+   }
+  ],
+  "gold_answer": "During Week 1 onboarding, you should set up Zoom as part of the canonical call stack. Zoom integrates with Gong, which automatically records your calls and saves them to a shared library for the team to review.",
+  "ranks": {
+   "dense": [
+    6,
+    null
+   ],
+   "keyword": [
+    null,
+    null
+   ],
+   "hybrid": [
+    6,
+    null
+   ],
+   "hybrid+rerank": [
+    3,
+    null
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   false
+  ],
+  "top5": [
+   {
+    "doc": "posthog/people/onboarding.md",
+    "section": "Onboarding > In-person onboarding > Your first week",
+    "text": "Onboarding > In-person onboarding > Your first week  Your first week can definitely be a bit overwhelming at any new company, so here's what you can (roughly) e"
+   },
+   {
+    "doc": "posthog/growth/sales/new-hire-onboarding.md",
+    "section": "New starter onboarding > Technical Account Executive ramp",
+    "text": "New starter onboarding > Technical Account Executive ramp  ### Week 2  - During your first week, Ben will go through the sales process with you and answer any q"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/new-hire-onboarding.md",
+    "section": "New starter onboarding > Week 1 \u2013 how we talk about PostHog",
+    "text": "New starter onboarding > Week 1 \u2013 how we talk about PostHog  This week is about getting set up and learning how we talk about PostHog. You'll feel extremely unp"
+   },
+   {
+    "doc": "posthog/growth/sales/new-hire-onboarding.md",
+    "section": "New starter onboarding > Technical Account Executive ramp > Day 1",
+    "text": "New starter onboarding > Technical Account Executive ramp > Day 1  - Meet with [Ben](/community/profiles/32367) who will run through this plan and answer any qu"
+   },
+   {
+    "doc": "posthog/company/communication.md",
+    "section": "Communication > Internal meetings",
+    "text": "Communication > Internal meetings  PostHog uses [Google Meet](https://meet.google.com/) for video communications. For large meetings, use `CMD + minus key` to z"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "posthog/cs-and-onboarding/new-hire-onboarding.md",
+    "section": "New starter onboarding > Week 1 \u2013 how we talk about PostHog",
+    "anchors": [
+     "week-1-how-we-talk-about-posthog"
+    ],
+    "text": "New starter onboarding > Week 1 \u2013 how we talk about PostHog  This week is about getting set up and learning how we talk about PostHog. You'll feel extremely unp"
+   }
+  ]
+ },
+ {
+  "id": "r-aeeda4c2",
+  "kind": "relationship",
+  "tenant": "B",
+  "question": "What should I do when a customer starts asking for help reducing their spending, and how do I track that they're going through this process?",
+  "gold": [
+   {
+    "doc": "posthog/cs-and-onboarding/cost-optimization.md",
+    "locator": "cost-optimization"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/cost-optimization.md",
+    "locator": "the-cost-optimizing-tag"
+   }
+  ],
+  "gold_answer": "When a customer asks for help reducing spend and you're working on it, add the `cost optimizing` tag to their account in PostHog Customer Analytics. This tag indicates you're aware of the cost optimization and supporting the customer through it, and it adds context to any resulting revenue changes s",
+  "ranks": {
+   "dense": [
+    null,
+    25
+   ],
+   "keyword": [
+    null,
+    null
+   ],
+   "hybrid": [
+    null,
+    25
+   ],
+   "hybrid+rerank": [
+    null,
+    25
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/growth/sales/risk-mitigation-and-churn-prevention.md",
+    "section": "Risk mitigation and churn prevention > Risk mitigation (proactive) > Implementation health",
+    "text": "Risk mitigation and churn prevention > Risk mitigation (proactive) > Implementation health  Take action on their request first. Gather context along the way or "
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/cost-optimization.md",
+    "section": "Cost optimization > Two ways a cost optimization starts",
+    "text": "Cost optimization > Two ways a cost optimization starts  **The customer asks.** They tell you they want to spend less on PostHog. [Risk mitigation and churn pre"
+   },
+   {
+    "doc": "posthog/growth/sales/risk-mitigation-and-churn-prevention.md",
+    "section": "Risk mitigation and churn prevention > Risk mitigation (proactive) > Implementation health",
+    "text": "Risk mitigation and churn prevention > Risk mitigation (proactive) > Implementation health  - **Consider proposing a target spend.** Once you've acted on their "
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/getting-started-with-customers.md",
+    "section": "Getting started with customers > 2. Reach out",
+    "text": "Getting started with customers > 2. Reach out  ### Value nugget ideas  Pull from Vitally and Metabase to find something specific to mention:  - Event count spik"
+   },
+   {
+    "doc": "posthog/growth/sales/product-led-sales.md",
+    "section": "Product-led Sales > Working with the customer",
+    "text": "Product-led Sales > Working with the customer  Just as with the [inbound sales process](/handbook/growth/sales/new-sales), it's on you to decide how you qualify"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "posthog/cs-and-onboarding/cost-optimization.md",
+    "section": "Cost optimization > The `cost optimizing` tag",
+    "anchors": [
+     "the-cost-optimizing-tag"
+    ],
+    "text": "Cost optimization > The `cost optimizing` tag  Add the `cost optimizing` tag to the account in PostHog Customer Analytics when the cost optimization starts and "
+   }
+  ]
+ },
+ {
+  "id": "r-b3690bd3",
+  "kind": "relationship",
+  "tenant": "B",
+  "question": "How do I use the product engagement and session replay metrics to rate accounts in the accounts table?",
+  "gold": [
+   {
+    "doc": "posthog/cs-and-onboarding/health-tracking.md",
+    "locator": "product-analytics"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/health-tracking.md",
+    "locator": "how-to-use-it"
+   }
+  ],
+  "gold_answer": "Product engagement and session replay metrics are part of health scoring, which helps evaluate customer health. The CSM rating based on these metrics is used in the accounts table, where you can sort and total the ratings using HogQL and PostHog AI.",
+  "ranks": {
+   "dense": [
+    20,
+    null
+   ],
+   "keyword": [
+    null,
+    null
+   ],
+   "hybrid": [
+    21,
+    null
+   ],
+   "hybrid+rerank": [
+    21,
+    null
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/growth/sales/expansion-strategies.md",
+    "section": "Expansion strategies > Strategy 1: Go deeper on the existing team",
+    "text": "Expansion strategies > Strategy 1: Go deeper on the existing team  The team already uses Product Analytics. You help them adopt Session Replay, then Experiments"
+   },
+   {
+    "doc": "posthog/product/metrics.md",
+    "section": "Product metrics > Metrics we use in growth reviews",
+    "text": "Product metrics > Metrics we use in growth reviews  ### NPS  We have a NPS survey set up for each product. They need regular updates due to some survey limitati"
+   },
+   {
+    "doc": "posthog/growth/sales/account-allocation.md",
+    "section": "Account allocation and handover > Account handover checklist > Before the handover call > Self-serve research (do this first)",
+    "text": "Account allocation and handover > Account handover checklist > Before the handover call > Self-serve research (do this first)  - [ ] **Customer Analytics accoun"
+   },
+   {
+    "doc": "posthog/growth/use-case-selling/product-intelligence.md",
+    "section": "Product Intelligence > Getting a customer started > What does an evaluation look like?",
+    "text": "Product Intelligence > Getting a customer started > What does an evaluation look like?  - **Scope:** Instrument their core product flow: signup \u2192 key activation"
+   },
+   {
+    "doc": "posthog/onboarding/onboarding-conversations-playbook.md",
+    "section": "Onboarding conversations playbook > Outreach > Checking in",
+    "text": "Onboarding conversations playbook > Outreach > Checking in  This is where we can have a real impact on product adoption and usage expansion. Think of it as a va"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "posthog/cs-and-onboarding/health-tracking.md",
+    "section": "Customer health tracking > Health scoring > Product engagement",
+    "anchors": [
+     "product-analytics",
+     "session-replay"
+    ],
+    "text": "Customer health tracking > Health scoring > Product engagement  #### Product analytics  | Measure                                        | Poor | Concerning | H"
+   }
+  ]
+ },
+ {
+  "id": "r-d2ccd2ad",
+  "kind": "relationship",
+  "tenant": "B",
+  "question": "Who will help me understand failed payments alerts when I start as a new employee?",
+  "gold": [
+   {
+    "doc": "posthog/onboarding/new-hire-onboarding.md",
+    "locator": "day-1"
+   },
+   {
+    "doc": "posthog/onboarding/onboarding-tracking.md",
+    "locator": "alerts-and-revenue-tracking"
+   }
+  ],
+  "gold_answer": "Magda will run through your onboarding plan on Day 1 and answer any questions you may have. Magda is also a failsafe for failed payments alerts in Vitally, which notify users when payments fail so the team can reach out and help customers with their billing.",
+  "ranks": {
+   "dense": [
+    null,
+    1
+   ],
+   "keyword": [
+    null,
+    null
+   ],
+   "hybrid": [
+    null,
+    1
+   ],
+   "hybrid+rerank": [
+    null,
+    1
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   true
+  ],
+  "top5": [
+   {
+    "doc": "posthog/onboarding/onboarding-tracking.md",
+    "section": "Onboarding process and tracking > Alerts and revenue tracking",
+    "text": "Onboarding process and tracking > Alerts and revenue tracking  We occasionally shift our attention to help customers who may need more urgent assistance. For th"
+   },
+   {
+    "doc": "posthog/growth/sales/billing.md",
+    "section": "Billing > Managing billing > Failed/late payments",
+    "text": "Billing > Managing billing > Failed/late payments  We define late payments as follows:  1. For credit-based customers, that have not made payment on an invoice "
+   },
+   {
+    "doc": "posthog/onboarding/onboarding-tracking.md",
+    "section": "Onboarding process and tracking > Specific cases",
+    "text": "Onboarding process and tracking > Specific cases  ### How to stop automation  There might be some specific situations where you're actively engaged with the cus"
+   },
+   {
+    "doc": "posthog/growth/sales/billing.md",
+    "section": "Billing > Managing billing > Failed/late payments",
+    "text": "Billing > Managing billing > Failed/late payments  #### Step 1 - On the day their payment becomes late  As the account owner you will be assigned a risk indicat"
+   },
+   {
+    "doc": "posthog/growth/sales/billing.md",
+    "section": "Billing > Managing billing > Failed/late payments > Repeated failed payments",
+    "text": "Billing > Managing billing > Failed/late payments > Repeated failed payments  A customer has *repeated* failed payments when payments have failed across three o"
+   }
+  ],
+  "gold_chunks": [
+   {
+    "doc": "posthog/onboarding/onboarding-tracking.md",
+    "section": "Onboarding process and tracking > Alerts and revenue tracking",
+    "anchors": [
+     "alerts-and-revenue-tracking"
+    ],
+    "text": "Onboarding process and tracking > Alerts and revenue tracking  We occasionally shift our attention to help customers who may need more urgent assistance. For th"
+   }
+  ]
+ },
+ {
+  "id": "r-f23846d6",
+  "kind": "relationship",
+  "tenant": "B",
+  "question": "When I'm doing research on an account, how can I see the health scores and engagement metrics in Vitally?",
+  "gold": [
+   {
+    "doc": "posthog/cs-and-onboarding/getting-started-with-customers.md",
+    "locator": "prioritization"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/how-we-use-automation.md",
+    "locator": "current-automation-stack"
+   }
+  ],
+  "gold_answer": "You can use BuildBetter to review past customer success, sales, and onboarding calls for valuable context, and the notes from those calls are automatically synced to Vitally. Vitally tracks usage patterns, billing changes, health scores, and engagement metrics that update regularly as a composite of",
+  "ranks": {
+   "dense": [
+    null,
+    null
+   ],
+   "keyword": [
+    null,
+    null
+   ],
+   "hybrid": [
+    null,
+    null
+   ],
+   "hybrid+rerank": [
+    null,
+    null
+   ]
+  },
+  "gold_doc_in_top50": [
+   true,
+   false
+  ],
+  "top5": [
+   {
+    "doc": "posthog/cs-and-onboarding/health-tracking.md",
+    "section": "Customer health tracking > Health scoring > Overview",
+    "text": "Customer health tracking > Health scoring > Overview  Health scores are a great way to assess whether your customer is at risk of churn or in a good state and a"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/health-tracking.md",
+    "section": "Customer health tracking > Account indicators",
+    "text": "Customer health tracking > Account indicators  Health scores are useful for tracking the long-term trends in an account, but occasionally there are more immedia"
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/health-tracking.md",
+    "section": "Customer health tracking > Health scoring",
+    "text": "Customer health tracking > Health scoring  #### Customer engagement > Company engagement  This looks at a customer's engagement with PostHog as a company. Most "
+   },
+   {
+    "doc": "posthog/cs-and-onboarding/health-tracking.md",
+    "section": "Customer health tracking",
+    "text": "Customer health tracking  We use Vitally as a customer success platform.  You can log in via Google SSO to view customer data but will need [Mine](/community/pr"
+   },
+   {
+    "doc": "posthog/growth/sales/csm-tam-overlay-coverage.md",
+    "section": "CSM + TAM rules of engagement > **Where to expect overlap** > Account health",
+    "text": "CSM + TAM rules of engagement > **Where to expect overlap** > Account health  The CSM owns reading the [health score](/handbook/cs-and-onboarding/health-trackin"
+   }
+  ],
+  "gold_chunks": []
+ }
+]

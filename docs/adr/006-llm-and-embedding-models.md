@@ -28,3 +28,7 @@ scored R@5 0.81 / MRR 0.72 against 0.75 / 0.62 for the current bge-small-en-v1.5
 model. bge-base and nomic did not beat it. Recommendation: switch to arctic-m after confirming the gain survives the reranker
 (re-run retrieval with `hybrid+rerank`) and accepting the cost (vector(768) migration, full re-embed, 1.8x slower embedding).
 bge-small stays the default until that is done.
+
+### Update 2026-10-09 (B-034)
+With the production reranker, bge-small and arctic-embed-m both reach R@5 0.81 and MRR 0.66, so the gap measured in B-033 disappears.
+**Decision: keep bge-small-en-v1.5.** No migration and no re-embed; revisit only if the reranker is replaced or removed.

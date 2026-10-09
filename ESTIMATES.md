@@ -229,4 +229,6 @@ Owner estimate for 2.7+2.8+2.9: O 15 / M 20 / P 25 min (PERT 20 min).
 | Phase 6 task 6.5 (contextual retrieval experiment) | 2026-10-08 19:00 | | done: B-032, ~$7 of blurbs in total; ran alone, peak RSS 2.0 GB |
 | Phase 6 task 6.6 (embedding models) | 2026-10-08 20:15 | | done: B-033; nomic needed prefixes (rerun), arctic-m best; ran one at a time, peak RSS 3.0 GB |
 | Phase 6 full test-suite run | 2026-10-08 20:55 | | 761 passed in 10m56s; ruff, format, mypy clean; ran alone, peak RSS 0.8 GB |
-| Phase 6 tasks 6.9, 6.10, 6.15 (consolidated results, charts, ADR statuses, README) | 2026-10-08 21:15 | | docs/phase6_results.md, docs/img/*.svg (docs/make_charts.py), ADR 001-009 statuses, README; no model calls |
+| Phase 6 tasks 6.9, 6.10, 6.15 (consolidated results, charts, ADR statuses, README) | 2026-10-08 21:15 | | docs/phase6_results.md, docs/img/*.svg (docs/make_charts.py), ADR 001-009 statuses, README; no model calls || Phase 7 block 1 (7.1 learn: garak/promptfoo/PortSwigger patterns; 7.2 red-team harness + live campaign) | 2026-10-09 | | auto-started at owner's request while owner reads Phase 6 explanations |
+
+| Phase 6 follow-up: arctic+reranker check (B-034), miss analysis and tuning (B-035) | 2026-10-09 | | owner request; one job at a time; red-team harness (evals/redteam.py) written, campaign paused at 25/66 (hung on pri-01: investigate when security resumes) |

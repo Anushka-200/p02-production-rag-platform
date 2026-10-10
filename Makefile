@@ -63,3 +63,15 @@ purge:  ## Delete expired visitor data (chats, leads, WhatsApp routing); see doc
 
 redteam:  ## Red-team campaign: 83 attacks against scratch tenants (about $0.11)
 	PYTHONPATH=. uv run python -m evals.redteam --yes
+
+api:  ## Run the API on :8001 outside Docker (production mode: the dev login header is off)
+	ENVIRONMENT=prod uv run uvicorn app.api.main:_default_app --factory --port 8001
+
+worker:  ## Run the ingestion worker outside Docker
+	ENVIRONMENT=prod uv run python -m app.worker
+
+ui:  ## Run the Streamlit UI on :8502 outside Docker (needs the API)
+	PYTHONPATH=. API_URL=http://localhost:8001 uv run streamlit run ui/Chat.py --server.port 8502
+
+demo-reset:  ## Reset the demo accounts (removes the sample upload, chats and memories); needs `make api`
+	uv run python -m scripts.demo_reset

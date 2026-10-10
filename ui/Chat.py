@@ -1,6 +1,6 @@
 """Chat page: ask questions, see sources, keep conversations, view and delete what is remembered.
 
-Run: uv run streamlit run ui/Chat.py --server.port 8502   (API must be running on API_URL)
+Run: make ui   (the API must be running on API_URL, default http://localhost:8001)
 """
 
 import streamlit as st

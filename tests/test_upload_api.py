@@ -107,3 +107,19 @@ def test_changing_a_document_to_public_needs_admin_and_says_403_not_404(rig) -> 
     w.conn.execute("UPDATE users SET role = 'admin' WHERE id = %s", (w.ann.user_id,))
     assert client.patch(url, json={"visibility": "public"}, headers=ANN).status_code == 200
     assert w.conn.execute("SELECT visibility FROM chunks").fetchone()[0] == "public"
+
+
+def test_only_the_owner_can_delete_a_document_and_its_chunks_go_with_it(rig) -> None:  # type: ignore[no-untyped-def]
+    w, _, client = rig
+    w.chunk(w.ann, "acme", "Handbook text", None, visibility="org", uri="h.md")
+    doc = w.conn.execute("SELECT id FROM documents").fetchone()[0]
+    amy = w.person("acme", "amy")  # a colleague who can SEE the document but does not own it
+    assert amy.user_id != w.ann.user_id
+    assert (
+        client.delete(f"/documents/{doc}", headers={"X-Dev-User": "amy@x.com"}).status_code == 404
+    )
+    assert w.conn.execute("SELECT count(*) FROM documents").fetchone()[0] == 1
+    assert client.delete(f"/documents/{doc}", headers=ANN).status_code == 204
+    assert w.conn.execute("SELECT count(*) FROM documents").fetchone()[0] == 0
+    assert w.conn.execute("SELECT count(*) FROM chunks").fetchone()[0] == 0
+    assert client.delete(f"/documents/{doc}", headers=ANN).status_code == 404  # already gone

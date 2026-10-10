@@ -21,8 +21,8 @@ def main() -> None:
             n = {"documents": 0, "conversations": 0, "memories": 0}
             for d in c.get("/documents", headers=h).json():
                 if d.get("source_uri") == SAMPLE or d.get("filename") == SAMPLE:
-                    c.delete(f"/documents/{d['id']}", headers=h).raise_for_status()
-                    n["documents"] += 1
+                    gone = c.delete(f"/documents/{d['id']}", headers=h)
+                    n["documents"] += gone.status_code == 204  # 404 = someone else's copy: leave it
             for conv in c.get("/conversations", headers=h).json():
                 c.delete(f"/conversations/{conv['id']}", headers=h)
                 n["conversations"] += 1

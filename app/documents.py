@@ -64,3 +64,17 @@ def set_visibility(
     if row is None:
         # Not found, someone else's, or hidden by RLS: the same answer, so ids cannot be probed.
         raise DocumentError("document not found, or you are not its owner")
+
+
+def delete_document(conn: psycopg.Connection, who: Scope, document_id: uuid.UUID) -> None:
+    """Delete a document and, by cascade, all its chunks (and so its embeddings and index entries).
+
+    Only the owner may delete (the same rule as the database's write policy). Not found, someone
+    else's and hidden by RLS all give the same answer, so ids cannot be probed.
+    """
+    row = conn.execute(
+        "DELETE FROM documents WHERE id = %s AND owner_id = %s RETURNING id",
+        (document_id, who.user_id),
+    ).fetchone()
+    if row is None:
+        raise DocumentError("document not found, or you are not its owner")

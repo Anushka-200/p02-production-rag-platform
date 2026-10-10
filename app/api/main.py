@@ -12,7 +12,7 @@ from typing import Any
 
 import psycopg
 from fastapi import Depends, FastAPI, File, Form, HTTPException, Query, Request, UploadFile
-from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
+from fastapi.responses import FileResponse, JSONResponse, Response, StreamingResponse
 from pydantic import BaseModel, Field, field_validator
 from starlette.background import BackgroundTask
 
@@ -39,7 +39,13 @@ from app.chat_history import (
 )
 from app.config import Settings, get_settings
 from app.db.tenant import check_role_is_restricted, tenant_connection
-from app.documents import DocumentError, NotAllowed, list_documents, set_visibility
+from app.documents import (
+    DocumentError,
+    NotAllowed,
+    delete_document,
+    list_documents,
+    set_visibility,
+)
 from app.embeddings import Embedder, get_embedder, get_token_counter
 from app.ingest.upload import UploadError, enqueue_upload
 from app.llm import complete
@@ -282,6 +288,15 @@ def create_app(
     def documents(who: Principal = Depends(principal)) -> list[dict[str, Any]]:
         with tenant_connection(open_connection, who.scope) as conn:
             return list_documents(conn, who.scope)
+
+    @app.delete("/documents/{document_id}", status_code=204)
+    def document_delete(document_id: uuid.UUID, who: Principal = Depends(principal)) -> Response:
+        try:
+            with tenant_connection(open_connection, who.scope, write=True) as conn:
+                delete_document(conn, who.scope, document_id)
+        except DocumentError as exc:
+            raise HTTPException(404, str(exc)) from exc
+        return Response(status_code=204)
 
     @app.patch("/documents/{document_id}/visibility")
     def document_visibility(
